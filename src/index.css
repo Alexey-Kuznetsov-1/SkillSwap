@@ -66,14 +66,14 @@ body {
 
 h1,
 h2 {
-  font-family: var(--heading);
+  font-family: var(--font-heading);
   font-weight: 500;
-  color: var(--text-h);
+  color: var(--color-accent-dark);
 }
 
 h1 {
   margin: 32px 0;
-  font-size: 56px;
+  font-size: var(--font-size-heading-section);
   letter-spacing: -1.68px;
 
   @media (width <= 1024px) {
@@ -100,7 +100,7 @@ p {
 code,
 .counter {
   display: inline-flex;
-  font-family: var(--mono);
+  font-family: var(--font-text), sans-serif;
   color: var(--text-h);
   border-radius: 4px;
 }
