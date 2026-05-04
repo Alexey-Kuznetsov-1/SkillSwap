@@ -2,10 +2,15 @@ import { useState } from 'react';
 import reactLogo from '@/assets/react.svg';
 import viteLogo from '@/assets/vite.svg';
 import './App.css';
+<<<<<<< feature/radio-button
 import { Radio } from '@/shared/ui/Radio/Radio';
+=======
+import { Textarea } from '@/shared/ui/Textarea/Textarea';
+>>>>>>> develop
 
 function App() {
   const [count, setCount] = useState(0);
+  const [skillDescription, setSkillDescription] = useState('');
 
   const [selectedValue, setSelectedValue] = useState('option1');
 
@@ -33,6 +38,21 @@ function App() {
           <p>
             Edit <code>src/app/App.tsx</code> and save to test <code>HMR</code>
           </p>
+          {/* УДАЛИТЬ - пример работы textarea ---> */}
+          <Textarea
+            label='Описание'
+            value={skillDescription}
+            onChange={setSkillDescription}
+            placeholder='Коротко опишите, чему можете научить'
+            rows={4}
+            maxLength={1000}
+            error={
+              skillDescription.length > 800
+                ? 'Осталось мало символов!'
+                : undefined
+            }
+          />
+          {/* <--- УДАЛИТЬ - пример работы textarea */}
         </div>
         {/* RADIO-BUTTON пример работы кнопки радио --> */}
         <div>
