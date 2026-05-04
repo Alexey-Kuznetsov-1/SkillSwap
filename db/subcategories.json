@@ -1,0 +1,51 @@
+{
+  "data": [
+    { "id": "c1s1", "name": "Управление командой", "categoryId": "c1" },
+    { "id": "c1s2", "name": "Маркетинг и реклама", "categoryId": "c1" },
+    { "id": "c1s3", "name": "Продажи и переговоры", "categoryId": "c1" },
+    { "id": "c1s4", "name": "Личный бренд", "categoryId": "c1" },
+    { "id": "c1s5", "name": "Резюме и собеседование", "categoryId": "c1" },
+    { "id": "c1s6", "name": "Тайм-менеджмент", "categoryId": "c1" },
+    { "id": "c1s7", "name": "Проектное управление", "categoryId": "c1" },
+    { "id": "c1s8", "name": "Предпринимательство", "categoryId": "c1" },
+
+    { "id": "c2s1", "name": "Рисование и иллюстрация", "categoryId": "c2" },
+    { "id": "c2s2", "name": "Фотография", "categoryId": "c2" },
+    { "id": "c2s3", "name": "Видеомонтаж", "categoryId": "c2" },
+    { "id": "c2s4", "name": "Музыка и звук", "categoryId": "c2" },
+    { "id": "c2s5", "name": "Актёрское мастерство", "categoryId": "c2" },
+    { "id": "c2s6", "name": "Креативное письмо", "categoryId": "c2" },
+    { "id": "c2s7", "name": "Арт-терапия", "categoryId": "c2" },
+    { "id": "c2s8", "name": "Декор и DIY", "categoryId": "c2" },
+
+    { "id": "c3s1", "name": "Английский", "categoryId": "c3" },
+    { "id": "c3s2", "name": "Французский", "categoryId": "c3" },
+    { "id": "c3s3", "name": "Испанский", "categoryId": "c3" },
+    { "id": "c3s4", "name": "Немецкий", "categoryId": "c3" },
+    { "id": "c3s5", "name": "Китайский", "categoryId": "c3" },
+    { "id": "c3s6", "name": "Японский", "categoryId": "c3" },
+    { "id": "c3s7", "name": "Подготовка к экзаменам (IELTS, TOEFL)", "categoryId": "c3" },
+
+    { "id": "c4s1", "name": "Личностное развитие", "categoryId": "c4" },
+    { "id": "c4s2", "name": "Навыки обучения", "categoryId": "c4" },
+    { "id": "c4s3", "name": "Когнитивные техники", "categoryId": "c4" },
+    { "id": "c4s4", "name": "Скорочтение", "categoryId": "c4" },
+    { "id": "c4s5", "name": "Навыки преподавания", "categoryId": "c4" },
+    { "id": "c4s6", "name": "Коучинг", "categoryId": "c4" },
+
+    { "id": "c5s1", "name": "Уборка и организация", "categoryId": "c5" },
+    { "id": "c5s2", "name": "Домашние финансы", "categoryId": "c5" },
+    { "id": "c5s3", "name": "Приготовление еды", "categoryId": "c5" },
+    { "id": "c5s4", "name": "Домашние растения", "categoryId": "c5" },
+    { "id": "c5s5", "name": "Ремонт", "categoryId": "c5" },
+    { "id": "c5s6", "name": "Хранение вещей", "categoryId": "c5" },
+
+    { "id": "c6s1", "name": "Йога и медитация", "categoryId": "c6" },
+    { "id": "c6s2", "name": "Питание и ЗОЖ", "categoryId": "c6" },
+    { "id": "c6s3", "name": "Ментальное здоровье", "categoryId": "c6" },
+    { "id": "c6s4", "name": "Осознанность", "categoryId": "c6" },
+    { "id": "c6s5", "name": "Физические тренировки", "categoryId": "c6" },
+    { "id": "c6s6", "name": "Сон и восстановление", "categoryId": "c6" },
+    { "id": "c6s7", "name": "Баланс жизни и работы", "categoryId": "c6" }
+  ]
+}

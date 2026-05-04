@@ -1,1 +1,1156 @@
-[]
+{
+  "data": [
+    {
+      "id": 1,
+      "email": "user1@mail.com",
+      "avatarUrl": "/images/users/user01.jpg",
+      "name": "Алексей Иванов",
+      "about": "Привет! Люблю ритм, кофе по утрам и людей, которые не боятся пробовать новое",
+      "location": { "id": 1, "name": "Москва" },
+      "birthDay": "1992-02-12",
+      "gender": "Мужской",
+      "registrationDate": "2024-01-10",
+      "skillCanTeach": [
+        {
+          "id": 1,
+          "name": "Игра на барабанах",
+          "subCategory": {
+            "id": "c2s4",
+            "name": "Музыка и звук",
+            "categoryId": "c2"
+          }
+        }
+      ],
+      "subcategoriesWantToLearn": [{ "id": "c2s1", "name": "Рисование и иллюстрация", "categoryId": "c2" }],
+      "userIdLikes": [2, 3]
+    },
+    {
+      "id": 2,
+      "email": "user2@mail.com",
+      "avatarUrl": "/images/users/user02.jpg",
+      "name": "Мария Смирнова",
+      "about": "Фотограф, интересуюсь искусством и дизайном.",
+      "location": { "id": 2, "name": "Санкт-Петербург" },
+      "birthDay": "1996-08-15",
+      "gender": "Женский",
+      "registrationDate": "2024-02-20",
+      "skillCanTeach": [
+        {
+          "id": 2,
+          "name": "Фотография",
+          "subCategory": { "id": "c2s2", "name": "Фотография", "categoryId": "c2" }
+        }
+      ],
+      "subcategoriesWantToLearn": [{ "id": "c3s1", "name": "Английский", "categoryId": "c3" }],
+      "userIdLikes": [1, 4]
+    },
+    {
+      "id": 3,
+      "email": "user3@mail.com",
+      "avatarUrl": "/images/users/user03.jpg",
+      "name": "Дмитрий Ковалев",
+      "about": "Бизнес-консультант, страстно увлечён развитием личных брендов.",
+      "location": { "id": 3, "name": "Новосибирск" },
+      "birthDay": "1988-05-22",
+      "gender": "Мужской",
+      "registrationDate": "2024-03-01",
+      "skillCanTeach": [
+        {
+          "id": 3,
+          "name": "Маркетинг",
+          "subCategory": { "id": "c1s2", "name": "Маркетинг и реклама", "categoryId": "c1" }
+        }
+      ],
+      "subcategoriesWantToLearn": [{ "id": "c2s4", "name": "Музыка и звук", "categoryId": "c2" }],
+      "userIdLikes": [1, 5]
+    },
+    {
+      "id": 4,
+      "email": "user4@mail.com",
+      "avatarUrl": "/images/users/user04.jpg",
+      "name": "Ольга Петренко",
+      "about": "Писатель и копирайтер. Создаю контент для блогов и соцсетей.",
+      "location": { "id": 4, "name": "Екатеринбург" },
+      "birthDay": "1990-11-10",
+      "gender": "Женский",
+      "registrationDate": "2024-03-10",
+      "skillCanTeach": [
+        {
+          "id": 4,
+          "name": "Копирайтинг",
+          "subCategory": { "id": "c2s6", "name": "Креативное письмо", "categoryId": "c2" }
+        }
+      ],
+      "subcategoriesWantToLearn": [{ "id": "c5s3", "name": "Приготовление еды", "categoryId": "c5" }],
+      "userIdLikes": [3, 6]
+    },
+    {
+      "id": 5,
+      "email": "user5@mail.com",
+      "avatarUrl": "/images/users/user05.jpg",
+      "name": "Иван Васильев",
+      "about": "Интернет-маркетолог, создаю стратегии роста для стартапов.",
+      "location": { "id": 5, "name": "Казань" },
+      "birthDay": "1985-06-17",
+      "gender": "Мужской",
+      "registrationDate": "2024-03-15",
+      "skillCanTeach": [
+        {
+          "id": 5,
+          "name": "SEO",
+          "subCategory": { "id": "c1s2", "name": "Маркетинг и реклама", "categoryId": "c1" }
+        }
+      ],
+      "subcategoriesWantToLearn": [{ "id": "c6s1", "name": "Йога и медитация", "categoryId": "c6" }],
+      "userIdLikes": [2, 4]
+    },
+    {
+      "id": 6,
+      "email": "user6@mail.com",
+      "avatarUrl": "/images/users/user06.jpg",
+      "name": "Анна Соколова",
+      "about": "UX/UI дизайнер, люблю минимализм и функциональность.",
+      "location": { "id": 6, "name": "Нижний Новгород" },
+      "birthDay": "1994-03-09",
+      "gender": "Женский",
+      "registrationDate": "2024-03-20",
+      "skillCanTeach": [
+        {
+          "id": 6,
+          "name": "Figma",
+          "subCategory": {
+            "id": "c2s8",
+            "name": "Декор и DIY",
+            "categoryId": "c2"
+          }
+        }
+      ],
+      "subcategoriesWantToLearn": [
+        { "id": "c1s1", "name": "Управление командой", "categoryId": "c1" }
+      ],
+      "userIdLikes": [1, 3, 5]
+    },
+    {
+      "id": 7,
+      "email": "user7@mail.com",
+      "avatarUrl": "/images/users/user07.jpg",
+      "name": "Сергей Мельников",
+      "about": "Backend разработчик, пишу API и микросервисы.",
+      "location": { "id": 7, "name": "Челябинск" },
+      "birthDay": "1991-12-01",
+      "gender": "Мужской",
+      "registrationDate": "2024-03-22",
+      "skillCanTeach": [
+        {
+          "id": 7,
+          "name": "Node.js",
+          "subCategory": {
+            "id": "c4s2",
+            "name": "Навыки обучения",
+            "categoryId": "c4"
+          }
+        }
+      ],
+      "subcategoriesWantToLearn": [
+        { "id": "c2s3", "name": "Видеомонтаж", "categoryId": "c2" }
+      ],
+      "userIdLikes": [2, 4]
+    },
+    {
+      "id": 8,
+      "email": "user8@mail.com",
+      "avatarUrl": "/images/users/user08.jpg",
+      "name": "Екатерина Лебедева",
+      "about": "Преподаватель английского языка.",
+      "location": { "id": 8, "name": "Самара" },
+      "birthDay": "1993-07-18",
+      "gender": "Женский",
+      "registrationDate": "2024-03-25",
+      "skillCanTeach": [
+        {
+          "id": 8,
+          "name": "Английский язык",
+          "subCategory": { "id": "c3s1", "name": "Английский", "categoryId": "c3" }
+        }
+      ],
+      "subcategoriesWantToLearn": [
+        { "id": "c1s4", "name": "Личный бренд", "categoryId": "c1" }
+      ],
+      "userIdLikes": [6, 7]
+    },
+    {
+      "id": 9,
+      "email": "user9@mail.com",
+      "avatarUrl": "/images/users/user09.jpg",
+      "name": "Роман Кузнецов",
+      "about": "Фитнес тренер и нутрициолог.",
+      "location": { "id": 9, "name": "Уфа" },
+      "birthDay": "1989-04-11",
+      "gender": "Мужской",
+      "registrationDate": "2024-03-27",
+      "skillCanTeach": [
+        {
+          "id": 9,
+          "name": "Фитнес",
+          "subCategory": { "id": "c6s5", "name": "Физические тренировки", "categoryId": "c6" }
+        }
+      ],
+      "subcategoriesWantToLearn": [
+        { "id": "c2s6", "name": "Креативное письмо", "categoryId": "c2" }
+      ],
+      "userIdLikes": [8]
+    },
+    {
+      "id": 10,
+      "email": "user10@mail.com",
+      "avatarUrl": "/images/users/user10.jpg",
+      "name": "Наталья Орлова",
+      "about": "Фотограф, снимаю портреты и мероприятия.",
+      "location": { "id": 10, "name": "Ростов-на-Дону" },
+      "birthDay": "1995-09-30",
+      "gender": "Женский",
+      "registrationDate": "2024-04-01",
+      "skillCanTeach": [
+        {
+          "id": 10,
+          "name": "Фотография",
+          "subCategory": { "id": "c2s2", "name": "Фотография", "categoryId": "c2" }
+        }
+      ],
+      "subcategoriesWantToLearn": [
+        { "id": "c3s3", "name": "Испанский", "categoryId": "c3" }
+      ],
+      "userIdLikes": [1, 9]
+    },
+    {
+      "id": 11,
+      "email": "user11@mail.com",
+      "avatarUrl": "/images/users/user11.jpg",
+      "name": "Артём Зайцев",
+      "about": "Продакт-менеджер, развиваю цифровые сервисы.",
+      "location": { "id": 11, "name": "Красноярск" },
+      "birthDay": "1990-01-14",
+      "gender": "Мужской",
+      "registrationDate": "2024-04-03",
+      "skillCanTeach": [
+        {
+          "id": 11,
+          "name": "Product Management",
+          "subCategory": { "id": "c1s7", "name": "Проектное управление", "categoryId": "c1" }
+        }
+      ],
+      "subcategoriesWantToLearn": [
+        { "id": "c2s4", "name": "Музыка и звук", "categoryId": "c2" }
+      ],
+      "userIdLikes": [2, 8]
+    },
+    {
+      "id": 12,
+      "email": "user12@mail.com",
+      "avatarUrl": "/images/users/user12.jpg",
+      "name": "Полина Власова",
+      "about": "Художник-иллюстратор, рисую для книг и игр.",
+      "location": { "id": 12, "name": "Воронеж" },
+      "birthDay": "1997-06-05",
+      "gender": "Женский",
+      "registrationDate": "2024-04-05",
+      "skillCanTeach": [
+        {
+          "id": 12,
+          "name": "Иллюстрация",
+          "subCategory": { "id": "c2s1", "name": "Рисование и иллюстрация", "categoryId": "c2" }
+        }
+      ],
+      "subcategoriesWantToLearn": [
+        { "id": "c1s4", "name": "Личный бренд", "categoryId": "c1" }
+      ],
+      "userIdLikes": [3, 10]
+    },
+    {
+      "id": 13,
+      "email": "user13@mail.com",
+      "avatarUrl": "/images/users/user13.jpg",
+      "name": "Игорь Фомин",
+      "about": "DevOps инженер, автоматизирую инфраструктуру.",
+      "location": { "id": 13, "name": "Пермь" },
+      "birthDay": "1987-10-22",
+      "gender": "Мужской",
+      "registrationDate": "2024-04-07",
+      "skillCanTeach": [
+        {
+          "id": 13,
+          "name": "Docker",
+          "subCategory": {
+            "id": "c4s2",
+            "name": "Навыки обучения",
+            "categoryId": "c4"
+          }
+        }
+      ],
+      "subcategoriesWantToLearn": [
+        { "id": "c3s5", "name": "Китайский", "categoryId": "c3" }
+      ],
+      "userIdLikes": [6, 9]
+    },
+    {
+      "id": 14,
+      "email": "user14@mail.com",
+      "avatarUrl": "/images/users/user14.jpg",
+      "name": "Виктория Белова",
+      "about": "SMM специалист, веду бренды в соцсетях.",
+      "location": { "id": 14, "name": "Волгоград" },
+      "birthDay": "1996-02-19",
+      "gender": "Женский",
+      "registrationDate": "2024-04-10",
+      "skillCanTeach": [
+        {
+          "id": 14,
+          "name": "SMM",
+          "subCategory": { "id": "c1s2", "name": "Маркетинг и реклама", "categoryId": "c1" }
+        }
+      ],
+      "subcategoriesWantToLearn": [
+        { "id": "c2s5", "name": "Актёрское мастерство", "categoryId": "c2" }
+      ],
+      "userIdLikes": [1, 7]
+    },
+    {
+      "id": 15,
+      "email": "user15@mail.com",
+      "avatarUrl": "/images/users/user15.jpg",
+      "name": "Денис Морозов",
+      "about": "Музыкант и звукорежиссёр.",
+      "location": { "id": 15, "name": "Краснодар" },
+      "birthDay": "1992-12-08",
+      "gender": "Мужской",
+      "registrationDate": "2024-04-12",
+      "skillCanTeach": [
+        {
+          "id": 15,
+          "name": "Sound Design",
+          "subCategory": { "id": "c2s4", "name": "Музыка и звук", "categoryId": "c2" }
+        }
+      ],
+      "subcategoriesWantToLearn": [
+        { "id": "c6s1", "name": "Йога и медитация", "categoryId": "c6" }
+      ],
+      "userIdLikes": [4, 11]
+    },
+    {
+      "id": 16,
+      "email": "user16@mail.com",
+      "avatarUrl": "/images/users/user16.jpg",
+      "name": "Алина Карпова",
+      "about": "Копирайтер и контент-стратег.",
+      "location": { "id": 16, "name": "Саратов" },
+      "birthDay": "1998-03-14",
+      "gender": "Женский",
+      "registrationDate": "2024-04-15",
+      "skillCanTeach": [
+        {
+          "id": 16,
+          "name": "Копирайтинг",
+          "subCategory": {
+            "id": "c2s6",
+            "name": "Креативное письмо",
+            "categoryId": "c2"
+          }
+        }
+      ],
+      "subcategoriesWantToLearn": [
+        { "id": "c1s8", "name": "Предпринимательство", "categoryId": "c1" }
+      ],
+      "userIdLikes": [2, 5]
+    },
+    {
+      "id": 17,
+      "email": "user17@mail.com",
+      "avatarUrl": "/images/users/user17.jpg",
+      "name": "Максим Громов",
+      "about": "Преподаю основы веб-разработки.",
+      "location": { "id": 17, "name": "Тюмень" },
+      "birthDay": "1993-09-21",
+      "gender": "Мужской",
+      "registrationDate": "2024-04-18",
+      "skillCanTeach": [
+        {
+          "id": 17,
+          "name": "Основы веб-разработки",
+          "subCategory": {
+            "id": "c4s2",
+            "name": "Навыки обучения",
+            "categoryId": "c4"
+          }
+        }
+      ],
+      "subcategoriesWantToLearn": [
+        { "id": "c2s3", "name": "Видеомонтаж", "categoryId": "c2" }
+      ],
+      "userIdLikes": [1, 6]
+    },
+    {
+      "id": 18,
+      "email": "user18@mail.com",
+      "avatarUrl": "/images/users/user18.jpg",
+      "name": "Светлана Романова",
+      "about": "Преподаватель йоги и медитации.",
+      "location": { "id": 18, "name": "Тольятти" },
+      "birthDay": "1991-05-30",
+      "gender": "Женский",
+      "registrationDate": "2024-04-20",
+      "skillCanTeach": [
+        {
+          "id": 18,
+          "name": "Практика йоги",
+          "subCategory": {
+            "id": "c6s1",
+            "name": "Йога и медитация",
+            "categoryId": "c6"
+          }
+        }
+      ],
+      "subcategoriesWantToLearn": [
+        { "id": "c3s1", "name": "Английский", "categoryId": "c3" }
+      ],
+      "userIdLikes": [3, 7]
+    },
+    {
+      "id": 19,
+      "email": "user19@mail.com",
+      "avatarUrl": "/images/users/user19.jpg",
+      "name": "Евгений Литвинов",
+      "about": "Работаю с анализом данных и процессами.",
+      "location": { "id": 19, "name": "Иркутск" },
+      "birthDay": "1988-11-11",
+      "gender": "Мужской",
+      "registrationDate": "2024-04-22",
+      "skillCanTeach": [
+        {
+          "id": 19,
+          "name": "Анализ бизнес-процессов",
+          "subCategory": {
+            "id": "c1s7",
+            "name": "Проектное управление",
+            "categoryId": "c1"
+          }
+        }
+      ],
+      "subcategoriesWantToLearn": [
+        { "id": "c2s1", "name": "Рисование и иллюстрация", "categoryId": "c2" }
+      ],
+      "userIdLikes": [4, 8]
+    },
+    {
+      "id": 20,
+      "email": "user20@mail.com",
+      "avatarUrl": "/images/users/user20.jpg",
+      "name": "Дарья Никитина",
+      "about": "Фотограф портретов и lifestyle.",
+      "location": { "id": 20, "name": "Барнаул" },
+      "birthDay": "1996-07-07",
+      "gender": "Женский",
+      "registrationDate": "2024-04-25",
+      "skillCanTeach": [
+        {
+          "id": 20,
+          "name": "Портретная фотография",
+          "subCategory": {
+            "id": "c2s2",
+            "name": "Фотография",
+            "categoryId": "c2"
+          }
+        }
+      ],
+      "subcategoriesWantToLearn": [
+        { "id": "c1s4", "name": "Личный бренд", "categoryId": "c1" }
+      ],
+      "userIdLikes": [9, 12]
+    },
+    {
+      "id": 21,
+      "email": "maria.orlova@example.com",
+      "avatarUrl": "/images/users/user01.jpg",
+      "name": "Мария Орлова",
+      "about": "Люблю рисовать и обучать других.",
+      "location": { "id": 12, "name": "Воронеж" },
+      "birthDay": "1998-01-09",
+      "gender": "Женский",
+      "registrationDate": "2024-04-23",
+      "skillCanTeach": [
+        {
+          "id": 21,
+          "name": "Иллюстрация для начинающих",
+          "subCategory": { "id": "c2s1", "name": "Рисование и иллюстрация", "categoryId": "c2" }
+        }
+      ],
+      "subcategoriesWantToLearn": [
+        { "id": "c3s1", "name": "Английский", "categoryId": "c3" }
+      ],
+      "userIdLikes": [20]
+    },
+    {
+      "id": 22,
+      "email": "kirill.belov@example.com",
+      "avatarUrl": "/images/users/user02.jpg",
+      "name": "Кирилл Белов",
+      "about": "Работаю со звуком и музыкой.",
+      "location": { "id": 13, "name": "Пермь" },
+      "birthDay": "1992-11-19",
+      "gender": "Мужской",
+      "registrationDate": "2024-04-24",
+      "skillCanTeach": [
+        {
+          "id": 22,
+          "name": "Основы звукозаписи и сведения",
+          "subCategory": { "id": "c2s4", "name": "Музыка и звук", "categoryId": "c2" }
+        }
+      ],
+      "subcategoriesWantToLearn": [
+        { "id": "c1s4", "name": "Личный бренд", "categoryId": "c1" }
+      ],
+      "userIdLikes": []
+    },
+    {
+      "id": 23,
+      "email": "tatiana.egorova@example.com",
+      "avatarUrl": "/images/users/user03.jpg",
+      "name": "Татьяна Егорова",
+      "about": "Помогаю развивать когнитивные навыки.",
+      "location": { "id": 14, "name": "Волгоград" },
+      "birthDay": "1990-06-25",
+      "gender": "Женский",
+      "registrationDate": "2024-04-25",
+      "skillCanTeach": [
+        {
+          "id": 23,
+          "name": "Когнитивные техники для обучения",
+          "subCategory": { "id": "c4s3", "name": "Когнитивные техники", "categoryId": "c4" }
+        }
+      ],
+      "subcategoriesWantToLearn": [
+        { "id": "c6s6", "name": "Сон и восстановление", "categoryId": "c6" }
+      ],
+      "userIdLikes": [21, 22]
+    },
+    {
+      "id": 24,
+      "email": "denis.popov@example.com",
+      "avatarUrl": "/images/users/user04.jpg",
+      "name": "Денис Попов",
+      "about": "Учу готовить быстро и вкусно.",
+      "location": { "id": 15, "name": "Краснодар" },
+      "birthDay": "1986-09-02",
+      "gender": "Мужской",
+      "registrationDate": "2024-04-26",
+      "skillCanTeach": [
+        {
+          "id": 24,
+          "name": "Домашняя кухня: быстрые рецепты",
+          "subCategory": { "id": "c5s3", "name": "Приготовление еды", "categoryId": "c5" }
+        }
+      ],
+      "subcategoriesWantToLearn": [
+        { "id": "c2s3", "name": "Видеомонтаж", "categoryId": "c2" }
+      ],
+      "userIdLikes": []
+    },
+    {
+      "id": 25,
+      "email": "svetlana.zaitseva@example.com",
+      "avatarUrl": "/images/users/user05.jpg",
+      "name": "Светлана Зайцева",
+      "about": "Помогаю наводить порядок в доме и жизни.",
+      "location": { "id": 16, "name": "Саратов" },
+      "birthDay": "1993-07-21",
+      "gender": "Женский",
+      "registrationDate": "2024-04-27",
+      "skillCanTeach": [
+        {
+          "id": 25,
+          "name": "Организация пространства дома",
+          "subCategory": { "id": "c5s1", "name": "Уборка и организация", "categoryId": "c5" }
+        }
+      ],
+      "subcategoriesWantToLearn": [
+        { "id": "c4s4", "name": "Скорочтение", "categoryId": "c4" }
+      ],
+      "userIdLikes": [20, 23]
+    },
+    {
+      "id": 26,
+      "email": "roman.kozlov@example.com",
+      "avatarUrl": "/images/users/user06.jpg",
+      "name": "Роман Козлов",
+      "about": "Тренирую тело и дисциплину.",
+      "location": { "id": 17, "name": "Тюмень" },
+      "birthDay": "1988-12-11",
+      "gender": "Мужской",
+      "registrationDate": "2024-04-28",
+      "skillCanTeach": [
+        {
+          "id": 26,
+          "name": "Базовые физические тренировки",
+          "subCategory": { "id": "c6s5", "name": "Физические тренировки", "categoryId": "c6" }
+        }
+      ],
+      "subcategoriesWantToLearn": [
+        { "id": "c3s4", "name": "Немецкий", "categoryId": "c3" }
+      ],
+      "userIdLikes": []
+    },
+    {
+      "id": 27,
+      "email": "yana.grigorieva@example.com",
+      "avatarUrl": "/images/users/user07.jpg",
+      "name": "Яна Григорьева",
+      "about": "Помогаю развивать навыки обучения.",
+      "location": { "id": 18, "name": "Тольятти" },
+      "birthDay": "1997-05-03",
+      "gender": "Женский",
+      "registrationDate": "2024-04-29",
+      "skillCanTeach": [
+        {
+          "id": 27,
+          "name": "Как эффективно учиться",
+          "subCategory": { "id": "c4s2", "name": "Навыки обучения", "categoryId": "c4" }
+        }
+      ],
+      "subcategoriesWantToLearn": [
+        { "id": "c2s7", "name": "Арт-терапия", "categoryId": "c2" }
+      ],
+      "userIdLikes": [25]
+    },
+    {
+      "id": 28,
+      "email": "artem.nikitin@example.com",
+      "avatarUrl": "/images/users/user08.jpg",
+      "name": "Артём Никитин",
+      "about": "Снимаю и монтирую видео.",
+      "location": { "id": 19, "name": "Иркутск" },
+      "birthDay": "1991-10-17",
+      "gender": "Мужской",
+      "registrationDate": "2024-04-30",
+      "skillCanTeach": [
+        {
+          "id": 28,
+          "name": "Монтаж видео для начинающих",
+          "subCategory": { "id": "c2s3", "name": "Видеомонтаж", "categoryId": "c2" }
+        }
+      ],
+      "subcategoriesWantToLearn": [
+        { "id": "c1s7", "name": "Проектное управление", "categoryId": "c1" }
+      ],
+      "userIdLikes": [21, 24]
+    },
+    {
+      "id": 29,
+      "email": "ekaterina.makarova@example.com",
+      "avatarUrl": "/images/users/user09.jpg",
+      "name": "Екатерина Макарова",
+      "about": "Преподаю английский язык.",
+      "location": { "id": 20, "name": "Барнаул" },
+      "birthDay": "1994-03-08",
+      "gender": "Женский",
+      "registrationDate": "2024-05-01",
+      "skillCanTeach": [
+        {
+          "id": 29,
+          "name": "Английский для начинающих",
+          "subCategory": { "id": "c3s1", "name": "Английский", "categoryId": "c3" }
+        }
+      ],
+      "subcategoriesWantToLearn": [
+        { "id": "c1s6", "name": "Тайм-менеджмент", "categoryId": "c1" }
+      ],
+      "userIdLikes": []
+    },
+    {
+      "id": 30,
+      "email": "maksim.andreev@example.com",
+      "avatarUrl": "/images/users/user10.jpg",
+      "name": "Максим Андреев",
+      "about": "Помогаю выстраивать личную эффективность.",
+      "location": { "id": 1, "name": "Москва" },
+      "birthDay": "1990-01-15",
+      "gender": "Мужской",
+      "registrationDate": "2024-05-02",
+      "skillCanTeach": [
+        {
+          "id": 30,
+          "name": "Системный тайм-менеджмент",
+          "subCategory": { "id": "c1s6", "name": "Тайм-менеджмент", "categoryId": "c1" }
+        }
+      ],
+      "subcategoriesWantToLearn": [
+        { "id": "c6s7", "name": "Баланс жизни и работы", "categoryId": "c6" }
+      ],
+      "userIdLikes": [25, 28]
+    },
+    {
+      "id": 31,
+      "email": "daria.vlasova@example.com",
+      "avatarUrl": "/images/users/user11.jpg",
+      "name": "Дарья Власова",
+      "about": "Пишу тексты и обучаю сторителлингу.",
+      "location": { "id": 2, "name": "Санкт-Петербург" },
+      "birthDay": "1996-09-12",
+      "gender": "Женский",
+      "registrationDate": "2024-05-03",
+      "skillCanTeach": [
+        {
+          "id": 31,
+          "name": "Креативное письмо и сторителлинг",
+          "subCategory": { "id": "c2s6", "name": "Креативное письмо", "categoryId": "c2" }
+        }
+      ],
+      "subcategoriesWantToLearn": [
+        { "id": "c1s4", "name": "Личный бренд", "categoryId": "c1" }
+      ],
+      "userIdLikes": []
+    },
+    {
+      "id": 32,
+      "email": "igor.karpov@example.com",
+      "avatarUrl": "/images/users/user12.jpg",
+      "name": "Игорь Карпов",
+      "about": "Обучаю управлению финансами дома.",
+      "location": { "id": 3, "name": "Новосибирск" },
+      "birthDay": "1985-04-04",
+      "gender": "Мужской",
+      "registrationDate": "2024-05-04",
+      "skillCanTeach": [
+        {
+          "id": 32,
+          "name": "Управление личными финансами",
+          "subCategory": { "id": "c5s2", "name": "Домашние финансы", "categoryId": "c5" }
+        }
+      ],
+      "subcategoriesWantToLearn": [
+        { "id": "c4s1", "name": "Личностное развитие", "categoryId": "c4" }
+      ],
+      "userIdLikes": [30]
+    },
+    {
+      "id": 33,
+      "email": "polina.semenova@example.com",
+      "avatarUrl": "/images/users/user13.jpg",
+      "name": "Полина Семёнова",
+      "about": "Практикую осознанность и медитации.",
+      "location": { "id": 4, "name": "Екатеринбург" },
+      "birthDay": "1993-06-18",
+      "gender": "Женский",
+      "registrationDate": "2024-05-05",
+      "skillCanTeach": [
+        {
+          "id": 33,
+          "name": "Практики осознанности",
+          "subCategory": { "id": "c6s4", "name": "Осознанность", "categoryId": "c6" }
+        }
+      ],
+      "subcategoriesWantToLearn": [
+        { "id": "c2s8", "name": "Декор и DIY", "categoryId": "c2" }
+      ],
+      "userIdLikes": [27, 29]
+    },
+    {
+      "id": 34,
+      "email": "vadim.kiselev@example.com",
+      "avatarUrl": "/images/users/user14.jpg",
+      "name": "Вадим Киселёв",
+      "about": "Готовлю к международным экзаменам.",
+      "location": { "id": 5, "name": "Казань" },
+      "birthDay": "1989-11-30",
+      "gender": "Мужской",
+      "registrationDate": "2024-05-06",
+      "skillCanTeach": [
+        {
+          "id": 34,
+          "name": "Подготовка к IELTS и TOEFL",
+          "subCategory": { "id": "c3s7", "name": "Подготовка к экзаменам (IELTS, TOEFL)", "categoryId": "c3" }
+        }
+      ],
+      "subcategoriesWantToLearn": [
+        { "id": "c1s3", "name": "Продажи и переговоры", "categoryId": "c1" }
+      ],
+      "userIdLikes": []
+    },
+    {
+      "id": 35,
+      "email": "aleksandra.belyaeva@example.com",
+      "avatarUrl": "/images/users/user15.jpg",
+      "name": "Александра Беляева",
+      "about": "Развиваю навыки преподавания и обучения.",
+      "location": { "id": 6, "name": "Нижний Новгород" },
+      "birthDay": "1992-02-10",
+      "gender": "Женский",
+      "registrationDate": "2024-05-07",
+      "skillCanTeach": [
+        {
+          "id": 35,
+          "name": "Методики преподавания",
+          "subCategory": { "id": "c4s5", "name": "Навыки преподавания", "categoryId": "c4" }
+        }
+      ],
+      "subcategoriesWantToLearn": [
+        { "id": "c1s2", "name": "Маркетинг и реклама", "categoryId": "c1" },
+        { "id": "c2s2", "name": "Фотография", "categoryId": "c2" }
+      ],
+      "userIdLikes": [30, 33]
+    },
+    {
+      "id": 36,
+      "email": "viktor.gromov@example.com",
+      "avatarUrl": "/images/users/user16.jpg",
+      "name": "Виктор Громов",
+      "about": "Практикую коучинг и развитие мышления.",
+      "location": { "id": 7, "name": "Челябинск" },
+      "birthDay": "1984-08-19",
+      "gender": "Мужской",
+      "registrationDate": "2024-05-08",
+      "skillCanTeach": [
+        {
+          "id": 36,
+          "name": "Основы коучинга",
+          "subCategory": { "id": "c4s6", "name": "Коучинг", "categoryId": "c4" }
+        }
+      ],
+      "subcategoriesWantToLearn": [
+        { "id": "c6s3", "name": "Ментальное здоровье", "categoryId": "c6" },
+        { "id": "c6s6", "name": "Сон и восстановление", "categoryId": "c6" },
+        { "id": "c1s6", "name": "Тайм-менеджмент", "categoryId": "c1" }
+      ],
+      "userIdLikes": []
+    },
+    {
+      "id": 37,
+      "email": "natalia.ershova@example.com",
+      "avatarUrl": "/images/users/user17.jpg",
+      "name": "Наталья Ершова",
+      "about": "Создаю уют и работаю с декором.",
+      "location": { "id": 8, "name": "Самара" },
+      "birthDay": "1995-03-03",
+      "gender": "Женский",
+      "registrationDate": "2024-05-09",
+      "skillCanTeach": [
+        {
+          "id": 37,
+          "name": "Декор интерьера своими руками",
+          "subCategory": { "id": "c2s8", "name": "Декор и DIY", "categoryId": "c2" }
+        }
+      ],
+      "subcategoriesWantToLearn": [
+        { "id": "c5s4", "name": "Домашние растения", "categoryId": "c5" },
+        { "id": "c5s6", "name": "Хранение вещей", "categoryId": "c5" },
+        { "id": "c4s4", "name": "Скорочтение", "categoryId": "c4" }
+      ],
+      "userIdLikes": [31, 34]
+    },
+    {
+      "id": 38,
+      "email": "oleg.denisov@example.com",
+      "avatarUrl": "/images/users/user18.jpg",
+      "name": "Олег Денисов",
+      "about": "Занимаюсь немецким языком и обучаю.",
+      "location": { "id": 9, "name": "Уфа" },
+      "birthDay": "1991-12-22",
+      "gender": "Мужской",
+      "registrationDate": "2024-05-10",
+      "skillCanTeach": [
+        {
+          "id": 38,
+          "name": "Немецкий язык с нуля",
+          "subCategory": { "id": "c3s4", "name": "Немецкий", "categoryId": "c3" }
+        }
+      ],
+      "subcategoriesWantToLearn": [
+        { "id": "c1s5", "name": "Резюме и собеседование", "categoryId": "c1" },
+        { "id": "c1s3", "name": "Продажи и переговоры", "categoryId": "c1" }
+      ],
+      "userIdLikes": []
+    },
+    {
+      "id": 39,
+      "email": "kseniya.fadeeva@example.com",
+      "avatarUrl": "/images/users/user19.jpg",
+      "name": "Ксения Фадеева",
+      "about": "Работаю с телом и питанием.",
+      "location": { "id": 10, "name": "Ростов-на-Дону" },
+      "birthDay": "1996-07-14",
+      "gender": "Женский",
+      "registrationDate": "2024-05-11",
+      "skillCanTeach": [
+        {
+          "id": 39,
+          "name": "Основы здорового питания",
+          "subCategory": { "id": "c6s2", "name": "Питание и ЗОЖ", "categoryId": "c6" }
+        }
+      ],
+      "subcategoriesWantToLearn": [
+        { "id": "c6s5", "name": "Физические тренировки", "categoryId": "c6" },
+        { "id": "c6s7", "name": "Баланс жизни и работы", "categoryId": "c6" },
+        { "id": "c4s1", "name": "Личностное развитие", "categoryId": "c4" },
+        { "id": "c3s3", "name": "Испанский", "categoryId": "c3" }
+      ],
+      "userIdLikes": [32, 35]
+    },
+    {
+      "id": 40,
+      "email": "andrey.frolov@example.com",
+      "avatarUrl": "/images/users/user20.jpg",
+      "name": "Андрей Фролов",
+      "about": "Помогаю выстраивать процессы в командах.",
+      "location": { "id": 1, "name": "Москва" },
+      "birthDay": "1986-05-06",
+      "gender": "Мужской",
+      "registrationDate": "2024-05-12",
+      "skillCanTeach": [
+        {
+          "id": 40,
+          "name": "Управление командой в IT",
+          "subCategory": { "id": "c1s1", "name": "Управление командой", "categoryId": "c1" }
+        }
+      ],
+      "subcategoriesWantToLearn": [
+        { "id": "c6s3", "name": "Ментальное здоровье", "categoryId": "c6" },
+        { "id": "c6s1", "name": "Йога и медитация", "categoryId": "c6" }
+      ],
+      "userIdLikes": [35, 38]
+    },
+    {
+      "id": 41,
+      "email": "veronika.pavlova@example.com",
+      "avatarUrl": "/images/users/user01.jpg",
+      "name": "Вероника Павлова",
+      "about": "Фотографирую и обучаю визуалу.",
+      "location": { "id": 2, "name": "Санкт-Петербург" },
+      "birthDay": "1997-11-02",
+      "gender": "Женский",
+      "registrationDate": "2024-05-13",
+      "skillCanTeach": [
+        {
+          "id": 41,
+          "name": "Портретная фотография",
+          "subCategory": { "id": "c2s2", "name": "Фотография", "categoryId": "c2" }
+        }
+      ],
+      "subcategoriesWantToLearn": [
+        { "id": "c1s4", "name": "Личный бренд", "categoryId": "c1" },
+        { "id": "c1s2", "name": "Маркетинг и реклама", "categoryId": "c1" },
+        { "id": "c2s6", "name": "Креативное письмо", "categoryId": "c2" }
+      ],
+      "userIdLikes": []
+    },
+    {
+      "id": 42,
+      "email": "sergey.melnikov@example.com",
+      "avatarUrl": "/images/users/user02.jpg",
+      "name": "Сергей Мельников",
+      "about": "Работаю с проектами и командами.",
+      "location": { "id": 3, "name": "Новосибирск" },
+      "birthDay": "1989-02-27",
+      "gender": "Мужской",
+      "registrationDate": "2024-05-14",
+      "skillCanTeach": [
+        {
+          "id": 42,
+          "name": "Agile и управление проектами",
+          "subCategory": { "id": "c1s7", "name": "Проектное управление", "categoryId": "c1" }
+        }
+      ],
+      "subcategoriesWantToLearn": [
+        { "id": "c4s6", "name": "Коучинг", "categoryId": "c4" },
+        { "id": "c6s7", "name": "Баланс жизни и работы", "categoryId": "c6" }
+      ],
+      "userIdLikes": [40]
+    },
+    {
+      "id": 43,
+      "email": "ulia.titova@example.com",
+      "avatarUrl": "/images/users/user03.jpg",
+      "name": "Юлия Титова",
+      "about": "Люблю работать с текстами и смыслами.",
+      "location": { "id": 4, "name": "Екатеринбург" },
+      "birthDay": "1995-09-09",
+      "gender": "Женский",
+      "registrationDate": "2024-05-15",
+      "skillCanTeach": [
+        {
+          "id": 43,
+          "name": "Копирайтинг и тексты",
+          "subCategory": { "id": "c2s6", "name": "Креативное письмо", "categoryId": "c2" }
+        }
+      ],
+      "subcategoriesWantToLearn": [
+        { "id": "c3s1", "name": "Английский", "categoryId": "c3" },
+        { "id": "c1s5", "name": "Резюме и собеседование", "categoryId": "c1" },
+        { "id": "c4s2", "name": "Навыки обучения", "categoryId": "c4" }
+      ],
+      "userIdLikes": [41, 39]
+    },
+    {
+      "id": 44,
+      "email": "nikolay.bogdanov@example.com",
+      "avatarUrl": "/images/users/user04.jpg",
+      "name": "Николай Богданов",
+      "about": "Занимаюсь ремонтом и обучаю этому.",
+      "location": { "id": 5, "name": "Казань" },
+      "birthDay": "1983-12-01",
+      "gender": "Мужской",
+      "registrationDate": "2024-05-16",
+      "skillCanTeach": [
+        {
+          "id": 44,
+          "name": "Базовый домашний ремонт",
+          "subCategory": { "id": "c5s5", "name": "Ремонт", "categoryId": "c5" }
+        }
+      ],
+      "subcategoriesWantToLearn": [
+        { "id": "c5s1", "name": "Уборка и организация", "categoryId": "c5" },
+        { "id": "c6s2", "name": "Питание и ЗОЖ", "categoryId": "c6" }
+      ],
+      "userIdLikes": []
+    },
+    {
+      "id": 45,
+      "email": "anastasia.sokolova@example.com",
+      "avatarUrl": "/images/users/user05.jpg",
+      "name": "Анастасия Соколова",
+      "about": "Преподаю английский и помогаю заговорить свободно.",
+      "location": { "id": 6, "name": "Нижний Новгород" },
+      "birthDay": "1996-04-18",
+      "gender": "Женский",
+      "registrationDate": "2024-05-17",
+      "skillCanTeach": [
+        {
+          "id": 45,
+          "name": "Разговорный английский",
+          "subCategory": { "id": "c3s1", "name": "Английский", "categoryId": "c3" }
+        }
+      ],
+      "subcategoriesWantToLearn": [
+        { "id": "c2s2", "name": "Фотография", "categoryId": "c2" },
+        { "id": "c1s4", "name": "Личный бренд", "categoryId": "c1" },
+        { "id": "c6s4", "name": "Осознанность", "categoryId": "c6" }
+      ],
+      "userIdLikes": [41, 43]
+    },
+    {
+      "id": 46,
+      "email": "pavel.orlov@example.com",
+      "avatarUrl": "/images/users/user06.jpg",
+      "name": "Павел Орлов",
+      "about": "Работаю с видео и контентом.",
+      "location": { "id": 7, "name": "Челябинск" },
+      "birthDay": "1991-08-12",
+      "gender": "Мужской",
+      "registrationDate": "2024-05-18",
+      "skillCanTeach": [
+        {
+          "id": 46,
+          "name": "Монтаж и обработка видео",
+          "subCategory": { "id": "c2s3", "name": "Видеомонтаж", "categoryId": "c2" }
+        }
+      ],
+      "subcategoriesWantToLearn": [
+        { "id": "c1s2", "name": "Маркетинг и реклама", "categoryId": "c1" },
+        { "id": "c1s7", "name": "Проектное управление", "categoryId": "c1" }
+      ],
+      "userIdLikes": [40]
+    },
+    {
+      "id": 47,
+      "email": "katerina.volkova@example.com",
+      "avatarUrl": "/images/users/user07.jpg",
+      "name": "Катерина Волкова",
+      "about": "Йога, дыхание и баланс.",
+      "location": { "id": 8, "name": "Самара" },
+      "birthDay": "1994-10-05",
+      "gender": "Женский",
+      "registrationDate": "2024-05-19",
+      "skillCanTeach": [
+        {
+          "id": 47,
+          "name": "Йога для восстановления",
+          "subCategory": { "id": "c6s1", "name": "Йога и медитация", "categoryId": "c6" }
+        }
+      ],
+      "subcategoriesWantToLearn": [
+        { "id": "c6s5", "name": "Физические тренировки", "categoryId": "c6" },
+        { "id": "c6s6", "name": "Сон и восстановление", "categoryId": "c6" },
+        { "id": "c4s1", "name": "Личностное развитие", "categoryId": "c4" }
+      ],
+      "userIdLikes": []
+    },
+    {
+      "id": 48,
+      "email": "daniil.efremov@example.com",
+      "avatarUrl": "/images/users/user08.jpg",
+      "name": "Даниил Ефремов",
+      "about": "Обучаю переговорам и продажам.",
+      "location": { "id": 9, "name": "Уфа" },
+      "birthDay": "1987-03-29",
+      "gender": "Мужской",
+      "registrationDate": "2024-05-20",
+      "skillCanTeach": [
+        {
+          "id": 48,
+          "name": "Эффективные переговоры",
+          "subCategory": { "id": "c1s3", "name": "Продажи и переговоры", "categoryId": "c1" }
+        }
+      ],
+      "subcategoriesWantToLearn": [
+        { "id": "c2s6", "name": "Креативное письмо", "categoryId": "c2" },
+        { "id": "c4s4", "name": "Скорочтение", "categoryId": "c4" }
+      ],
+      "userIdLikes": [45, 46]
+    },
+    {
+      "id": 49,
+      "email": "irina.belousova@example.com",
+      "avatarUrl": "/images/users/user09.jpg",
+      "name": "Ирина Белоусова",
+      "about": "Обучаю финансовой грамотности.",
+      "location": { "id": 10, "name": "Ростов-на-Дону" },
+      "birthDay": "1990-06-14",
+      "gender": "Женский",
+      "registrationDate": "2024-05-21",
+      "skillCanTeach": [
+        {
+          "id": 49,
+          "name": "Финансовая грамотность для дома",
+          "subCategory": { "id": "c5s2", "name": "Домашние финансы", "categoryId": "c5" }
+        }
+      ],
+      "subcategoriesWantToLearn": [
+        { "id": "c1s1", "name": "Управление командой", "categoryId": "c1" },
+        { "id": "c1s6", "name": "Тайм-менеджмент", "categoryId": "c1" },
+        { "id": "c6s3", "name": "Ментальное здоровье", "categoryId": "c6" },
+        { "id": "c4s6", "name": "Коучинг", "categoryId": "c4" }
+      ],
+      "userIdLikes": [44]
+    },
+    {
+      "id": 50,
+      "email": "roman.petrenko@example.com",
+      "avatarUrl": "/images/users/user10.jpg",
+      "name": "Роман Петренко",
+      "about": "Помогаю людям прокачивать карьеру и софт-скиллы.",
+      "location": { "id": 1, "name": "Москва" },
+      "birthDay": "1988-09-23",
+      "gender": "Мужской",
+      "registrationDate": "2024-05-22",
+      "skillCanTeach": [
+        {
+          "id": 50,
+          "name": "Развитие карьерных навыков",
+          "subCategory": { "id": "c1s5", "name": "Резюме и собеседование", "categoryId": "c1" }
+        }
+      ],
+      "subcategoriesWantToLearn": [
+        { "id": "c2s1", "name": "Рисование и иллюстрация", "categoryId": "c2" },
+        { "id": "c3s3", "name": "Испанский", "categoryId": "c3" }
+      ],
+      "userIdLikes": []
+    }
+  ]
+}
