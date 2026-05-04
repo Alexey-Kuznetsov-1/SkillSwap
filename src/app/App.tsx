@@ -2,11 +2,9 @@ import { useState } from 'react';
 import reactLogo from '@/assets/react.svg';
 import viteLogo from '@/assets/vite.svg';
 import './App.css';
-<<<<<<< feature/radio-button
 import { Radio } from '@/shared/ui/Radio/Radio';
-=======
 import { Textarea } from '@/shared/ui/Textarea/Textarea';
->>>>>>> develop
+
 
 function App() {
   const [count, setCount] = useState(0);
