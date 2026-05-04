@@ -2,11 +2,9 @@ import { useState } from 'react';
 import reactLogo from '@/assets/react.svg';
 import viteLogo from '@/assets/vite.svg';
 import './App.css';
-<<<<<<< feature/radio-button
 import { Radio } from '@/shared/ui/Radio/Radio';
-=======
 import { Textarea } from '@/shared/ui/Textarea/Textarea';
->>>>>>> develop
+import { Avatar } from '@/shared/ui/Avatar/Avatar';
 
 function App() {
   const [count, setCount] = useState(0);
@@ -90,6 +88,11 @@ function App() {
         >
           Count is {count}
         </button>
+        {/* <-- Avatar пример аватарки пользователя */}
+        {/* <-- Avatar пример аватарки пользователя при наличаи изображения*/}
+        <Avatar src='https://i.pinimg.com/236x/ce/f2/ad/cef2ad42d058f72fa1de0ced9c7d3ead.jpg?nii=t' />
+        {/* <-- Avatar пример аватарки пользователя при отсутствии изображения*/}
+        <Avatar name='Денис Терёхин' />
       </section>
 
       <div className='ticks'></div>
