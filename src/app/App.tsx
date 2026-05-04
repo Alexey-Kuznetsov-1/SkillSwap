@@ -2,15 +2,23 @@ import { useState } from 'react';
 import reactLogo from '@/assets/react.svg';
 import viteLogo from '@/assets/vite.svg';
 import './App.css';
+import { Textarea } from '@/shared/ui/Textarea/Textarea';
 
 function App() {
   const [count, setCount] = useState(0);
+  const [skillDescription, setSkillDescription] = useState('');
 
   return (
     <>
       <section id='center'>
         <div className='hero'>
-          <img src={viteLogo} className='base' width='170' height='179' alt='' />
+          <img
+            src={viteLogo}
+            className='base'
+            width='170'
+            height='179'
+            alt=''
+          />
           <img src={reactLogo} className='framework' alt='React logo' />
           <img src={viteLogo} className='vite' alt='Vite logo' />
         </div>
@@ -19,6 +27,21 @@ function App() {
           <p>
             Edit <code>src/app/App.tsx</code> and save to test <code>HMR</code>
           </p>
+          {/* УДАЛИТЬ - пример работы textarea ---> */}
+          <Textarea
+            label='Описание'
+            value={skillDescription}
+            onChange={setSkillDescription}
+            placeholder='Коротко опишите, чему можете научить'
+            rows={4}
+            maxLength={1000}
+            error={
+              skillDescription.length > 800
+                ? 'Осталось мало символов!'
+                : undefined
+            }
+          />
+          {/* <--- УДАЛИТЬ - пример работы textarea */}
         </div>
         <button
           type='button'

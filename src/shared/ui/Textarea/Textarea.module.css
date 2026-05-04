@@ -1,0 +1,70 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  width: 100%;
+  font-family: var(--font-text);
+  font-size: var(--font-size-text);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--font-line-height-text);
+  color: var(--color-text-main);
+}
+
+.label {
+  text-align: left;
+  letter-spacing: 2%;
+}
+
+.textarea {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 436px;
+  min-height: 96px;
+  padding: 15px 20px;
+  overflow: auto;
+  font-family: var(--font-text);
+  font-size: inherit;
+  line-height: inherit;
+  color: inherit;
+  resize: none;
+
+  /* Вендорные префиксы перед стандартом */
+  -ms-overflow-style: none; /* IE 10+, Edge */
+  scrollbar-width: none; /* Firefox */
+
+  /* Границы поля */
+  border: 1px solid var(--color-caption);
+  border-radius: 12px;
+}
+
+/* WebKit-браузеры (Chrome, Safari, Opera) */
+.textarea::-webkit-scrollbar {
+  display: none; /* Скрываем скроллбар */
+}
+
+.textarea:focus {
+  caret-color: var(--color-accent-dark);
+  outline: none;
+}
+
+.textarea:focus::placeholder {
+  visibility: hidden;
+}
+
+.error {
+  border-color: var(--color-error);
+}
+
+.error-message {
+  margin-top: 0.25rem;
+  font-size: var(--font-size-caption);
+  line-height: var(--font-line-height-caption);
+  color: var(--color-error);
+  text-align: left;
+}
+
+/* У нас нет дизайнкода для disabled textarea */
+.disabled {
+  color: var(--color-text-disabled);
+  cursor: not-allowed;
+}
