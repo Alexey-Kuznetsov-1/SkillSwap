@@ -10,18 +10,8 @@
       "birthDay": "1992-02-12",
       "gender": "Мужской",
       "registrationDate": "2024-01-10",
-      "skillCanTeach": [
-        {
-          "id": 1,
-          "name": "Игра на барабанах",
-          "subCategory": {
-            "id": "c2s4",
-            "name": "Музыка и звук",
-            "categoryId": "c2"
-          }
-        }
-      ],
-      "subcategoriesWantToLearn": [{ "id": "c2s1", "name": "Рисование и иллюстрация", "categoryId": "c2" }],
+      "skillCanTeachId": 1,
+      "subcategoriesWantToLearn": [21],
       "userIdLikes": [2, 3]
     },
     {
@@ -34,14 +24,8 @@
       "birthDay": "1996-08-15",
       "gender": "Женский",
       "registrationDate": "2024-02-20",
-      "skillCanTeach": [
-        {
-          "id": 2,
-          "name": "Фотография",
-          "subCategory": { "id": "c2s2", "name": "Фотография", "categoryId": "c2" }
-        }
-      ],
-      "subcategoriesWantToLearn": [{ "id": "c3s1", "name": "Английский", "categoryId": "c3" }],
+      "skillCanTeachId": 2,
+      "subcategoriesWantToLearn": [31, 16, 55],
       "userIdLikes": [1, 4]
     },
     {
@@ -54,14 +38,8 @@
       "birthDay": "1988-05-22",
       "gender": "Мужской",
       "registrationDate": "2024-03-01",
-      "skillCanTeach": [
-        {
-          "id": 3,
-          "name": "Маркетинг",
-          "subCategory": { "id": "c1s2", "name": "Маркетинг и реклама", "categoryId": "c1" }
-        }
-      ],
-      "subcategoriesWantToLearn": [{ "id": "c2s4", "name": "Музыка и звук", "categoryId": "c2" }],
+      "skillCanTeachId": 3,
+      "subcategoriesWantToLearn": [24],
       "userIdLikes": [1, 5]
     },
     {
@@ -74,14 +52,8 @@
       "birthDay": "1990-11-10",
       "gender": "Женский",
       "registrationDate": "2024-03-10",
-      "skillCanTeach": [
-        {
-          "id": 4,
-          "name": "Копирайтинг",
-          "subCategory": { "id": "c2s6", "name": "Креативное письмо", "categoryId": "c2" }
-        }
-      ],
-      "subcategoriesWantToLearn": [{ "id": "c5s3", "name": "Приготовление еды", "categoryId": "c5" }],
+      "skillCanTeachId": 4,
+      "subcategoriesWantToLearn": [53],
       "userIdLikes": [3, 6]
     },
     {
@@ -94,14 +66,8 @@
       "birthDay": "1985-06-17",
       "gender": "Мужской",
       "registrationDate": "2024-03-15",
-      "skillCanTeach": [
-        {
-          "id": 5,
-          "name": "SEO",
-          "subCategory": { "id": "c1s2", "name": "Маркетинг и реклама", "categoryId": "c1" }
-        }
-      ],
-      "subcategoriesWantToLearn": [{ "id": "c6s1", "name": "Йога и медитация", "categoryId": "c6" }],
+      "skillCanTeachId": 5,
+      "subcategoriesWantToLearn": [61],
       "userIdLikes": [2, 4]
     },
     {
@@ -114,20 +80,8 @@
       "birthDay": "1994-03-09",
       "gender": "Женский",
       "registrationDate": "2024-03-20",
-      "skillCanTeach": [
-        {
-          "id": 6,
-          "name": "Figma",
-          "subCategory": {
-            "id": "c2s8",
-            "name": "Декор и DIY",
-            "categoryId": "c2"
-          }
-        }
-      ],
-      "subcategoriesWantToLearn": [
-        { "id": "c1s1", "name": "Управление командой", "categoryId": "c1" }
-      ],
+      "skillCanTeachId": 6,
+      "subcategoriesWantToLearn": [11],
       "userIdLikes": [1, 3, 5]
     },
     {
@@ -140,20 +94,8 @@
       "birthDay": "1991-12-01",
       "gender": "Мужской",
       "registrationDate": "2024-03-22",
-      "skillCanTeach": [
-        {
-          "id": 7,
-          "name": "Node.js",
-          "subCategory": {
-            "id": "c4s2",
-            "name": "Навыки обучения",
-            "categoryId": "c4"
-          }
-        }
-      ],
-      "subcategoriesWantToLearn": [
-        { "id": "c2s3", "name": "Видеомонтаж", "categoryId": "c2" }
-      ],
+      "skillCanTeachId": 7,
+      "subcategoriesWantToLearn": [23],
       "userIdLikes": [2, 4]
     },
     {
@@ -166,16 +108,8 @@
       "birthDay": "1993-07-18",
       "gender": "Женский",
       "registrationDate": "2024-03-25",
-      "skillCanTeach": [
-        {
-          "id": 8,
-          "name": "Английский язык",
-          "subCategory": { "id": "c3s1", "name": "Английский", "categoryId": "c3" }
-        }
-      ],
-      "subcategoriesWantToLearn": [
-        { "id": "c1s4", "name": "Личный бренд", "categoryId": "c1" }
-      ],
+      "skillCanTeachId": 8,
+      "subcategoriesWantToLearn": [14],
       "userIdLikes": [6, 7]
     },
     {
@@ -188,16 +122,8 @@
       "birthDay": "1989-04-11",
       "gender": "Мужской",
       "registrationDate": "2024-03-27",
-      "skillCanTeach": [
-        {
-          "id": 9,
-          "name": "Фитнес",
-          "subCategory": { "id": "c6s5", "name": "Физические тренировки", "categoryId": "c6" }
-        }
-      ],
-      "subcategoriesWantToLearn": [
-        { "id": "c2s6", "name": "Креативное письмо", "categoryId": "c2" }
-      ],
+      "skillCanTeachId": 9,
+      "subcategoriesWantToLearn": [26],
       "userIdLikes": [8]
     },
     {
@@ -210,16 +136,8 @@
       "birthDay": "1995-09-30",
       "gender": "Женский",
       "registrationDate": "2024-04-01",
-      "skillCanTeach": [
-        {
-          "id": 10,
-          "name": "Фотография",
-          "subCategory": { "id": "c2s2", "name": "Фотография", "categoryId": "c2" }
-        }
-      ],
-      "subcategoriesWantToLearn": [
-        { "id": "c3s3", "name": "Испанский", "categoryId": "c3" }
-      ],
+      "skillCanTeachId": 10,
+      "subcategoriesWantToLearn": [33],
       "userIdLikes": [1, 9]
     },
     {
@@ -232,16 +150,8 @@
       "birthDay": "1990-01-14",
       "gender": "Мужской",
       "registrationDate": "2024-04-03",
-      "skillCanTeach": [
-        {
-          "id": 11,
-          "name": "Product Management",
-          "subCategory": { "id": "c1s7", "name": "Проектное управление", "categoryId": "c1" }
-        }
-      ],
-      "subcategoriesWantToLearn": [
-        { "id": "c2s4", "name": "Музыка и звук", "categoryId": "c2" }
-      ],
+      "skillCanTeachId": 11,
+      "subcategoriesWantToLearn": [24],
       "userIdLikes": [2, 8]
     },
     {
@@ -254,16 +164,8 @@
       "birthDay": "1997-06-05",
       "gender": "Женский",
       "registrationDate": "2024-04-05",
-      "skillCanTeach": [
-        {
-          "id": 12,
-          "name": "Иллюстрация",
-          "subCategory": { "id": "c2s1", "name": "Рисование и иллюстрация", "categoryId": "c2" }
-        }
-      ],
-      "subcategoriesWantToLearn": [
-        { "id": "c1s4", "name": "Личный бренд", "categoryId": "c1" }
-      ],
+      "skillCanTeachId": 12,
+      "subcategoriesWantToLearn": [14],
       "userIdLikes": [3, 10]
     },
     {
@@ -276,20 +178,8 @@
       "birthDay": "1987-10-22",
       "gender": "Мужской",
       "registrationDate": "2024-04-07",
-      "skillCanTeach": [
-        {
-          "id": 13,
-          "name": "Docker",
-          "subCategory": {
-            "id": "c4s2",
-            "name": "Навыки обучения",
-            "categoryId": "c4"
-          }
-        }
-      ],
-      "subcategoriesWantToLearn": [
-        { "id": "c3s5", "name": "Китайский", "categoryId": "c3" }
-      ],
+      "skillCanTeachId": 13,
+      "subcategoriesWantToLearn": [35],
       "userIdLikes": [6, 9]
     },
     {
@@ -302,16 +192,8 @@
       "birthDay": "1996-02-19",
       "gender": "Женский",
       "registrationDate": "2024-04-10",
-      "skillCanTeach": [
-        {
-          "id": 14,
-          "name": "SMM",
-          "subCategory": { "id": "c1s2", "name": "Маркетинг и реклама", "categoryId": "c1" }
-        }
-      ],
-      "subcategoriesWantToLearn": [
-        { "id": "c2s5", "name": "Актёрское мастерство", "categoryId": "c2" }
-      ],
+      "skillCanTeachId": 14,
+      "subcategoriesWantToLearn": [25],
       "userIdLikes": [1, 7]
     },
     {
@@ -324,16 +206,8 @@
       "birthDay": "1992-12-08",
       "gender": "Мужской",
       "registrationDate": "2024-04-12",
-      "skillCanTeach": [
-        {
-          "id": 15,
-          "name": "Sound Design",
-          "subCategory": { "id": "c2s4", "name": "Музыка и звук", "categoryId": "c2" }
-        }
-      ],
-      "subcategoriesWantToLearn": [
-        { "id": "c6s1", "name": "Йога и медитация", "categoryId": "c6" }
-      ],
+      "skillCanTeachId": 15,
+      "subcategoriesWantToLearn": [61],
       "userIdLikes": [4, 11]
     },
     {
@@ -346,20 +220,8 @@
       "birthDay": "1998-03-14",
       "gender": "Женский",
       "registrationDate": "2024-04-15",
-      "skillCanTeach": [
-        {
-          "id": 16,
-          "name": "Копирайтинг",
-          "subCategory": {
-            "id": "c2s6",
-            "name": "Креативное письмо",
-            "categoryId": "c2"
-          }
-        }
-      ],
-      "subcategoriesWantToLearn": [
-        { "id": "c1s8", "name": "Предпринимательство", "categoryId": "c1" }
-      ],
+      "skillCanTeachId": 16,
+      "subcategoriesWantToLearn": [18],
       "userIdLikes": [2, 5]
     },
     {
@@ -372,20 +234,8 @@
       "birthDay": "1993-09-21",
       "gender": "Мужской",
       "registrationDate": "2024-04-18",
-      "skillCanTeach": [
-        {
-          "id": 17,
-          "name": "Основы веб-разработки",
-          "subCategory": {
-            "id": "c4s2",
-            "name": "Навыки обучения",
-            "categoryId": "c4"
-          }
-        }
-      ],
-      "subcategoriesWantToLearn": [
-        { "id": "c2s3", "name": "Видеомонтаж", "categoryId": "c2" }
-      ],
+      "skillCanTeachId": 17,
+      "subcategoriesWantToLearn": [23],
       "userIdLikes": [1, 6]
     },
     {
@@ -398,20 +248,8 @@
       "birthDay": "1991-05-30",
       "gender": "Женский",
       "registrationDate": "2024-04-20",
-      "skillCanTeach": [
-        {
-          "id": 18,
-          "name": "Практика йоги",
-          "subCategory": {
-            "id": "c6s1",
-            "name": "Йога и медитация",
-            "categoryId": "c6"
-          }
-        }
-      ],
-      "subcategoriesWantToLearn": [
-        { "id": "c3s1", "name": "Английский", "categoryId": "c3" }
-      ],
+      "skillCanTeachId": 18,
+      "subcategoriesWantToLearn": [31],
       "userIdLikes": [3, 7]
     },
     {
@@ -424,20 +262,8 @@
       "birthDay": "1988-11-11",
       "gender": "Мужской",
       "registrationDate": "2024-04-22",
-      "skillCanTeach": [
-        {
-          "id": 19,
-          "name": "Анализ бизнес-процессов",
-          "subCategory": {
-            "id": "c1s7",
-            "name": "Проектное управление",
-            "categoryId": "c1"
-          }
-        }
-      ],
-      "subcategoriesWantToLearn": [
-        { "id": "c2s1", "name": "Рисование и иллюстрация", "categoryId": "c2" }
-      ],
+      "skillCanTeachId": 19,
+      "subcategoriesWantToLearn": [21],
       "userIdLikes": [4, 8]
     },
     {
@@ -450,20 +276,8 @@
       "birthDay": "1996-07-07",
       "gender": "Женский",
       "registrationDate": "2024-04-25",
-      "skillCanTeach": [
-        {
-          "id": 20,
-          "name": "Портретная фотография",
-          "subCategory": {
-            "id": "c2s2",
-            "name": "Фотография",
-            "categoryId": "c2"
-          }
-        }
-      ],
-      "subcategoriesWantToLearn": [
-        { "id": "c1s4", "name": "Личный бренд", "categoryId": "c1" }
-      ],
+      "skillCanTeachId": 20,
+      "subcategoriesWantToLearn": [14],
       "userIdLikes": [9, 12]
     },
     {
@@ -476,16 +290,8 @@
       "birthDay": "1998-01-09",
       "gender": "Женский",
       "registrationDate": "2024-04-23",
-      "skillCanTeach": [
-        {
-          "id": 21,
-          "name": "Иллюстрация для начинающих",
-          "subCategory": { "id": "c2s1", "name": "Рисование и иллюстрация", "categoryId": "c2" }
-        }
-      ],
-      "subcategoriesWantToLearn": [
-        { "id": "c3s1", "name": "Английский", "categoryId": "c3" }
-      ],
+      "skillCanTeachId": 21,
+      "subcategoriesWantToLearn": [31],
       "userIdLikes": [20]
     },
     {
@@ -498,16 +304,8 @@
       "birthDay": "1992-11-19",
       "gender": "Мужской",
       "registrationDate": "2024-04-24",
-      "skillCanTeach": [
-        {
-          "id": 22,
-          "name": "Основы звукозаписи и сведения",
-          "subCategory": { "id": "c2s4", "name": "Музыка и звук", "categoryId": "c2" }
-        }
-      ],
-      "subcategoriesWantToLearn": [
-        { "id": "c1s4", "name": "Личный бренд", "categoryId": "c1" }
-      ],
+      "skillCanTeachId": 22,
+      "subcategoriesWantToLearn": [14],
       "userIdLikes": []
     },
     {
@@ -520,16 +318,8 @@
       "birthDay": "1990-06-25",
       "gender": "Женский",
       "registrationDate": "2024-04-25",
-      "skillCanTeach": [
-        {
-          "id": 23,
-          "name": "Когнитивные техники для обучения",
-          "subCategory": { "id": "c4s3", "name": "Когнитивные техники", "categoryId": "c4" }
-        }
-      ],
-      "subcategoriesWantToLearn": [
-        { "id": "c6s6", "name": "Сон и восстановление", "categoryId": "c6" }
-      ],
+      "skillCanTeachId": 23,
+      "subcategoriesWantToLearn": [66],
       "userIdLikes": [21, 22]
     },
     {
@@ -542,16 +332,8 @@
       "birthDay": "1986-09-02",
       "gender": "Мужской",
       "registrationDate": "2024-04-26",
-      "skillCanTeach": [
-        {
-          "id": 24,
-          "name": "Домашняя кухня: быстрые рецепты",
-          "subCategory": { "id": "c5s3", "name": "Приготовление еды", "categoryId": "c5" }
-        }
-      ],
-      "subcategoriesWantToLearn": [
-        { "id": "c2s3", "name": "Видеомонтаж", "categoryId": "c2" }
-      ],
+      "skillCanTeachId": 24,
+      "subcategoriesWantToLearn": [23],
       "userIdLikes": []
     },
     {
@@ -564,16 +346,8 @@
       "birthDay": "1993-07-21",
       "gender": "Женский",
       "registrationDate": "2024-04-27",
-      "skillCanTeach": [
-        {
-          "id": 25,
-          "name": "Организация пространства дома",
-          "subCategory": { "id": "c5s1", "name": "Уборка и организация", "categoryId": "c5" }
-        }
-      ],
-      "subcategoriesWantToLearn": [
-        { "id": "c4s4", "name": "Скорочтение", "categoryId": "c4" }
-      ],
+      "skillCanTeachId": 25,
+      "subcategoriesWantToLearn": [44],
       "userIdLikes": [20, 23]
     },
     {
@@ -586,16 +360,8 @@
       "birthDay": "1988-12-11",
       "gender": "Мужской",
       "registrationDate": "2024-04-28",
-      "skillCanTeach": [
-        {
-          "id": 26,
-          "name": "Базовые физические тренировки",
-          "subCategory": { "id": "c6s5", "name": "Физические тренировки", "categoryId": "c6" }
-        }
-      ],
-      "subcategoriesWantToLearn": [
-        { "id": "c3s4", "name": "Немецкий", "categoryId": "c3" }
-      ],
+      "skillCanTeachId": 26,
+      "subcategoriesWantToLearn": [34],
       "userIdLikes": []
     },
     {
@@ -608,16 +374,8 @@
       "birthDay": "1997-05-03",
       "gender": "Женский",
       "registrationDate": "2024-04-29",
-      "skillCanTeach": [
-        {
-          "id": 27,
-          "name": "Как эффективно учиться",
-          "subCategory": { "id": "c4s2", "name": "Навыки обучения", "categoryId": "c4" }
-        }
-      ],
-      "subcategoriesWantToLearn": [
-        { "id": "c2s7", "name": "Арт-терапия", "categoryId": "c2" }
-      ],
+      "skillCanTeachId": 27,
+      "subcategoriesWantToLearn": [27],
       "userIdLikes": [25]
     },
     {
@@ -630,16 +388,8 @@
       "birthDay": "1991-10-17",
       "gender": "Мужской",
       "registrationDate": "2024-04-30",
-      "skillCanTeach": [
-        {
-          "id": 28,
-          "name": "Монтаж видео для начинающих",
-          "subCategory": { "id": "c2s3", "name": "Видеомонтаж", "categoryId": "c2" }
-        }
-      ],
-      "subcategoriesWantToLearn": [
-        { "id": "c1s7", "name": "Проектное управление", "categoryId": "c1" }
-      ],
+      "skillCanTeachId": 28,
+      "subcategoriesWantToLearn": [17],
       "userIdLikes": [21, 24]
     },
     {
@@ -652,16 +402,8 @@
       "birthDay": "1994-03-08",
       "gender": "Женский",
       "registrationDate": "2024-05-01",
-      "skillCanTeach": [
-        {
-          "id": 29,
-          "name": "Английский для начинающих",
-          "subCategory": { "id": "c3s1", "name": "Английский", "categoryId": "c3" }
-        }
-      ],
-      "subcategoriesWantToLearn": [
-        { "id": "c1s6", "name": "Тайм-менеджмент", "categoryId": "c1" }
-      ],
+      "skillCanTeachId": 29,
+      "subcategoriesWantToLearn": [16],
       "userIdLikes": []
     },
     {
@@ -674,16 +416,8 @@
       "birthDay": "1990-01-15",
       "gender": "Мужской",
       "registrationDate": "2024-05-02",
-      "skillCanTeach": [
-        {
-          "id": 30,
-          "name": "Системный тайм-менеджмент",
-          "subCategory": { "id": "c1s6", "name": "Тайм-менеджмент", "categoryId": "c1" }
-        }
-      ],
-      "subcategoriesWantToLearn": [
-        { "id": "c6s7", "name": "Баланс жизни и работы", "categoryId": "c6" }
-      ],
+      "skillCanTeachId": 30,
+      "subcategoriesWantToLearn": [67],
       "userIdLikes": [25, 28]
     },
     {
@@ -696,16 +430,8 @@
       "birthDay": "1996-09-12",
       "gender": "Женский",
       "registrationDate": "2024-05-03",
-      "skillCanTeach": [
-        {
-          "id": 31,
-          "name": "Креативное письмо и сторителлинг",
-          "subCategory": { "id": "c2s6", "name": "Креативное письмо", "categoryId": "c2" }
-        }
-      ],
-      "subcategoriesWantToLearn": [
-        { "id": "c1s4", "name": "Личный бренд", "categoryId": "c1" }
-      ],
+      "skillCanTeachId": 31,
+      "subcategoriesWantToLearn": [14],
       "userIdLikes": []
     },
     {
@@ -718,16 +444,8 @@
       "birthDay": "1985-04-04",
       "gender": "Мужской",
       "registrationDate": "2024-05-04",
-      "skillCanTeach": [
-        {
-          "id": 32,
-          "name": "Управление личными финансами",
-          "subCategory": { "id": "c5s2", "name": "Домашние финансы", "categoryId": "c5" }
-        }
-      ],
-      "subcategoriesWantToLearn": [
-        { "id": "c4s1", "name": "Личностное развитие", "categoryId": "c4" }
-      ],
+      "skillCanTeachId": 32,
+      "subcategoriesWantToLearn": [41],
       "userIdLikes": [30]
     },
     {
@@ -740,16 +458,8 @@
       "birthDay": "1993-06-18",
       "gender": "Женский",
       "registrationDate": "2024-05-05",
-      "skillCanTeach": [
-        {
-          "id": 33,
-          "name": "Практики осознанности",
-          "subCategory": { "id": "c6s4", "name": "Осознанность", "categoryId": "c6" }
-        }
-      ],
-      "subcategoriesWantToLearn": [
-        { "id": "c2s8", "name": "Декор и DIY", "categoryId": "c2" }
-      ],
+      "skillCanTeachId": 33,
+      "subcategoriesWantToLearn": [28],
       "userIdLikes": [27, 29]
     },
     {
@@ -762,16 +472,8 @@
       "birthDay": "1989-11-30",
       "gender": "Мужской",
       "registrationDate": "2024-05-06",
-      "skillCanTeach": [
-        {
-          "id": 34,
-          "name": "Подготовка к IELTS и TOEFL",
-          "subCategory": { "id": "c3s7", "name": "Подготовка к экзаменам (IELTS, TOEFL)", "categoryId": "c3" }
-        }
-      ],
-      "subcategoriesWantToLearn": [
-        { "id": "c1s3", "name": "Продажи и переговоры", "categoryId": "c1" }
-      ],
+      "skillCanTeachId": 34,
+      "subcategoriesWantToLearn": [13],
       "userIdLikes": []
     },
     {
@@ -784,17 +486,8 @@
       "birthDay": "1992-02-10",
       "gender": "Женский",
       "registrationDate": "2024-05-07",
-      "skillCanTeach": [
-        {
-          "id": 35,
-          "name": "Методики преподавания",
-          "subCategory": { "id": "c4s5", "name": "Навыки преподавания", "categoryId": "c4" }
-        }
-      ],
-      "subcategoriesWantToLearn": [
-        { "id": "c1s2", "name": "Маркетинг и реклама", "categoryId": "c1" },
-        { "id": "c2s2", "name": "Фотография", "categoryId": "c2" }
-      ],
+      "skillCanTeachId": 35,
+      "subcategoriesWantToLearn": [12, 22],
       "userIdLikes": [30, 33]
     },
     {
@@ -807,18 +500,8 @@
       "birthDay": "1984-08-19",
       "gender": "Мужской",
       "registrationDate": "2024-05-08",
-      "skillCanTeach": [
-        {
-          "id": 36,
-          "name": "Основы коучинга",
-          "subCategory": { "id": "c4s6", "name": "Коучинг", "categoryId": "c4" }
-        }
-      ],
-      "subcategoriesWantToLearn": [
-        { "id": "c6s3", "name": "Ментальное здоровье", "categoryId": "c6" },
-        { "id": "c6s6", "name": "Сон и восстановление", "categoryId": "c6" },
-        { "id": "c1s6", "name": "Тайм-менеджмент", "categoryId": "c1" }
-      ],
+      "skillCanTeachId": 36,
+      "subcategoriesWantToLearn": [63, 66, 16 ],
       "userIdLikes": []
     },
     {
@@ -831,18 +514,8 @@
       "birthDay": "1995-03-03",
       "gender": "Женский",
       "registrationDate": "2024-05-09",
-      "skillCanTeach": [
-        {
-          "id": 37,
-          "name": "Декор интерьера своими руками",
-          "subCategory": { "id": "c2s8", "name": "Декор и DIY", "categoryId": "c2" }
-        }
-      ],
-      "subcategoriesWantToLearn": [
-        { "id": "c5s4", "name": "Домашние растения", "categoryId": "c5" },
-        { "id": "c5s6", "name": "Хранение вещей", "categoryId": "c5" },
-        { "id": "c4s4", "name": "Скорочтение", "categoryId": "c4" }
-      ],
+      "skillCanTeachId": 37,
+      "subcategoriesWantToLearn": [54, 56, 44],
       "userIdLikes": [31, 34]
     },
     {
@@ -855,17 +528,8 @@
       "birthDay": "1991-12-22",
       "gender": "Мужской",
       "registrationDate": "2024-05-10",
-      "skillCanTeach": [
-        {
-          "id": 38,
-          "name": "Немецкий язык с нуля",
-          "subCategory": { "id": "c3s4", "name": "Немецкий", "categoryId": "c3" }
-        }
-      ],
-      "subcategoriesWantToLearn": [
-        { "id": "c1s5", "name": "Резюме и собеседование", "categoryId": "c1" },
-        { "id": "c1s3", "name": "Продажи и переговоры", "categoryId": "c1" }
-      ],
+      "skillCanTeachId": 38,
+      "subcategoriesWantToLearn": [15, 13],
       "userIdLikes": []
     },
     {
@@ -878,19 +542,8 @@
       "birthDay": "1996-07-14",
       "gender": "Женский",
       "registrationDate": "2024-05-11",
-      "skillCanTeach": [
-        {
-          "id": 39,
-          "name": "Основы здорового питания",
-          "subCategory": { "id": "c6s2", "name": "Питание и ЗОЖ", "categoryId": "c6" }
-        }
-      ],
-      "subcategoriesWantToLearn": [
-        { "id": "c6s5", "name": "Физические тренировки", "categoryId": "c6" },
-        { "id": "c6s7", "name": "Баланс жизни и работы", "categoryId": "c6" },
-        { "id": "c4s1", "name": "Личностное развитие", "categoryId": "c4" },
-        { "id": "c3s3", "name": "Испанский", "categoryId": "c3" }
-      ],
+      "skillCanTeachId": 39,
+      "subcategoriesWantToLearn": [65, 67, 41, 33],
       "userIdLikes": [32, 35]
     },
     {
@@ -903,17 +556,8 @@
       "birthDay": "1986-05-06",
       "gender": "Мужской",
       "registrationDate": "2024-05-12",
-      "skillCanTeach": [
-        {
-          "id": 40,
-          "name": "Управление командой в IT",
-          "subCategory": { "id": "c1s1", "name": "Управление командой", "categoryId": "c1" }
-        }
-      ],
-      "subcategoriesWantToLearn": [
-        { "id": "c6s3", "name": "Ментальное здоровье", "categoryId": "c6" },
-        { "id": "c6s1", "name": "Йога и медитация", "categoryId": "c6" }
-      ],
+      "skillCanTeachId": 40,
+      "subcategoriesWantToLearn": [63, 61],
       "userIdLikes": [35, 38]
     },
     {
@@ -926,18 +570,8 @@
       "birthDay": "1997-11-02",
       "gender": "Женский",
       "registrationDate": "2024-05-13",
-      "skillCanTeach": [
-        {
-          "id": 41,
-          "name": "Портретная фотография",
-          "subCategory": { "id": "c2s2", "name": "Фотография", "categoryId": "c2" }
-        }
-      ],
-      "subcategoriesWantToLearn": [
-        { "id": "c1s4", "name": "Личный бренд", "categoryId": "c1" },
-        { "id": "c1s2", "name": "Маркетинг и реклама", "categoryId": "c1" },
-        { "id": "c2s6", "name": "Креативное письмо", "categoryId": "c2" }
-      ],
+      "skillCanTeachId": 41,
+      "subcategoriesWantToLearn": [14, 12, 26],
       "userIdLikes": []
     },
     {
@@ -950,17 +584,8 @@
       "birthDay": "1989-02-27",
       "gender": "Мужской",
       "registrationDate": "2024-05-14",
-      "skillCanTeach": [
-        {
-          "id": 42,
-          "name": "Agile и управление проектами",
-          "subCategory": { "id": "c1s7", "name": "Проектное управление", "categoryId": "c1" }
-        }
-      ],
-      "subcategoriesWantToLearn": [
-        { "id": "c4s6", "name": "Коучинг", "categoryId": "c4" },
-        { "id": "c6s7", "name": "Баланс жизни и работы", "categoryId": "c6" }
-      ],
+      "skillCanTeachId": 42,
+      "subcategoriesWantToLearn": [46, 67],
       "userIdLikes": [40]
     },
     {
@@ -973,18 +598,8 @@
       "birthDay": "1995-09-09",
       "gender": "Женский",
       "registrationDate": "2024-05-15",
-      "skillCanTeach": [
-        {
-          "id": 43,
-          "name": "Копирайтинг и тексты",
-          "subCategory": { "id": "c2s6", "name": "Креативное письмо", "categoryId": "c2" }
-        }
-      ],
-      "subcategoriesWantToLearn": [
-        { "id": "c3s1", "name": "Английский", "categoryId": "c3" },
-        { "id": "c1s5", "name": "Резюме и собеседование", "categoryId": "c1" },
-        { "id": "c4s2", "name": "Навыки обучения", "categoryId": "c4" }
-      ],
+      "skillCanTeachId": 43,
+      "subcategoriesWantToLearn": [31, 15, 42],
       "userIdLikes": [41, 39]
     },
     {
@@ -997,17 +612,8 @@
       "birthDay": "1983-12-01",
       "gender": "Мужской",
       "registrationDate": "2024-05-16",
-      "skillCanTeach": [
-        {
-          "id": 44,
-          "name": "Базовый домашний ремонт",
-          "subCategory": { "id": "c5s5", "name": "Ремонт", "categoryId": "c5" }
-        }
-      ],
-      "subcategoriesWantToLearn": [
-        { "id": "c5s1", "name": "Уборка и организация", "categoryId": "c5" },
-        { "id": "c6s2", "name": "Питание и ЗОЖ", "categoryId": "c6" }
-      ],
+      "skillCanTeachId": 44,
+      "subcategoriesWantToLearn": [51, 62],
       "userIdLikes": []
     },
     {
@@ -1020,18 +626,8 @@
       "birthDay": "1996-04-18",
       "gender": "Женский",
       "registrationDate": "2024-05-17",
-      "skillCanTeach": [
-        {
-          "id": 45,
-          "name": "Разговорный английский",
-          "subCategory": { "id": "c3s1", "name": "Английский", "categoryId": "c3" }
-        }
-      ],
-      "subcategoriesWantToLearn": [
-        { "id": "c2s2", "name": "Фотография", "categoryId": "c2" },
-        { "id": "c1s4", "name": "Личный бренд", "categoryId": "c1" },
-        { "id": "c6s4", "name": "Осознанность", "categoryId": "c6" }
-      ],
+      "skillCanTeachId": 45,
+      "subcategoriesWantToLearn": [22,14,64],
       "userIdLikes": [41, 43]
     },
     {
@@ -1044,17 +640,8 @@
       "birthDay": "1991-08-12",
       "gender": "Мужской",
       "registrationDate": "2024-05-18",
-      "skillCanTeach": [
-        {
-          "id": 46,
-          "name": "Монтаж и обработка видео",
-          "subCategory": { "id": "c2s3", "name": "Видеомонтаж", "categoryId": "c2" }
-        }
-      ],
-      "subcategoriesWantToLearn": [
-        { "id": "c1s2", "name": "Маркетинг и реклама", "categoryId": "c1" },
-        { "id": "c1s7", "name": "Проектное управление", "categoryId": "c1" }
-      ],
+      "skillCanTeachId": 46,
+      "subcategoriesWantToLearn": [12,17],
       "userIdLikes": [40]
     },
     {
@@ -1067,18 +654,8 @@
       "birthDay": "1994-10-05",
       "gender": "Женский",
       "registrationDate": "2024-05-19",
-      "skillCanTeach": [
-        {
-          "id": 47,
-          "name": "Йога для восстановления",
-          "subCategory": { "id": "c6s1", "name": "Йога и медитация", "categoryId": "c6" }
-        }
-      ],
-      "subcategoriesWantToLearn": [
-        { "id": "c6s5", "name": "Физические тренировки", "categoryId": "c6" },
-        { "id": "c6s6", "name": "Сон и восстановление", "categoryId": "c6" },
-        { "id": "c4s1", "name": "Личностное развитие", "categoryId": "c4" }
-      ],
+      "skillCanTeachId": 47,
+      "subcategoriesWantToLearn": [65, 66, 41],
       "userIdLikes": []
     },
     {
@@ -1091,17 +668,8 @@
       "birthDay": "1987-03-29",
       "gender": "Мужской",
       "registrationDate": "2024-05-20",
-      "skillCanTeach": [
-        {
-          "id": 48,
-          "name": "Эффективные переговоры",
-          "subCategory": { "id": "c1s3", "name": "Продажи и переговоры", "categoryId": "c1" }
-        }
-      ],
-      "subcategoriesWantToLearn": [
-        { "id": "c2s6", "name": "Креативное письмо", "categoryId": "c2" },
-        { "id": "c4s4", "name": "Скорочтение", "categoryId": "c4" }
-      ],
+      "skillCanTeachId": 48,
+      "subcategoriesWantToLearn": [26, 44],
       "userIdLikes": [45, 46]
     },
     {
@@ -1114,19 +682,8 @@
       "birthDay": "1990-06-14",
       "gender": "Женский",
       "registrationDate": "2024-05-21",
-      "skillCanTeach": [
-        {
-          "id": 49,
-          "name": "Финансовая грамотность для дома",
-          "subCategory": { "id": "c5s2", "name": "Домашние финансы", "categoryId": "c5" }
-        }
-      ],
-      "subcategoriesWantToLearn": [
-        { "id": "c1s1", "name": "Управление командой", "categoryId": "c1" },
-        { "id": "c1s6", "name": "Тайм-менеджмент", "categoryId": "c1" },
-        { "id": "c6s3", "name": "Ментальное здоровье", "categoryId": "c6" },
-        { "id": "c4s6", "name": "Коучинг", "categoryId": "c4" }
-      ],
+      "skillCanTeachId": 49,
+      "subcategoriesWantToLearn": [11, 16, 63, 46],
       "userIdLikes": [44]
     },
     {
@@ -1139,17 +696,8 @@
       "birthDay": "1988-09-23",
       "gender": "Мужской",
       "registrationDate": "2024-05-22",
-      "skillCanTeach": [
-        {
-          "id": 50,
-          "name": "Развитие карьерных навыков",
-          "subCategory": { "id": "c1s5", "name": "Резюме и собеседование", "categoryId": "c1" }
-        }
-      ],
-      "subcategoriesWantToLearn": [
-        { "id": "c2s1", "name": "Рисование и иллюстрация", "categoryId": "c2" },
-        { "id": "c3s3", "name": "Испанский", "categoryId": "c3" }
-      ],
+      "skillCanTeachId": 50,
+      "subcategoriesWantToLearn": [21, 33],
       "userIdLikes": []
     }
   ]
