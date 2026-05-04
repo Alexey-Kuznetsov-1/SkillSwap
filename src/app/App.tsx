@@ -2,15 +2,29 @@ import { useState } from 'react';
 import reactLogo from '@/assets/react.svg';
 import viteLogo from '@/assets/vite.svg';
 import './App.css';
+import { Radio } from '@/shared/ui/Radio/Radio';
 
 function App() {
   const [count, setCount] = useState(0);
+
+  const [selectedValue, setSelectedValue] = useState('option1');
+
+  const handleRadioChange = (value: string) => {
+    setSelectedValue(value);
+    console.log('Selected:', value);
+  };
 
   return (
     <>
       <section id='center'>
         <div className='hero'>
-          <img src={viteLogo} className='base' width='170' height='179' alt='' />
+          <img
+            src={viteLogo}
+            className='base'
+            width='170'
+            height='179'
+            alt=''
+          />
           <img src={reactLogo} className='framework' alt='React logo' />
           <img src={viteLogo} className='vite' alt='Vite logo' />
         </div>
@@ -20,6 +34,35 @@ function App() {
             Edit <code>src/app/App.tsx</code> and save to test <code>HMR</code>
           </p>
         </div>
+        {/* RADIO-BUTTON пример работы кнопки радио --> */}
+        <div>
+          <Radio
+            name='exampleGroup'
+            value='option1'
+            checked={selectedValue === 'option1'}
+            onChange={handleRadioChange}
+          >
+            Всё
+          </Radio>
+          <Radio
+            name='exampleGroup'
+            value='option2'
+            checked={selectedValue === 'option2'}
+            onChange={handleRadioChange}
+          >
+            Хочу научиться
+          </Radio>
+          <Radio
+            name='exampleGroup'
+            value='option3'
+            checked={selectedValue === 'option3'}
+            onChange={handleRadioChange}
+          >
+            Могу научить
+          </Radio>
+        </div>
+        {/* <-- RADIO-BUTTON пример работы кнопки радио */}
+
         <button
           type='button'
           className='counter'
