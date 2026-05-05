@@ -6,13 +6,10 @@
       "avatarUrl": "/images/users/user01.jpg",
       "name": "Алексей Иванов",
       "about": "Привет! Люблю ритм, кофе по утрам и людей, которые не боятся пробовать новое",
-      "location": { "id": 1, "name": "Москва" },
       "birthDay": "1992-02-12",
       "gender": "Мужской",
       "registrationDate": "2024-01-10",
-      "skillCanTeachId": 1,
-      "subcategoriesWantToLearn": [21],
-      "userIdLikes": [2, 3]
+      "cityId": 1
     },
     {
       "id": 2,
@@ -20,13 +17,10 @@
       "avatarUrl": "/images/users/user02.jpg",
       "name": "Мария Смирнова",
       "about": "Фотограф, интересуюсь искусством и дизайном.",
-      "location": { "id": 2, "name": "Санкт-Петербург" },
       "birthDay": "1996-08-15",
       "gender": "Женский",
       "registrationDate": "2024-02-20",
-      "skillCanTeachId": 2,
-      "subcategoriesWantToLearn": [31, 16, 55],
-      "userIdLikes": [1, 4]
+      "cityId": 2
     },
     {
       "id": 3,
@@ -34,13 +28,10 @@
       "avatarUrl": "/images/users/user03.jpg",
       "name": "Дмитрий Ковалев",
       "about": "Бизнес-консультант, страстно увлечён развитием личных брендов.",
-      "location": { "id": 3, "name": "Новосибирск" },
       "birthDay": "1988-05-22",
       "gender": "Мужской",
       "registrationDate": "2024-03-01",
-      "skillCanTeachId": 3,
-      "subcategoriesWantToLearn": [24],
-      "userIdLikes": [1, 5]
+      "cityId": 3
     },
     {
       "id": 4,
@@ -48,13 +39,10 @@
       "avatarUrl": "/images/users/user04.jpg",
       "name": "Ольга Петренко",
       "about": "Писатель и копирайтер. Создаю контент для блогов и соцсетей.",
-      "location": { "id": 4, "name": "Екатеринбург" },
       "birthDay": "1990-11-10",
       "gender": "Женский",
       "registrationDate": "2024-03-10",
-      "skillCanTeachId": 4,
-      "subcategoriesWantToLearn": [53],
-      "userIdLikes": [3, 6]
+      "cityId": 4
     },
     {
       "id": 5,
@@ -62,13 +50,10 @@
       "avatarUrl": "/images/users/user05.jpg",
       "name": "Иван Васильев",
       "about": "Интернет-маркетолог, создаю стратегии роста для стартапов.",
-      "location": { "id": 5, "name": "Казань" },
       "birthDay": "1985-06-17",
       "gender": "Мужской",
       "registrationDate": "2024-03-15",
-      "skillCanTeachId": 5,
-      "subcategoriesWantToLearn": [61],
-      "userIdLikes": [2, 4]
+      "cityId": 5
     },
     {
       "id": 6,
@@ -76,13 +61,10 @@
       "avatarUrl": "/images/users/user06.jpg",
       "name": "Анна Соколова",
       "about": "UX/UI дизайнер, люблю минимализм и функциональность.",
-      "location": { "id": 6, "name": "Нижний Новгород" },
       "birthDay": "1994-03-09",
       "gender": "Женский",
       "registrationDate": "2024-03-20",
-      "skillCanTeachId": 6,
-      "subcategoriesWantToLearn": [11],
-      "userIdLikes": [1, 3, 5]
+      "cityId": 6
     },
     {
       "id": 7,
@@ -90,13 +72,10 @@
       "avatarUrl": "/images/users/user07.jpg",
       "name": "Сергей Мельников",
       "about": "Backend разработчик, пишу API и микросервисы.",
-      "location": { "id": 7, "name": "Челябинск" },
       "birthDay": "1991-12-01",
       "gender": "Мужской",
       "registrationDate": "2024-03-22",
-      "skillCanTeachId": 7,
-      "subcategoriesWantToLearn": [23],
-      "userIdLikes": [2, 4]
+      "cityId": 7
     },
     {
       "id": 8,
@@ -104,13 +83,10 @@
       "avatarUrl": "/images/users/user08.jpg",
       "name": "Екатерина Лебедева",
       "about": "Преподаватель английского языка.",
-      "location": { "id": 8, "name": "Самара" },
       "birthDay": "1993-07-18",
       "gender": "Женский",
       "registrationDate": "2024-03-25",
-      "skillCanTeachId": 8,
-      "subcategoriesWantToLearn": [14],
-      "userIdLikes": [6, 7]
+      "cityId": 8
     },
     {
       "id": 9,
@@ -118,13 +94,10 @@
       "avatarUrl": "/images/users/user09.jpg",
       "name": "Роман Кузнецов",
       "about": "Фитнес тренер и нутрициолог.",
-      "location": { "id": 9, "name": "Уфа" },
       "birthDay": "1989-04-11",
       "gender": "Мужской",
       "registrationDate": "2024-03-27",
-      "skillCanTeachId": 9,
-      "subcategoriesWantToLearn": [26],
-      "userIdLikes": [8]
+      "cityId": 9
     },
     {
       "id": 10,
@@ -132,13 +105,10 @@
       "avatarUrl": "/images/users/user10.jpg",
       "name": "Наталья Орлова",
       "about": "Фотограф, снимаю портреты и мероприятия.",
-      "location": { "id": 10, "name": "Ростов-на-Дону" },
       "birthDay": "1995-09-30",
       "gender": "Женский",
       "registrationDate": "2024-04-01",
-      "skillCanTeachId": 10,
-      "subcategoriesWantToLearn": [33],
-      "userIdLikes": [1, 9]
+      "cityId": 10
     },
     {
       "id": 11,
@@ -146,13 +116,10 @@
       "avatarUrl": "/images/users/user11.jpg",
       "name": "Артём Зайцев",
       "about": "Продакт-менеджер, развиваю цифровые сервисы.",
-      "location": { "id": 11, "name": "Красноярск" },
       "birthDay": "1990-01-14",
       "gender": "Мужской",
       "registrationDate": "2024-04-03",
-      "skillCanTeachId": 11,
-      "subcategoriesWantToLearn": [24],
-      "userIdLikes": [2, 8]
+      "cityId": 11
     },
     {
       "id": 12,
@@ -160,13 +127,10 @@
       "avatarUrl": "/images/users/user12.jpg",
       "name": "Полина Власова",
       "about": "Художник-иллюстратор, рисую для книг и игр.",
-      "location": { "id": 12, "name": "Воронеж" },
       "birthDay": "1997-06-05",
       "gender": "Женский",
       "registrationDate": "2024-04-05",
-      "skillCanTeachId": 12,
-      "subcategoriesWantToLearn": [14],
-      "userIdLikes": [3, 10]
+      "cityId": 12
     },
     {
       "id": 13,
@@ -174,13 +138,10 @@
       "avatarUrl": "/images/users/user13.jpg",
       "name": "Игорь Фомин",
       "about": "DevOps инженер, автоматизирую инфраструктуру.",
-      "location": { "id": 13, "name": "Пермь" },
       "birthDay": "1987-10-22",
       "gender": "Мужской",
       "registrationDate": "2024-04-07",
-      "skillCanTeachId": 13,
-      "subcategoriesWantToLearn": [35],
-      "userIdLikes": [6, 9]
+      "cityId": 13
     },
     {
       "id": 14,
@@ -188,13 +149,10 @@
       "avatarUrl": "/images/users/user14.jpg",
       "name": "Виктория Белова",
       "about": "SMM специалист, веду бренды в соцсетях.",
-      "location": { "id": 14, "name": "Волгоград" },
       "birthDay": "1996-02-19",
       "gender": "Женский",
       "registrationDate": "2024-04-10",
-      "skillCanTeachId": 14,
-      "subcategoriesWantToLearn": [25],
-      "userIdLikes": [1, 7]
+      "cityId": 14
     },
     {
       "id": 15,
@@ -202,13 +160,10 @@
       "avatarUrl": "/images/users/user15.jpg",
       "name": "Денис Морозов",
       "about": "Музыкант и звукорежиссёр.",
-      "location": { "id": 15, "name": "Краснодар" },
       "birthDay": "1992-12-08",
       "gender": "Мужской",
       "registrationDate": "2024-04-12",
-      "skillCanTeachId": 15,
-      "subcategoriesWantToLearn": [61],
-      "userIdLikes": [4, 11]
+      "cityId": 15
     },
     {
       "id": 16,
@@ -216,13 +171,10 @@
       "avatarUrl": "/images/users/user16.jpg",
       "name": "Алина Карпова",
       "about": "Копирайтер и контент-стратег.",
-      "location": { "id": 16, "name": "Саратов" },
       "birthDay": "1998-03-14",
       "gender": "Женский",
       "registrationDate": "2024-04-15",
-      "skillCanTeachId": 16,
-      "subcategoriesWantToLearn": [18],
-      "userIdLikes": [2, 5]
+      "cityId": 16
     },
     {
       "id": 17,
@@ -230,13 +182,10 @@
       "avatarUrl": "/images/users/user17.jpg",
       "name": "Максим Громов",
       "about": "Преподаю основы веб-разработки.",
-      "location": { "id": 17, "name": "Тюмень" },
       "birthDay": "1993-09-21",
       "gender": "Мужской",
       "registrationDate": "2024-04-18",
-      "skillCanTeachId": 17,
-      "subcategoriesWantToLearn": [23],
-      "userIdLikes": [1, 6]
+      "cityId": 17
     },
     {
       "id": 18,
@@ -244,13 +193,10 @@
       "avatarUrl": "/images/users/user18.jpg",
       "name": "Светлана Романова",
       "about": "Преподаватель йоги и медитации.",
-      "location": { "id": 18, "name": "Тольятти" },
       "birthDay": "1991-05-30",
       "gender": "Женский",
       "registrationDate": "2024-04-20",
-      "skillCanTeachId": 18,
-      "subcategoriesWantToLearn": [31],
-      "userIdLikes": [3, 7]
+      "cityId": 18
     },
     {
       "id": 19,
@@ -258,13 +204,10 @@
       "avatarUrl": "/images/users/user19.jpg",
       "name": "Евгений Литвинов",
       "about": "Работаю с анализом данных и процессами.",
-      "location": { "id": 19, "name": "Иркутск" },
       "birthDay": "1988-11-11",
       "gender": "Мужской",
       "registrationDate": "2024-04-22",
-      "skillCanTeachId": 19,
-      "subcategoriesWantToLearn": [21],
-      "userIdLikes": [4, 8]
+      "cityId": 19
     },
     {
       "id": 20,
@@ -272,13 +215,10 @@
       "avatarUrl": "/images/users/user20.jpg",
       "name": "Дарья Никитина",
       "about": "Фотограф портретов и lifestyle.",
-      "location": { "id": 20, "name": "Барнаул" },
       "birthDay": "1996-07-07",
       "gender": "Женский",
       "registrationDate": "2024-04-25",
-      "skillCanTeachId": 20,
-      "subcategoriesWantToLearn": [14],
-      "userIdLikes": [9, 12]
+      "cityId": 20
     },
     {
       "id": 21,
@@ -286,13 +226,10 @@
       "avatarUrl": "/images/users/user01.jpg",
       "name": "Мария Орлова",
       "about": "Люблю рисовать и обучать других.",
-      "location": { "id": 12, "name": "Воронеж" },
       "birthDay": "1998-01-09",
       "gender": "Женский",
       "registrationDate": "2024-04-23",
-      "skillCanTeachId": 21,
-      "subcategoriesWantToLearn": [31],
-      "userIdLikes": [20]
+      "cityId": 12
     },
     {
       "id": 22,
@@ -300,13 +237,10 @@
       "avatarUrl": "/images/users/user02.jpg",
       "name": "Кирилл Белов",
       "about": "Работаю со звуком и музыкой.",
-      "location": { "id": 13, "name": "Пермь" },
       "birthDay": "1992-11-19",
       "gender": "Мужской",
       "registrationDate": "2024-04-24",
-      "skillCanTeachId": 22,
-      "subcategoriesWantToLearn": [14],
-      "userIdLikes": []
+      "cityId": 13
     },
     {
       "id": 23,
@@ -314,13 +248,10 @@
       "avatarUrl": "/images/users/user03.jpg",
       "name": "Татьяна Егорова",
       "about": "Помогаю развивать когнитивные навыки.",
-      "location": { "id": 14, "name": "Волгоград" },
       "birthDay": "1990-06-25",
       "gender": "Женский",
       "registrationDate": "2024-04-25",
-      "skillCanTeachId": 23,
-      "subcategoriesWantToLearn": [66],
-      "userIdLikes": [21, 22]
+      "cityId": 14
     },
     {
       "id": 24,
@@ -328,13 +259,10 @@
       "avatarUrl": "/images/users/user04.jpg",
       "name": "Денис Попов",
       "about": "Учу готовить быстро и вкусно.",
-      "location": { "id": 15, "name": "Краснодар" },
       "birthDay": "1986-09-02",
       "gender": "Мужской",
       "registrationDate": "2024-04-26",
-      "skillCanTeachId": 24,
-      "subcategoriesWantToLearn": [23],
-      "userIdLikes": []
+      "cityId": 15
     },
     {
       "id": 25,
@@ -342,13 +270,10 @@
       "avatarUrl": "/images/users/user05.jpg",
       "name": "Светлана Зайцева",
       "about": "Помогаю наводить порядок в доме и жизни.",
-      "location": { "id": 16, "name": "Саратов" },
       "birthDay": "1993-07-21",
       "gender": "Женский",
       "registrationDate": "2024-04-27",
-      "skillCanTeachId": 25,
-      "subcategoriesWantToLearn": [44],
-      "userIdLikes": [20, 23]
+      "cityId": 16
     },
     {
       "id": 26,
@@ -356,13 +281,10 @@
       "avatarUrl": "/images/users/user06.jpg",
       "name": "Роман Козлов",
       "about": "Тренирую тело и дисциплину.",
-      "location": { "id": 17, "name": "Тюмень" },
       "birthDay": "1988-12-11",
       "gender": "Мужской",
       "registrationDate": "2024-04-28",
-      "skillCanTeachId": 26,
-      "subcategoriesWantToLearn": [34],
-      "userIdLikes": []
+      "cityId": 17
     },
     {
       "id": 27,
@@ -370,13 +292,10 @@
       "avatarUrl": "/images/users/user07.jpg",
       "name": "Яна Григорьева",
       "about": "Помогаю развивать навыки обучения.",
-      "location": { "id": 18, "name": "Тольятти" },
       "birthDay": "1997-05-03",
       "gender": "Женский",
       "registrationDate": "2024-04-29",
-      "skillCanTeachId": 27,
-      "subcategoriesWantToLearn": [27],
-      "userIdLikes": [25]
+      "cityId": 18
     },
     {
       "id": 28,
@@ -384,13 +303,10 @@
       "avatarUrl": "/images/users/user08.jpg",
       "name": "Артём Никитин",
       "about": "Снимаю и монтирую видео.",
-      "location": { "id": 19, "name": "Иркутск" },
       "birthDay": "1991-10-17",
       "gender": "Мужской",
       "registrationDate": "2024-04-30",
-      "skillCanTeachId": 28,
-      "subcategoriesWantToLearn": [17],
-      "userIdLikes": [21, 24]
+      "cityId": 19
     },
     {
       "id": 29,
@@ -398,13 +314,10 @@
       "avatarUrl": "/images/users/user09.jpg",
       "name": "Екатерина Макарова",
       "about": "Преподаю английский язык.",
-      "location": { "id": 20, "name": "Барнаул" },
       "birthDay": "1994-03-08",
       "gender": "Женский",
       "registrationDate": "2024-05-01",
-      "skillCanTeachId": 29,
-      "subcategoriesWantToLearn": [16],
-      "userIdLikes": []
+      "cityId": 20
     },
     {
       "id": 30,
@@ -412,13 +325,10 @@
       "avatarUrl": "/images/users/user10.jpg",
       "name": "Максим Андреев",
       "about": "Помогаю выстраивать личную эффективность.",
-      "location": { "id": 1, "name": "Москва" },
       "birthDay": "1990-01-15",
       "gender": "Мужской",
       "registrationDate": "2024-05-02",
-      "skillCanTeachId": 30,
-      "subcategoriesWantToLearn": [67],
-      "userIdLikes": [25, 28]
+      "cityId": 1
     },
     {
       "id": 31,
@@ -426,13 +336,10 @@
       "avatarUrl": "/images/users/user11.jpg",
       "name": "Дарья Власова",
       "about": "Пишу тексты и обучаю сторителлингу.",
-      "location": { "id": 2, "name": "Санкт-Петербург" },
       "birthDay": "1996-09-12",
       "gender": "Женский",
       "registrationDate": "2024-05-03",
-      "skillCanTeachId": 31,
-      "subcategoriesWantToLearn": [14],
-      "userIdLikes": []
+      "cityId": 2
     },
     {
       "id": 32,
@@ -440,13 +347,10 @@
       "avatarUrl": "/images/users/user12.jpg",
       "name": "Игорь Карпов",
       "about": "Обучаю управлению финансами дома.",
-      "location": { "id": 3, "name": "Новосибирск" },
       "birthDay": "1985-04-04",
       "gender": "Мужской",
       "registrationDate": "2024-05-04",
-      "skillCanTeachId": 32,
-      "subcategoriesWantToLearn": [41],
-      "userIdLikes": [30]
+      "cityId": 3
     },
     {
       "id": 33,
@@ -454,13 +358,10 @@
       "avatarUrl": "/images/users/user13.jpg",
       "name": "Полина Семёнова",
       "about": "Практикую осознанность и медитации.",
-      "location": { "id": 4, "name": "Екатеринбург" },
       "birthDay": "1993-06-18",
       "gender": "Женский",
       "registrationDate": "2024-05-05",
-      "skillCanTeachId": 33,
-      "subcategoriesWantToLearn": [28],
-      "userIdLikes": [27, 29]
+      "cityId": 4
     },
     {
       "id": 34,
@@ -468,13 +369,10 @@
       "avatarUrl": "/images/users/user14.jpg",
       "name": "Вадим Киселёв",
       "about": "Готовлю к международным экзаменам.",
-      "location": { "id": 5, "name": "Казань" },
       "birthDay": "1989-11-30",
       "gender": "Мужской",
       "registrationDate": "2024-05-06",
-      "skillCanTeachId": 34,
-      "subcategoriesWantToLearn": [13],
-      "userIdLikes": []
+      "cityId": 5
     },
     {
       "id": 35,
@@ -482,13 +380,10 @@
       "avatarUrl": "/images/users/user15.jpg",
       "name": "Александра Беляева",
       "about": "Развиваю навыки преподавания и обучения.",
-      "location": { "id": 6, "name": "Нижний Новгород" },
       "birthDay": "1992-02-10",
       "gender": "Женский",
       "registrationDate": "2024-05-07",
-      "skillCanTeachId": 35,
-      "subcategoriesWantToLearn": [12, 22],
-      "userIdLikes": [30, 33]
+      "cityId": 6
     },
     {
       "id": 36,
@@ -496,13 +391,10 @@
       "avatarUrl": "/images/users/user16.jpg",
       "name": "Виктор Громов",
       "about": "Практикую коучинг и развитие мышления.",
-      "location": { "id": 7, "name": "Челябинск" },
       "birthDay": "1984-08-19",
       "gender": "Мужской",
       "registrationDate": "2024-05-08",
-      "skillCanTeachId": 36,
-      "subcategoriesWantToLearn": [63, 66, 16 ],
-      "userIdLikes": []
+      "cityId": 7
     },
     {
       "id": 37,
@@ -510,13 +402,10 @@
       "avatarUrl": "/images/users/user17.jpg",
       "name": "Наталья Ершова",
       "about": "Создаю уют и работаю с декором.",
-      "location": { "id": 8, "name": "Самара" },
       "birthDay": "1995-03-03",
       "gender": "Женский",
       "registrationDate": "2024-05-09",
-      "skillCanTeachId": 37,
-      "subcategoriesWantToLearn": [54, 56, 44],
-      "userIdLikes": [31, 34]
+      "cityId": 8
     },
     {
       "id": 38,
@@ -524,13 +413,10 @@
       "avatarUrl": "/images/users/user18.jpg",
       "name": "Олег Денисов",
       "about": "Занимаюсь немецким языком и обучаю.",
-      "location": { "id": 9, "name": "Уфа" },
       "birthDay": "1991-12-22",
       "gender": "Мужской",
       "registrationDate": "2024-05-10",
-      "skillCanTeachId": 38,
-      "subcategoriesWantToLearn": [15, 13],
-      "userIdLikes": []
+      "cityId": 9
     },
     {
       "id": 39,
@@ -538,13 +424,10 @@
       "avatarUrl": "/images/users/user19.jpg",
       "name": "Ксения Фадеева",
       "about": "Работаю с телом и питанием.",
-      "location": { "id": 10, "name": "Ростов-на-Дону" },
       "birthDay": "1996-07-14",
       "gender": "Женский",
       "registrationDate": "2024-05-11",
-      "skillCanTeachId": 39,
-      "subcategoriesWantToLearn": [65, 67, 41, 33],
-      "userIdLikes": [32, 35]
+      "cityId": 10
     },
     {
       "id": 40,
@@ -552,13 +435,10 @@
       "avatarUrl": "/images/users/user20.jpg",
       "name": "Андрей Фролов",
       "about": "Помогаю выстраивать процессы в командах.",
-      "location": { "id": 1, "name": "Москва" },
       "birthDay": "1986-05-06",
       "gender": "Мужской",
       "registrationDate": "2024-05-12",
-      "skillCanTeachId": 40,
-      "subcategoriesWantToLearn": [63, 61],
-      "userIdLikes": [35, 38]
+      "cityId": 1
     },
     {
       "id": 41,
@@ -566,13 +446,10 @@
       "avatarUrl": "/images/users/user01.jpg",
       "name": "Вероника Павлова",
       "about": "Фотографирую и обучаю визуалу.",
-      "location": { "id": 2, "name": "Санкт-Петербург" },
       "birthDay": "1997-11-02",
       "gender": "Женский",
       "registrationDate": "2024-05-13",
-      "skillCanTeachId": 41,
-      "subcategoriesWantToLearn": [14, 12, 26],
-      "userIdLikes": []
+      "cityId": 2
     },
     {
       "id": 42,
@@ -580,13 +457,10 @@
       "avatarUrl": "/images/users/user02.jpg",
       "name": "Сергей Мельников",
       "about": "Работаю с проектами и командами.",
-      "location": { "id": 3, "name": "Новосибирск" },
       "birthDay": "1989-02-27",
       "gender": "Мужской",
       "registrationDate": "2024-05-14",
-      "skillCanTeachId": 42,
-      "subcategoriesWantToLearn": [46, 67],
-      "userIdLikes": [40]
+      "cityId": 3
     },
     {
       "id": 43,
@@ -594,13 +468,10 @@
       "avatarUrl": "/images/users/user03.jpg",
       "name": "Юлия Титова",
       "about": "Люблю работать с текстами и смыслами.",
-      "location": { "id": 4, "name": "Екатеринбург" },
       "birthDay": "1995-09-09",
       "gender": "Женский",
       "registrationDate": "2024-05-15",
-      "skillCanTeachId": 43,
-      "subcategoriesWantToLearn": [31, 15, 42],
-      "userIdLikes": [41, 39]
+      "cityId": 4
     },
     {
       "id": 44,
@@ -608,13 +479,10 @@
       "avatarUrl": "/images/users/user04.jpg",
       "name": "Николай Богданов",
       "about": "Занимаюсь ремонтом и обучаю этому.",
-      "location": { "id": 5, "name": "Казань" },
       "birthDay": "1983-12-01",
       "gender": "Мужской",
       "registrationDate": "2024-05-16",
-      "skillCanTeachId": 44,
-      "subcategoriesWantToLearn": [51, 62],
-      "userIdLikes": []
+      "cityId": 5
     },
     {
       "id": 45,
@@ -622,13 +490,10 @@
       "avatarUrl": "/images/users/user05.jpg",
       "name": "Анастасия Соколова",
       "about": "Преподаю английский и помогаю заговорить свободно.",
-      "location": { "id": 6, "name": "Нижний Новгород" },
       "birthDay": "1996-04-18",
       "gender": "Женский",
       "registrationDate": "2024-05-17",
-      "skillCanTeachId": 45,
-      "subcategoriesWantToLearn": [22,14,64],
-      "userIdLikes": [41, 43]
+      "cityId": 6
     },
     {
       "id": 46,
@@ -636,13 +501,10 @@
       "avatarUrl": "/images/users/user06.jpg",
       "name": "Павел Орлов",
       "about": "Работаю с видео и контентом.",
-      "location": { "id": 7, "name": "Челябинск" },
       "birthDay": "1991-08-12",
       "gender": "Мужской",
       "registrationDate": "2024-05-18",
-      "skillCanTeachId": 46,
-      "subcategoriesWantToLearn": [12,17],
-      "userIdLikes": [40]
+      "cityId": 7
     },
     {
       "id": 47,
@@ -650,13 +512,10 @@
       "avatarUrl": "/images/users/user07.jpg",
       "name": "Катерина Волкова",
       "about": "Йога, дыхание и баланс.",
-      "location": { "id": 8, "name": "Самара" },
       "birthDay": "1994-10-05",
       "gender": "Женский",
       "registrationDate": "2024-05-19",
-      "skillCanTeachId": 47,
-      "subcategoriesWantToLearn": [65, 66, 41],
-      "userIdLikes": []
+      "cityId": 8
     },
     {
       "id": 48,
@@ -664,13 +523,10 @@
       "avatarUrl": "/images/users/user08.jpg",
       "name": "Даниил Ефремов",
       "about": "Обучаю переговорам и продажам.",
-      "location": { "id": 9, "name": "Уфа" },
       "birthDay": "1987-03-29",
       "gender": "Мужской",
       "registrationDate": "2024-05-20",
-      "skillCanTeachId": 48,
-      "subcategoriesWantToLearn": [26, 44],
-      "userIdLikes": [45, 46]
+      "cityId": 9
     },
     {
       "id": 49,
@@ -678,13 +534,10 @@
       "avatarUrl": "/images/users/user09.jpg",
       "name": "Ирина Белоусова",
       "about": "Обучаю финансовой грамотности.",
-      "location": { "id": 10, "name": "Ростов-на-Дону" },
       "birthDay": "1990-06-14",
       "gender": "Женский",
       "registrationDate": "2024-05-21",
-      "skillCanTeachId": 49,
-      "subcategoriesWantToLearn": [11, 16, 63, 46],
-      "userIdLikes": [44]
+      "cityId": 10
     },
     {
       "id": 50,
@@ -692,13 +545,10 @@
       "avatarUrl": "/images/users/user10.jpg",
       "name": "Роман Петренко",
       "about": "Помогаю людям прокачивать карьеру и софт-скиллы.",
-      "location": { "id": 1, "name": "Москва" },
       "birthDay": "1988-09-23",
       "gender": "Мужской",
       "registrationDate": "2024-05-22",
-      "skillCanTeachId": 50,
-      "subcategoriesWantToLearn": [21, 33],
-      "userIdLikes": []
+      "cityId": 1
     }
   ]
 }
