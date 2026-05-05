@@ -10,7 +10,7 @@ const decorator: Meta<typeof Avatar>['decorators'] = (Story) => (
 );
 
 const meta: Meta<typeof Avatar> = {
-  title: 'Components/Avatar',
+  title: 'UI/Avatar',
   component: Avatar,
   decorators: [decorator],
   argTypes: {
