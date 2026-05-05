@@ -4,7 +4,7 @@ import viteLogo from '@/assets/vite.svg';
 import './App.css';
 import { Radio } from '@/shared/ui/Radio/Radio';
 import { Textarea } from '@/shared/ui/Textarea/Textarea';
-
+import { Checkbox } from '@/shared/ui/Checkbox/Checkbox';
 
 function App() {
   const [count, setCount] = useState(0);
@@ -17,6 +17,8 @@ function App() {
     console.log('Selected:', value);
   };
 
+  const [isCategorySelected, setIsCategorySelected] = useState(false);
+  const [isSubcategorySelected, setIsSubcategorySelected] = useState(false);
   return (
     <>
       <section id='center'>
@@ -80,6 +82,24 @@ function App() {
           </Radio>
         </div>
         {/* <-- RADIO-BUTTON пример работы кнопки радио */}
+
+        <Checkbox
+          checked={isCategorySelected}
+          onChange={setIsCategorySelected}
+          type='category'
+          name='category-electronics'
+        >
+          Электроника
+        </Checkbox>
+
+        <Checkbox
+          checked={isSubcategorySelected}
+          onChange={setIsSubcategorySelected}
+          type='subcategory'
+          name='subcategory-smartphones'
+        >
+          Смартфоны
+        </Checkbox>
 
         <button
           type='button'
