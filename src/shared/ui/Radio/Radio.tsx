@@ -19,6 +19,7 @@ export const Radio: React.FC<RadioProps> = ({
   className = '',
 }) => {
   const handleChange = () => {
+    console.log('Radio onChange triggered:', value); // Отладка
     onChange(value);
   };
 
