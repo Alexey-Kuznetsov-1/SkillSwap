@@ -14,6 +14,7 @@ const config: StorybookConfig = {
     '@storybook/addon-a11y',
     '@storybook/addon-docs',
     '@storybook/addon-onboarding',
+    '@storybook/addon-essentials',
   ],
   framework: '@storybook/react-vite',
   async viteFinal(viteConfig) {
@@ -21,6 +22,12 @@ const config: StorybookConfig = {
       resolve: {
         alias: {
           '@': path.resolve(storybookDir, '../src'),
+        },
+      },
+      css: {
+        modules: {
+          // Настройка для корректной работы CSS Modules
+          generateScopedName: '[name]__[local]--[hash:base64:5]',
         },
       },
     });

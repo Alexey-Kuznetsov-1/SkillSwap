@@ -5,17 +5,19 @@ import './App.css';
 import { Radio } from '@/shared/ui/Radio/Radio';
 import { Textarea } from '@/shared/ui/Textarea/Textarea';
 import { Avatar } from '@/shared/ui/Avatar/Avatar';
+import { RadioGroup } from '@/shared/ui/RadioGroup/RadioGroup';
 
 function App() {
   const [count, setCount] = useState(0);
   const [skillDescription, setSkillDescription] = useState('');
 
-  const [selectedValue, setSelectedValue] = useState('option1');
+  const [filter, setFilter] = useState('all');
 
-  const handleRadioChange = (value: string) => {
-    setSelectedValue(value);
-    console.log('Selected:', value);
-  };
+  const options = [
+    { value: 'all', label: 'Всё' },
+    { value: 'learn', label: 'Хочу научиться' },
+    { value: 'teach', label: 'Могу научить' },
+  ];
 
   return (
     <>
@@ -52,34 +54,16 @@ function App() {
           />
           {/* <--- УДАЛИТЬ - пример работы textarea */}
         </div>
-        {/* RADIO-BUTTON пример работы кнопки радио --> */}
+        {/* RADIO-Group пример работы кнопки радио --> */}
         <div>
-          <Radio
-            name='exampleGroup'
-            value='option1'
-            checked={selectedValue === 'option1'}
-            onChange={handleRadioChange}
-          >
-            Всё
-          </Radio>
-          <Radio
-            name='exampleGroup'
-            value='option2'
-            checked={selectedValue === 'option2'}
-            onChange={handleRadioChange}
-          >
-            Хочу научиться
-          </Radio>
-          <Radio
-            name='exampleGroup'
-            value='option3'
-            checked={selectedValue === 'option3'}
-            onChange={handleRadioChange}
-          >
-            Могу научить
-          </Radio>
+          <RadioGroup
+            name='catalogFilter'
+            options={options}
+            value={filter}
+            onChange={setFilter}
+          />
         </div>
-        {/* <-- RADIO-BUTTON пример работы кнопки радио */}
+        {/* <-- RADIO-group пример работы кнопки радио */}
 
         <button
           type='button'
