@@ -1,0 +1,23 @@
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+}
+
+.remaining {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 8px;
+  
+  /* Стиль для счетчика "+N" — чуть темнее */
+  background-color: var(--code-bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 4px;
+}
