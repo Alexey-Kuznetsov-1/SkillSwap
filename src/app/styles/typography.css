@@ -1,0 +1,24 @@
+:root {
+  /* Подключенные шрифты */
+  --font-text: system-ui, 'Roboto', roboto, sans-serif;
+  --font-heading: system-ui, 'Jost', roboto, sans-serif;
+
+  /* Вес шрифтов */
+  --font-weight-medium: 500;
+  --font-weight-regular: 400;
+
+  /* Размеры шрифтов */
+  --font-size-text: 16px;
+  --font-size-heading-section: 32px;
+  --font-size-heading-filters: 24px;
+  --font-size-heading-medium: 20px;
+  --font-size-heading-card: 16px;
+  --font-size-caption: 12px;
+
+  /* Межстрочный интервал */
+
+  --font-line-height-text: 24px;
+  --font-line-height-heading-section: 40px;
+  --font-line-height-heading-filters: 32px;
+  --font-line-height-caption: 16px;
+}

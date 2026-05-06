@@ -2,15 +2,34 @@ import { useState } from 'react';
 import reactLogo from '@/assets/react.svg';
 import viteLogo from '@/assets/vite.svg';
 import './App.css';
+import { Radio } from '@/shared/ui/Radio/Radio';
+import { Textarea } from '@/shared/ui/Textarea/Textarea';
+import { Avatar } from '@/shared/ui/Avatar/Avatar';
+import { RadioGroup } from '@/shared/ui/RadioGroup/RadioGroup';
 
 function App() {
   const [count, setCount] = useState(0);
+  const [skillDescription, setSkillDescription] = useState('');
+
+  const [filter, setFilter] = useState('all');
+
+  const options = [
+    { value: 'all', label: 'Всё' },
+    { value: 'learn', label: 'Хочу научиться' },
+    { value: 'teach', label: 'Могу научить' },
+  ];
 
   return (
     <>
       <section id='center'>
         <div className='hero'>
-          <img src={viteLogo} className='base' width='170' height='179' alt='' />
+          <img
+            src={viteLogo}
+            className='base'
+            width='170'
+            height='179'
+            alt=''
+          />
           <img src={reactLogo} className='framework' alt='React logo' />
           <img src={viteLogo} className='vite' alt='Vite logo' />
         </div>
@@ -19,7 +38,33 @@ function App() {
           <p>
             Edit <code>src/app/App.tsx</code> and save to test <code>HMR</code>
           </p>
+          {/* УДАЛИТЬ - пример работы textarea ---> */}
+          <Textarea
+            label='Описание'
+            value={skillDescription}
+            onChange={setSkillDescription}
+            placeholder='Коротко опишите, чему можете научить'
+            rows={4}
+            maxLength={1000}
+            error={
+              skillDescription.length > 800
+                ? 'Осталось мало символов!'
+                : undefined
+            }
+          />
+          {/* <--- УДАЛИТЬ - пример работы textarea */}
         </div>
+        {/* RADIO-Group пример работы кнопки радио --> */}
+        <div>
+          <RadioGroup
+            name='catalogFilter'
+            options={options}
+            value={filter}
+            onChange={setFilter}
+          />
+        </div>
+        {/* <-- RADIO-group пример работы кнопки радио */}
+
         <button
           type='button'
           className='counter'
@@ -27,6 +72,11 @@ function App() {
         >
           Count is {count}
         </button>
+        {/* <-- Avatar пример аватарки пользователя */}
+        {/* <-- Avatar пример аватарки пользователя при наличаи изображения*/}
+        <Avatar src='https://i.pinimg.com/236x/ce/f2/ad/cef2ad42d058f72fa1de0ced9c7d3ead.jpg?nii=t' />
+        {/* <-- Avatar пример аватарки пользователя при отсутствии изображения*/}
+        <Avatar name='Денис Терёхин' />
       </section>
 
       <div className='ticks'></div>

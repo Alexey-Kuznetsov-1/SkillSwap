@@ -1,0 +1,26 @@
+/* Roboto Regular (400) */
+@font-face {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 400;
+  src: url('./fonts/Roboto/Roboto-Regular.ttf') format('ttf');
+  font-display: swap;
+}
+
+/* Roboto Medium (500) */
+@font-face {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  src: url('./fonts/Roboto/Roboto-Medium.ttf') format('ttf');
+  font-display: swap;
+}
+
+/* Jost Medium (500) */
+@font-face {
+  font-family: Jost;
+  font-style: normal;
+  font-weight: 500;
+  src: url('./fonts/Jost/Jost-Medium.ttf') format('ttf');
+  font-display: swap;
+}
