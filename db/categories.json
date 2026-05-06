@@ -4,85 +4,37 @@
       "id": 1,
       "name": "Бизнес и карьера",
       "icon": "/icons/categories/briefcase.svg",
-      "subcategories": [
-        { "id": 11, "name": "Управление командой", "categoryId": 1 },
-        { "id": 12, "name": "Маркетинг и реклама", "categoryId": 1 },
-        { "id": 13, "name": "Продажи и переговоры", "categoryId": 1 },
-        { "id": 14, "name": "Личный бренд", "categoryId": 1 },
-        { "id": 15, "name": "Резюме и собеседование", "categoryId": 1 },
-        { "id": 16, "name": "Тайм-менеджмент", "categoryId": 1 },
-        { "id": 17, "name": "Проектное управление", "categoryId": 1 },
-        { "id": 18, "name": "Предпринимательство", "categoryId": 1 }
-      ]
+      "color": "#eee7f7"
     },
     {
       "id": 2,
       "name": "Творчество и искусство",
       "icon": "/icons/categories/palette.svg",
-      "subcategories": [
-        { "id": 21, "name": "Рисование и иллюстрация", "categoryId": 2 },
-        { "id": 22, "name": "Фотография", "categoryId": 2 },
-        { "id": 23, "name": "Видеомонтаж", "categoryId": 2 },
-        { "id": 24, "name": "Музыка и звук", "categoryId": 2 },
-        { "id": 25, "name": "Актёрское мастерство", "categoryId": 2 },
-        { "id": 26, "name": "Креативное письмо", "categoryId": 2 },
-        { "id": 27, "name": "Арт-терапия", "categoryId": 2 },
-        { "id": 28, "name": "Декор и DIY", "categoryId": 2 }
-      ]
+      "color": "#f7e7f2"
     },
     {
       "id": 3,
       "name": "Иностранные языки",
       "icon": "/icons/categories/global.svg",
-      "subcategories": [
-        { "id": 31, "name": "Английский", "categoryId": 3 },
-        { "id": 32, "name": "Французский", "categoryId": 3 },
-        { "id": 33, "name": "Испанский", "categoryId": 3 },
-        { "id": 34, "name": "Немецкий", "categoryId": 3 },
-        { "id": 35, "name": "Китайский", "categoryId": 3 },
-        { "id": 36, "name": "Японский", "categoryId": 3 },
-        { "id": 37, "name": "Подготовка к экзаменам (IELTS, TOEFL)", "categoryId": 3 }
-      ]
+      "color": "#ebe5c5"
     },
     {
       "id": 4,
       "name": "Образование и развитие",
       "icon": "/icons/categories/book.svg",
-      "subcategories": [
-        { "id": 41, "name": "Личностное развитие", "categoryId": 4 },
-        { "id": 42, "name": "Навыки обучения", "categoryId": 4 },
-        { "id": 43, "name": "Когнитивные техники", "categoryId": 4 },
-        { "id": 44, "name": "Скорочтение", "categoryId": 4 },
-        { "id": 45, "name": "Навыки преподавания", "categoryId": 4 },
-        { "id": 46, "name": "Коучинг", "categoryId": 4 }
-      ]
+      "color": "#e7f2f6"
     },
     {
       "id": 5,
       "name": "Дом и уют",
       "icon": "/icons/categories/home.svg",
-      "subcategories": [
-        { "id": 51, "name": "Уборка и организация", "categoryId": 5 },
-        { "id": 52, "name": "Домашние финансы", "categoryId": 5 },
-        { "id": 53, "name": "Приготовление еды", "categoryId": 5 },
-        { "id": 54, "name": "Домашние растения", "categoryId": 5 },
-        { "id": 55, "name": "Ремонт", "categoryId": 5 },
-        { "id": 56, "name": "Хранение вещей", "categoryId": 5 }
-      ]
+      "color": "#f7ebe5"
     },
     {
       "id": 6,
       "name": "Здоровье и лайфстайл",
       "icon": "/icons/categories/lifestyle.svg",
-      "subcategories": [
-        { "id": 61, "name": "Йога и медитация", "categoryId": 6 },
-        { "id": 62, "name": "Питание и ЗОЖ", "categoryId": 6 },
-        { "id": 63, "name": "Ментальное здоровье", "categoryId": 6 },
-        { "id": 64, "name": "Осознанность", "categoryId": 6 },
-        { "id": 65, "name": "Физические тренировки", "categoryId": 6 },
-        { "id": 66, "name": "Сон и восстановление", "categoryId": 6 },
-        { "id": 67, "name": "Баланс жизни и работы", "categoryId": 6 }
-      ]
+      "color": "#e9f7e7"
     }
   ]
 }
