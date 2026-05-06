@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import reactLogo from '@/assets/react.svg';
 import viteLogo from '@/assets/vite.svg';
+import { getMockDbState, getSkillById } from '@/api';
 import './App.css';
 import { Radio } from '@/shared/ui/Radio/Radio';
 import { Textarea } from '@/shared/ui/Textarea/Textarea';
@@ -16,6 +17,20 @@ function App() {
     setSelectedValue(value);
     console.log('Selected:', value);
   };
+
+  useEffect(() => {
+    void (async () => {
+      try {
+        const dbState = await getMockDbState();
+        console.log('Загруженные данные mock-db-store:', dbState);
+
+        const skill = await getSkillById(1);
+        console.log('Результат getSkillById(1):', skill);
+      } catch (error) {
+        console.error('Ошибка при чтении данных API:', error);
+      }
+    })();
+  }, []);
 
   return (
     <>
