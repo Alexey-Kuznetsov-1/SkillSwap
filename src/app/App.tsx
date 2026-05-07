@@ -5,6 +5,7 @@ import { getMockDbState, getSkillById } from '@/api';
 import './App.css';
 import { Radio } from '@/shared/ui/Radio/Radio';
 import { Textarea } from '@/shared/ui/Textarea/Textarea';
+import { Checkbox } from '@/shared/ui/Checkbox/Checkbox';
 import { Avatar } from '@/shared/ui/Avatar/Avatar';
 import { RadioGroup } from '@/shared/ui/RadioGroup/RadioGroup';
 
@@ -34,6 +35,8 @@ function App() {
     })();
   }, []);
 
+  const [isCategorySelected, setIsCategorySelected] = useState(false);
+  const [isSubcategorySelected, setIsSubcategorySelected] = useState(false);
   return (
     <>
       <section id='center'>
@@ -79,6 +82,24 @@ function App() {
           />
         </div>
         {/* <-- RADIO-group пример работы кнопки радио */}
+
+        <Checkbox
+          checked={isCategorySelected}
+          onChange={setIsCategorySelected}
+          type='category'
+          name='category-electronics'
+        >
+          Электроника
+        </Checkbox>
+
+        <Checkbox
+          checked={isSubcategorySelected}
+          onChange={setIsSubcategorySelected}
+          type='subcategory'
+          name='subcategory-smartphones'
+        >
+          Смартфоны
+        </Checkbox>
 
         <button
           type='button'

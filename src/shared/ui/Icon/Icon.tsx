@@ -63,15 +63,15 @@ interface IconProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   size?: number | string;
 }
 
-export const Icon: React.FC<IconProps> = ({ 
-  name, 
-  size = 24, 
+export const Icon: React.FC<IconProps> = ({
+  name,
+  size = 24,
   alt = '',
   'aria-label': ariaLabel,
-  ...props 
+  ...props
 }) => {
   const iconPath = `/icons/${name}.svg`;
-  
+
   return (
     <img
       src={iconPath}
