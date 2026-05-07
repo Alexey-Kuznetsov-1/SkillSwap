@@ -1,0 +1,100 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 48px;
+  padding: 12px 24px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: 0.32px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.1s ease;
+}
+
+/* Primary styles */
+.primary {
+  background-color: #abd27a;
+  color: #0c0c0c;
+}
+
+.primary:hover:not(:disabled) {
+  background-color: #deebc5;
+  color: #253017;
+}
+
+.primary:active:not(:disabled) {
+  background-color: #508826;
+  color: #ffffff;
+}
+
+/* Secondary styles */
+.secondary {
+  background-color: #ffffff;
+  border: 1px solid #abd27a;
+  color: #0c0c0c;
+}
+
+.secondary:hover:not(:disabled) {
+  border-color: #deebc5;
+  color: #69735d;
+}
+
+.secondary:active:not(:disabled) {
+  border-color: #508826;
+  color: #253017;
+}
+
+/* Tertiary styles */
+.tertiary {
+  background-color: #ffffff;
+  color: #253017;
+}
+
+.tertiary:hover:not(:disabled) {
+  background-color: #deebc5;
+  color: #253017;
+}
+
+.tertiary:active:not(:disabled) {
+  background-color: #508826;
+  color: #ffffff;
+}
+
+/* Disabled state (общий для всех вариантов) */
+.disabled {
+  cursor: not-allowed;
+}
+
+.primary.disabled {
+  background-color: #e4e8df;
+  color: #69735d;
+}
+
+.secondary.disabled {
+  background-color: #ffffff;
+  border-color: #e4e8df;
+  color: #9ca197;
+}
+
+.tertiary.disabled {
+  background-color: #ffffff;
+  color: #9ca197;
+}
+
+/* Full width */
+.fullWidth {
+  width: 100%;
+}
+
+/* Icons */
+.iconLeft,
+.iconRight {
+  display: inline-flex;
+  align-items: center;
+  line-height: 0;
+}
