@@ -23,6 +23,12 @@ export type Subcategory = {
   categoryId: number;
 };
 
+// UI-модель подкатегории с уже подставленной категорией (чтобы не искать её отдельно в UI).
+export type SubcategoryWithCategory = Subcategory & {
+  // Категория, к которой относится подкатегория.
+  category: Category;
+};
+
 // Полная модель пользователя из mock-таблицы users.
 export type User = {
   // Уникальный идентификатор пользователя.
@@ -112,7 +118,7 @@ export type SkillCard = {
   // Категория навыка.
   category: Category;
   // Подкатегория навыка.
-  subcategory: Subcategory;
+  subcategory: SubcategoryWithCategory;
   // Минимальный набор данных автора для UI карточки.
   author: Pick<User, 'id' | 'name' | 'avatarUrl'>;
   // Количество лайков, агрегированное из таблицы skill-likes.

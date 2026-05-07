@@ -8,6 +8,7 @@ import type {
   SkillsCatalogParams,
   SkillsCatalogResult,
   Subcategory,
+  SubcategoryWithCategory,
   User
 } from '@/api/types';
 
@@ -84,13 +85,18 @@ function buildCard(
     throw new Error(`Не найден автор с id=${skill.userId} для навыка id=${skill.id}`);
   }
 
+  const subcategoryWithCategory: SubcategoryWithCategory = {
+    ...subcategory,
+    category
+  };
+
   return {
     id: skill.id,
     name: skill.name,
     description: skill.description,
     direction: skill.type,
     category,
-    subcategory,
+    subcategory: subcategoryWithCategory,
     author: {
       id: author.id,
       name: author.name,
