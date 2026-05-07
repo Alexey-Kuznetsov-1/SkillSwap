@@ -1,33 +1,28 @@
 .checkbox-wrapper {
   display: flex;
-  gap: 8px;
   align-items: center;
   padding: 0;
   margin: 0;
-  font-family: inherit;
-  font-size: 14px;
-  line-height: 20px;
-  color: #333;
+  font-family: var(--font-text);
+  font-size: var(--font-size-text);
+  line-height: var(--font-line-height-text);
+  color: var(--color-text-main);
   cursor: pointer;
   user-select: none;
 }
 
 .checkbox-icon {
   flex-shrink: 0;
-  width: 16px;
-  height: 16px;
-}
-
-.checkbox-wrapper.checked .checkbox-icon img {
-  color: #007bff;
+  height: 24px;
+  margin-right: 8px;
 }
 
 .visually-hidden {
   position: absolute;
-  width: 1px;
-  height: 1px;
+  width: 0;
+  height: 0;
   padding: 0;
-  margin: -1px;
+  margin: 0;
   overflow: hidden;
   white-space: nowrap;
   border: 0;

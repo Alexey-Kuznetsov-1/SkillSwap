@@ -46,7 +46,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   return (
     <label htmlFor={uniqueId} className={wrapperClasses.join(' ')}>
       <div className={styles['checkbox-icon']}>
-        <Icon name={iconName} size={16} aria-hidden='true' alt='Чекбокс' />
+        <Icon name={iconName} size={24} aria-hidden='true' alt='Чекбокс' />
       </div>
 
       <span className={styles['checkbox-label']}>{children}</span>
