@@ -1,0 +1,27 @@
+@import '../../../app/styles/fonts.css';
+
+.tag {
+  padding-inline: 12px;
+  padding-block: 8px;
+  border-radius: 20px;
+  display: inline-block;
+
+}
+
+.tag-default {
+  background-color: #E8ECF7; /* по умолчанию default */
+}
+
+.tag-text {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  vertical-align: middle;
+  color: #253017;
+  margin: 0;
+  padding: 0;
+}
+
+
+ 

@@ -8,6 +8,7 @@ import { Textarea } from '@/shared/ui/Textarea/Textarea';
 import { Checkbox } from '@/shared/ui/Checkbox/Checkbox';
 import { Avatar } from '@/shared/ui/Avatar/Avatar';
 import { RadioGroup } from '@/shared/ui/RadioGroup/RadioGroup';
+import { Tag } from '../shared/ui/Tag/Tag';
 
 function App() {
   const [count, setCount] = useState(0);
@@ -34,7 +35,6 @@ function App() {
       }
     })();
   }, []);
-
   const [isCategorySelected, setIsCategorySelected] = useState(false);
   const [isSubcategorySelected, setIsSubcategorySelected] = useState(false);
   return (
@@ -113,6 +113,10 @@ function App() {
         <Avatar src='https://i.pinimg.com/236x/ce/f2/ad/cef2ad42d058f72fa1de0ced9c7d3ead.jpg?nii=t' />
         {/* <-- Avatar пример аватарки пользователя при отсутствии изображения*/}
         <Avatar name='Денис Терёхин' />
+        {/* <-- Tag пример тега скилов пользователя, полный пример в сторибук */}
+        <Tag>+1</Tag>
+        
+
       </section>
 
       <div className='ticks'></div>
