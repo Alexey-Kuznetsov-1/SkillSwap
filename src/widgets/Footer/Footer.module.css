@@ -1,0 +1,77 @@
+.footer {
+  background: #FFFFFF;
+  width: 100%;
+  padding: 32px 36px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+/* Линия 1: логотип */
+.logo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+}
+
+.logoIcon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logoText {
+  font-family: 'Jost', sans-serif;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 32px;
+  letter-spacing: -0.011em;
+  color: #253017;
+}
+
+/* Линия 2: колонки ссылок — прижаты к правому краю */
+.linksContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 24px;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 324px;
+}
+
+.link {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.02em;
+  color: #253017;
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+/* Линия 3: копирайт — прижат к левому краю */
+.copyright {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.02em;
+  color: #69735D;
+}
