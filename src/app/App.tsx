@@ -3,7 +3,6 @@ import reactLogo from '@/assets/react.svg';
 import viteLogo from '@/assets/vite.svg';
 import { getMockDbState, getSkillById } from '@/api';
 import './App.css';
-import { Radio } from '@/shared/ui/Radio/Radio';
 import { Textarea } from '@/shared/ui/Textarea/Textarea';
 import { Checkbox } from '@/shared/ui/Checkbox/Checkbox';
 import { Avatar } from '@/shared/ui/Avatar/Avatar';
@@ -115,7 +114,7 @@ function App() {
         <Avatar name='Денис Терёхин' />
         {/* <-- Tag пример тега скилов пользователя, полный пример в сторибук */}
         <Tag>+1</Tag>
-        
+
 
       </section>
 
