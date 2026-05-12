@@ -6,7 +6,7 @@ import RegisterPage from '@/pages/RegisterPage';
 import CreatePage from '@/pages/CreatePage';
 import FavoritesPage from '@/pages/FavoritesPage';
 import ExamplePage from '@/pages/ExamplePage';
-import NotFoundPage from '@/pages/NotFoundPage';
+import NotFoundPage from '@/pages/NotFoundPage/NotFoundPage';
 
 function App() {
   return (

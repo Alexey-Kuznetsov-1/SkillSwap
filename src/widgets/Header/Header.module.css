@@ -1,15 +1,18 @@
-/* Header */
 .header {
+  background: #F9FAF7;
+  padding: 36px 0 20px;
+}
+
+.headerContent {
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: 36px 36px 20px;
   gap: 32px;
-  background: #F9FAF7;
-  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 36px;
 }
 
-/* Logo */
 .logo {
   display: flex;
   flex-direction: row;
@@ -36,7 +39,6 @@
   color: #253017;
 }
 
-/* Menu */
 .menu {
   display: flex;
   flex-direction: row;
@@ -72,49 +74,23 @@
   color: #253017;
 }
 
-/* Search */
-.search {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 12px;
-  gap: 8px;
+.searchWrapper {
   flex: 1;
-  background: #FFFFFF;
-  border-radius: 12px;
-  height: 48px;
+  max-width: 648px;
 }
 
-.searchInput {
-  flex: 1;
-  border: none;
-  outline: none;
-  font-family: 'Roboto', sans-serif;
-  font-size: 16px;
-  line-height: 24px;
-  letter-spacing: 0.02em;
-  color: #69735D;
-  background: transparent;
-}
-
-.searchInput::placeholder {
-  color: #69735D;
-}
-
-/* Theme toggle */
-.themeToggle {
-  width: 24px;
-  height: 24px;
+.iconButton {
   background: none;
   border: none;
   cursor: pointer;
+  padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0;
+  width: 24px;
+  height: 24px;
 }
 
-/* Actions */
 .actions {
   display: flex;
   flex-direction: row;
@@ -136,16 +112,4 @@
   line-height: 24px;
   letter-spacing: 0.02em;
   color: #253017;
-}
-
-.iconButton {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
 }

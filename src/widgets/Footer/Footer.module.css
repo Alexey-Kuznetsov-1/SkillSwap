@@ -1,18 +1,24 @@
 .footer {
   background: #FFFFFF;
-  width: 100%;
-  padding: 32px 36px;
+  padding: 32px 0;
 }
 
 .container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 36px;
   display: flex;
   flex-direction: column;
   gap: 60px;
-  max-width: 1440px;
-  margin: 0 auto;
 }
 
-/* Линия 1: логотип */
+.topRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
 .logo {
   display: flex;
   flex-direction: row;
@@ -37,11 +43,9 @@
   color: #253017;
 }
 
-/* Линия 2: колонки ссылок — прижаты к правому краю */
 .linksContainer {
   display: flex;
   flex-direction: row;
-  justify-content: flex-end;
   gap: 24px;
 }
 
@@ -66,7 +70,6 @@
   text-decoration: underline;
 }
 
-/* Линия 3: копирайт — прижат к левому краю */
 .copyright {
   font-family: 'Roboto', sans-serif;
   font-weight: 400;

@@ -1,12 +1,17 @@
 .container {
+  background: #F9FAF7;
+  padding: 204px 0 80px;
+  min-height: 100vh;
+}
+
+.contentWrapper {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 40px;
-  width: 100%;
-  padding: 204px 20px 80px;
-  background: #F9FAF7;
-  min-height: 100vh;
 }
 
 .illustration {
@@ -17,18 +22,13 @@
   justify-content: center;
 }
 
-.content {
-  width: 460px;
+.textContent {
+  max-width: 460px;
+  width: 100%;
+  text-align: center;
   display: flex;
   flex-direction: column;
   gap: 32px;
-}
-
-.textBlock {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  text-align: center;
 }
 
 .title {
@@ -38,7 +38,7 @@
   line-height: 28px;
   letter-spacing: -0.011em;
   color: #253017;
-  margin: 0;
+  margin: 0 0 4px 0;
 }
 
 .description {
