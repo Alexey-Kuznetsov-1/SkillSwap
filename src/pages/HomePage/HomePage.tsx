@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import Header from '@/widgets/Header';
 import Footer from '@/widgets/Footer';
 import FiltersSidebar from '@/widgets/FiltersSidebar';
@@ -79,9 +79,14 @@ const allCities = [
   'Уфа', 'Красноярск', 'Пермь', 'Воронеж', 'Волгоград',
 ];
 
+const PAGE_SIZE = 6;
+
 const HomePage: React.FC = () => {
   const [allSkills, setAllSkills] = useState<TempSkill[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
 
   const [skillType, setSkillType] = useState('all');
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
@@ -90,9 +95,21 @@ const HomePage: React.FC = () => {
   const [selectedCities, setSelectedCities] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
 
+  const [displayedSkills, setDisplayedSkills] = useState<TempSkill[]>([]);
   const [popularSkills, setPopularSkills] = useState<TempSkill[]>([]);
   const [newSkills, setNewSkills] = useState<TempSkill[]>([]);
   const [recommendedSkills, setRecommendedSkills] = useState<TempSkill[]>([]);
+
+  const observerRef = useRef<IntersectionObserver | null>(null);
+  const lastCardRef = useRef<HTMLDivElement | null>(null);
+
+  const hasFilters =
+    skillType !== 'all' ||
+    selectedCategories.length > 0 ||
+    selectedSubCategories.length > 0 ||
+    authorGender !== 'any' ||
+    selectedCities.length > 0 ||
+    searchQuery;
 
   useEffect(() => {
     const fetchSkills = async () => {
@@ -140,10 +157,44 @@ const HomePage: React.FC = () => {
   }, [allSkills, skillType, selectedCategories, selectedSubCategories, authorGender, selectedCities, searchQuery]);
 
   useEffect(() => {
+    if (!hasFilters) return;
+    const start = 0;
+    const end = page * PAGE_SIZE;
+    setDisplayedSkills(recommendedSkills.slice(start, end));
+    setHasMore(end < recommendedSkills.length);
+  }, [recommendedSkills, page, hasFilters]);
+
+  useEffect(() => {
+    setPage(1);
+    setHasMore(true);
+  }, [skillType, selectedCategories, selectedSubCategories, authorGender, selectedCities, searchQuery]);
+
+  useEffect(() => {
     if (allSkills.length === 0) return;
     setPopularSkills([...allSkills].sort((a, b) => b.likes - a.likes).slice(0, 3));
     setNewSkills([...allSkills].sort((a, b) => b.id - a.id).slice(0, 3));
   }, [allSkills]);
+
+  const handleObserver = useCallback((entries: IntersectionObserverEntry[]) => {
+    const target = entries[0];
+    if (target.isIntersecting && hasMore && !loadingMore && hasFilters) {
+      setPage((prev) => prev + 1);
+    }
+  }, [hasMore, loadingMore, hasFilters]);
+
+  useEffect(() => {
+    if (observerRef.current) observerRef.current.disconnect();
+    observerRef.current = new IntersectionObserver(handleObserver);
+    if (lastCardRef.current) observerRef.current.observe(lastCardRef.current);
+    return () => observerRef.current?.disconnect();
+  }, [handleObserver, displayedSkills]);
+
+  useEffect(() => {
+    if (!hasFilters) return;
+    setLoadingMore(true);
+    const timer = setTimeout(() => setLoadingMore(false), 500);
+    return () => clearTimeout(timer);
+  }, [page]);
 
   const handleCategoryToggle = (categoryValue: string) => {
     setSelectedCategories((prev) =>
@@ -167,8 +218,8 @@ const HomePage: React.FC = () => {
     setSearchQuery(query);
   };
 
-  const TempCard = ({ skill }: { skill: TempSkill }) => (
-    <div className={styles.card}>
+  const TempCard = ({ skill, isLast = false }: { skill: TempSkill; isLast?: boolean }) => (
+    <div className={styles.card} ref={isLast ? lastCardRef : null}>
       <h3>{skill.title}</h3>
       <p>{skill.description}</p>
       <div className={styles.cardFooter}>
@@ -206,14 +257,6 @@ const HomePage: React.FC = () => {
     );
   }
 
-  const hasFilters =
-    skillType !== 'all' ||
-    selectedCategories.length > 0 ||
-    selectedSubCategories.length > 0 ||
-    authorGender !== 'any' ||
-    selectedCities.length > 0 ||
-    searchQuery;
-
   return (
     <>
       <Header onSearch={handleSearch} />
@@ -241,10 +284,14 @@ const HomePage: React.FC = () => {
                 <>
                   <h2 className={styles.sectionTitle}>Подходящие предложения: {recommendedSkills.length}</h2>
                   <div className={styles.grid}>
-                    {recommendedSkills.map((skill) => (
-                      <TempCard key={skill.id} skill={skill} />
+                    {displayedSkills.map((skill, idx) => (
+                      <TempCard key={skill.id} skill={skill} isLast={idx === displayedSkills.length - 1} />
                     ))}
                   </div>
+                  {loadingMore && <p className={styles.loadingMore}>Загрузка...</p>}
+                  {!hasMore && displayedSkills.length > 0 && (
+                    <p className={styles.endMessage}>Вы посмотрели все предложения</p>
+                  )}
                 </>
               ) : (
                 <>

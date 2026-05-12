@@ -101,3 +101,17 @@
   font-size: 14px;
   color: #253017;
 }
+
+.loadingMore {
+  text-align: center;
+  padding: 20px;
+  font-family: 'Roboto', sans-serif;
+  color: #69735D;
+}
+
+.endMessage {
+  text-align: center;
+  padding: 20px;
+  font-family: 'Roboto', sans-serif;
+  color: #69735D;
+}
