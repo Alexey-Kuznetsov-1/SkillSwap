@@ -10,6 +10,7 @@ interface HeaderProps {
   isLoggedIn?: boolean;
   userName?: string;
   avatarSrc?: string;
+  onSearch?: (query: string) => void;
 }
 
 const categories = [
@@ -97,6 +98,7 @@ const Header: React.FC<HeaderProps> = ({
   isLoggedIn = false,
   userName = 'Мария',
   avatarSrc = '',
+  onSearch,
 }) => {
   const [searchValue, setSearchValue] = useState('');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -104,6 +106,7 @@ const Header: React.FC<HeaderProps> = ({
 
   const handleSearchChange = (value: string) => {
     setSearchValue(value);
+    onSearch?.(value);
   };
 
   const toggleDropdown = () => {
@@ -137,7 +140,6 @@ const Header: React.FC<HeaderProps> = ({
   return (
     <header className={styles.header}>
       <div className={styles.headerContent}>
-        {/* Логотип */}
         <div className={styles.logo}>
           <div className={styles.logoIcon}>
             <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -148,7 +150,6 @@ const Header: React.FC<HeaderProps> = ({
           <span className={styles.logoText}>SkillSwap</span>
         </div>
 
-        {/* Меню навигации */}
         <nav className={styles.menu}>
           <a href="/about" className={styles.menuLink}>О проекте</a>
           <div className={styles.dropdownWrapper} ref={dropdownRef}>
@@ -166,7 +167,6 @@ const Header: React.FC<HeaderProps> = ({
           </div>
         </nav>
 
-        {/* Поиск */}
         <SearchInput
           value={searchValue}
           onChange={handleSearchChange}
@@ -174,12 +174,10 @@ const Header: React.FC<HeaderProps> = ({
           className={styles.searchWrapper}
         />
 
-        {/* Иконка луны */}
         <button className={styles.iconButton}>
           <Icon name="moon" size={20} />
         </button>
 
-        {/* Кнопки / аватар */}
         <div className={styles.actions}>
           {isLoggedIn ? (
             <>

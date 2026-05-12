@@ -2,10 +2,9 @@ import React, { useEffect, useState } from 'react';
 import Header from '@/widgets/Header';
 import Footer from '@/widgets/Footer';
 import FiltersSidebar from '@/widgets/FiltersSidebar';
-import { getMockDbState } from '@/api';
 import styles from './HomePage.module.css';
 
-interface Skill {
+interface TempSkill {
   id: number;
   title: string;
   description: string;
@@ -21,63 +20,57 @@ interface Skill {
 }
 
 const categories = [
-  { value: 'business_career', label: 'Бизнес и карьера' },
-  { value: 'art_creativity', label: 'Творчество и искусство' },
-  { value: 'foreign_languages', label: 'Иностранные языки' },
-  { value: 'education_development', label: 'Образование и развитие' },
-  { value: 'home_coziness', label: 'Дом и уют' },
-  { value: 'health_lifestyle', label: 'Здоровье и лайфстайл' },
+  { value: 'business', label: 'Бизнес и карьера' },
+  { value: 'art', label: 'Творчество и искусство' },
+  { value: 'languages', label: 'Иностранные языки' },
+  { value: 'education', label: 'Образование и развитие' },
+  { value: 'home', label: 'Дом и уют' },
+  { value: 'health', label: 'Здоровье и лайфстайл' },
 ];
 
 const subCategories = [
-  // Бизнес и карьера
-  { value: 'team_management', label: 'Управление командой', parentCategory: 'business_career' },
-  { value: 'marketing', label: 'Маркетинг и реклама', parentCategory: 'business_career' },
-  { value: 'sales', label: 'Продажи и переговоры', parentCategory: 'business_career' },
-  { value: 'personal_brand', label: 'Личный бренд', parentCategory: 'business_career' },
-  { value: 'resume', label: 'Резюме и собеседование', parentCategory: 'business_career' },
-  { value: 'time_management', label: 'Тайм-менеджмент', parentCategory: 'business_career' },
-  { value: 'project_management', label: 'Проектное управление', parentCategory: 'business_career' },
-  { value: 'entrepreneurship', label: 'Предпринимательство', parentCategory: 'business_career' },
-  // Творчество и искусство
-  { value: 'drawing', label: 'Рисование и иллюстрация', parentCategory: 'art_creativity' },
-  { value: 'photography', label: 'Фотография', parentCategory: 'art_creativity' },
-  { value: 'video_editing', label: 'Видеомонтаж', parentCategory: 'art_creativity' },
-  { value: 'music', label: 'Музыка и звук', parentCategory: 'art_creativity' },
-  { value: 'acting', label: 'Актёрское мастерство', parentCategory: 'art_creativity' },
-  { value: 'creative_writing', label: 'Креативное письмо', parentCategory: 'art_creativity' },
-  { value: 'art_therapy', label: 'Арт-терапия', parentCategory: 'art_creativity' },
-  { value: 'diy', label: 'Декор и DIY', parentCategory: 'art_creativity' },
-  // Иностранные языки
-  { value: 'english', label: 'Английский', parentCategory: 'foreign_languages' },
-  { value: 'french', label: 'Французский', parentCategory: 'foreign_languages' },
-  { value: 'spanish', label: 'Испанский', parentCategory: 'foreign_languages' },
-  { value: 'german', label: 'Немецкий', parentCategory: 'foreign_languages' },
-  { value: 'chinese', label: 'Китайский', parentCategory: 'foreign_languages' },
-  { value: 'japanese', label: 'Японский', parentCategory: 'foreign_languages' },
-  { value: 'exam_prep', label: 'Подготовка к экзаменам (IELTS, TOEFL)', parentCategory: 'foreign_languages' },
-  // Образование и развитие
-  { value: 'personal_development', label: 'Личностное развитие', parentCategory: 'education_development' },
-  { value: 'learning_skills', label: 'Навыки обучения', parentCategory: 'education_development' },
-  { value: 'cognitive_techniques', label: 'Когнитивные техники', parentCategory: 'education_development' },
-  { value: 'speed_reading', label: 'Скорочтение', parentCategory: 'education_development' },
-  { value: 'teaching_skills', label: 'Навыки преподавания', parentCategory: 'education_development' },
-  { value: 'coaching', label: 'Коучинг', parentCategory: 'education_development' },
-  // Дом и уют
-  { value: 'cleaning', label: 'Уборка и организация', parentCategory: 'home_coziness' },
-  { value: 'home_finance', label: 'Домашние финансы', parentCategory: 'home_coziness' },
-  { value: 'cooking', label: 'Приготовление еды', parentCategory: 'home_coziness' },
-  { value: 'plants', label: 'Домашние растения', parentCategory: 'home_coziness' },
-  { value: 'repair', label: 'Ремонт', parentCategory: 'home_coziness' },
-  { value: 'storage', label: 'Хранение вещей', parentCategory: 'home_coziness' },
-  // Здоровье и лайфстайл
-  { value: 'yoga', label: 'Йога и медитация', parentCategory: 'health_lifestyle' },
-  { value: 'nutrition', label: 'Питание и ЗОЖ', parentCategory: 'health_lifestyle' },
-  { value: 'mental_health', label: 'Ментальное здоровье', parentCategory: 'health_lifestyle' },
-  { value: 'mindfulness', label: 'Осознанность', parentCategory: 'health_lifestyle' },
-  { value: 'fitness', label: 'Физические тренировки', parentCategory: 'health_lifestyle' },
-  { value: 'sleep', label: 'Сон и восстановление', parentCategory: 'health_lifestyle' },
-  { value: 'work_life_balance', label: 'Баланс жизни и работы', parentCategory: 'health_lifestyle' },
+  { value: 'team_management', label: 'Управление командой', parentCategory: 'business' },
+  { value: 'marketing', label: 'Маркетинг и реклама', parentCategory: 'business' },
+  { value: 'sales', label: 'Продажи и переговоры', parentCategory: 'business' },
+  { value: 'personal_brand', label: 'Личный бренд', parentCategory: 'business' },
+  { value: 'resume', label: 'Резюме и собеседование', parentCategory: 'business' },
+  { value: 'time_management', label: 'Тайм-менеджмент', parentCategory: 'business' },
+  { value: 'project_management', label: 'Проектное управление', parentCategory: 'business' },
+  { value: 'entrepreneurship', label: 'Предпринимательство', parentCategory: 'business' },
+  { value: 'drawing', label: 'Рисование и иллюстрация', parentCategory: 'art' },
+  { value: 'photography', label: 'Фотография', parentCategory: 'art' },
+  { value: 'video_editing', label: 'Видеомонтаж', parentCategory: 'art' },
+  { value: 'music', label: 'Музыка и звук', parentCategory: 'art' },
+  { value: 'acting', label: 'Актёрское мастерство', parentCategory: 'art' },
+  { value: 'creative_writing', label: 'Креативное письмо', parentCategory: 'art' },
+  { value: 'art_therapy', label: 'Арт-терапия', parentCategory: 'art' },
+  { value: 'diy', label: 'Декор и DIY', parentCategory: 'art' },
+  { value: 'english', label: 'Английский', parentCategory: 'languages' },
+  { value: 'french', label: 'Французский', parentCategory: 'languages' },
+  { value: 'spanish', label: 'Испанский', parentCategory: 'languages' },
+  { value: 'german', label: 'Немецкий', parentCategory: 'languages' },
+  { value: 'chinese', label: 'Китайский', parentCategory: 'languages' },
+  { value: 'japanese', label: 'Японский', parentCategory: 'languages' },
+  { value: 'exam_prep', label: 'Подготовка к экзаменам (IELTS, TOEFL)', parentCategory: 'languages' },
+  { value: 'personal_development', label: 'Личностное развитие', parentCategory: 'education' },
+  { value: 'learning_skills', label: 'Навыки обучения', parentCategory: 'education' },
+  { value: 'cognitive_techniques', label: 'Когнитивные техники', parentCategory: 'education' },
+  { value: 'speed_reading', label: 'Скорочтение', parentCategory: 'education' },
+  { value: 'teaching_skills', label: 'Навыки преподавания', parentCategory: 'education' },
+  { value: 'coaching', label: 'Коучинг', parentCategory: 'education' },
+  { value: 'cleaning', label: 'Уборка и организация', parentCategory: 'home' },
+  { value: 'home_finance', label: 'Домашние финансы', parentCategory: 'home' },
+  { value: 'cooking', label: 'Приготовление еды', parentCategory: 'home' },
+  { value: 'plants', label: 'Домашние растения', parentCategory: 'home' },
+  { value: 'repair', label: 'Ремонт', parentCategory: 'home' },
+  { value: 'storage', label: 'Хранение вещей', parentCategory: 'home' },
+  { value: 'yoga', label: 'Йога и медитация', parentCategory: 'health' },
+  { value: 'nutrition', label: 'Питание и ЗОЖ', parentCategory: 'health' },
+  { value: 'mental_health', label: 'Ментальное здоровье', parentCategory: 'health' },
+  { value: 'mindfulness', label: 'Осознанность', parentCategory: 'health' },
+  { value: 'fitness', label: 'Физические тренировки', parentCategory: 'health' },
+  { value: 'sleep', label: 'Сон и восстановление', parentCategory: 'health' },
+  { value: 'work_life_balance', label: 'Баланс жизни и работы', parentCategory: 'health' },
 ];
 
 const allCities = [
@@ -87,8 +80,7 @@ const allCities = [
 ];
 
 const HomePage: React.FC = () => {
-  const [allSkills, setAllSkills] = useState<Skill[]>([]);
-  const [filteredSkills, setFilteredSkills] = useState<Skill[]>([]);
+  const [allSkills, setAllSkills] = useState<TempSkill[]>([]);
   const [loading, setLoading] = useState(true);
 
   const [skillType, setSkillType] = useState('all');
@@ -96,11 +88,17 @@ const HomePage: React.FC = () => {
   const [selectedSubCategories, setSelectedSubCategories] = useState<string[]>([]);
   const [authorGender, setAuthorGender] = useState('any');
   const [selectedCities, setSelectedCities] = useState<string[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const [popularSkills, setPopularSkills] = useState<TempSkill[]>([]);
+  const [newSkills, setNewSkills] = useState<TempSkill[]>([]);
+  const [recommendedSkills, setRecommendedSkills] = useState<TempSkill[]>([]);
 
   useEffect(() => {
     const fetchSkills = async () => {
       try {
-        const data = await getMockDbState();
+        const response = await fetch('/db/skills.json');
+        const data = await response.json();
         setAllSkills(data.skills || []);
       } catch (error) {
         console.error('Ошибка загрузки навыков:', error);
@@ -117,86 +115,110 @@ const HomePage: React.FC = () => {
     if (skillType !== 'all') {
       filtered = filtered.filter((skill) => skill.type === skillType);
     }
-
     if (selectedCategories.length > 0) {
-      filtered = filtered.filter((skill) =>
-        selectedCategories.includes(skill.category)
-      );
+      filtered = filtered.filter((skill) => selectedCategories.includes(skill.category));
     }
-
     if (selectedSubCategories.length > 0) {
-      filtered = filtered.filter((skill) =>
-        selectedSubCategories.includes(skill.subCategory)
-      );
+      filtered = filtered.filter((skill) => selectedSubCategories.includes(skill.subCategory));
     }
-
     if (authorGender !== 'any') {
       filtered = filtered.filter((skill) => skill.authorGender === authorGender);
     }
-
     if (selectedCities.length > 0) {
-      filtered = filtered.filter((skill) =>
-        selectedCities.includes(skill.authorCity)
+      filtered = filtered.filter((skill) => selectedCities.includes(skill.authorCity));
+    }
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter(
+        (skill) =>
+          skill.title.toLowerCase().includes(query) ||
+          skill.description.toLowerCase().includes(query)
       );
     }
 
-    setFilteredSkills(filtered);
-  }, [allSkills, skillType, selectedCategories, selectedSubCategories, authorGender, selectedCities]);
+    setRecommendedSkills(filtered);
+  }, [allSkills, skillType, selectedCategories, selectedSubCategories, authorGender, selectedCities, searchQuery]);
+
+  useEffect(() => {
+    if (allSkills.length === 0) return;
+    setPopularSkills([...allSkills].sort((a, b) => b.likes - a.likes).slice(0, 3));
+    setNewSkills([...allSkills].sort((a, b) => b.id - a.id).slice(0, 3));
+  }, [allSkills]);
 
   const handleCategoryToggle = (categoryValue: string) => {
     setSelectedCategories((prev) =>
-      prev.includes(categoryValue)
-        ? prev.filter((c) => c !== categoryValue)
-        : [...prev, categoryValue]
+      prev.includes(categoryValue) ? prev.filter((c) => c !== categoryValue) : [...prev, categoryValue]
     );
   };
 
   const handleSubCategoryToggle = (subCategoryValue: string) => {
     setSelectedSubCategories((prev) =>
-      prev.includes(subCategoryValue)
-        ? prev.filter((c) => c !== subCategoryValue)
-        : [...prev, subCategoryValue]
+      prev.includes(subCategoryValue) ? prev.filter((c) => c !== subCategoryValue) : [...prev, subCategoryValue]
     );
   };
 
   const handleCityToggle = (city: string) => {
     setSelectedCities((prev) =>
-      prev.includes(city)
-        ? prev.filter((c) => c !== city)
-        : [...prev, city]
+      prev.includes(city) ? prev.filter((c) => c !== city) : [...prev, city]
     );
   };
 
-  const handleLike = (id: number) => {
-    setAllSkills((prev) =>
-      prev.map((skill) =>
-        skill.id === id ? { ...skill, likes: skill.likes + 1 } : skill
-      )
-    );
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
   };
 
-  const handleCardClick = (id: number) => {
-    console.log('Переход на страницу навыка:', id);
-  };
-
-  const TempCard = ({ skill }: { skill: Skill }) => (
-    <div className={styles.card} onClick={() => handleCardClick(skill.id)}>
+  const TempCard = ({ skill }: { skill: TempSkill }) => (
+    <div className={styles.card}>
       <h3>{skill.title}</h3>
       <p>{skill.description}</p>
       <div className={styles.cardFooter}>
         <span>{skill.author}, {skill.authorCity}</span>
-        <button onClick={() => handleLike(skill.id)}>❤️ {skill.likes}</button>
+        <span>❤️ {skill.likes}</span>
       </div>
     </div>
   );
 
+  const Section = ({ title, skills, showAll = false }: { title: string; skills: TempSkill[]; showAll?: boolean }) => (
+    <section className={styles.section}>
+      <div className={styles.sectionHeader}>
+        <h2 className={styles.sectionTitle}>{title}</h2>
+        {showAll && <button className={styles.showAllButton}>Смотреть все</button>}
+      </div>
+      <div className={styles.grid}>
+        {skills.slice(0, 3).map((skill) => (
+          <TempCard key={skill.id} skill={skill} />
+        ))}
+      </div>
+    </section>
+  );
+
+  if (loading) {
+    return (
+      <>
+        <Header onSearch={handleSearch} />
+        <main className={styles.main}>
+          <div className={styles.container}>
+            <p>Загрузка...</p>
+          </div>
+        </main>
+        <Footer />
+      </>
+    );
+  }
+
+  const hasFilters =
+    skillType !== 'all' ||
+    selectedCategories.length > 0 ||
+    selectedSubCategories.length > 0 ||
+    authorGender !== 'any' ||
+    selectedCities.length > 0 ||
+    searchQuery;
+
   return (
     <>
-      <Header />
+      <Header onSearch={handleSearch} />
       <main className={styles.main}>
         <div className={styles.container}>
-          <h1 className={styles.title}>Каталог навыков</h1>
-
           <div className={styles.twoColumns}>
             <FiltersSidebar
               skillType={skillType}
@@ -215,16 +237,20 @@ const HomePage: React.FC = () => {
             />
 
             <div className={styles.content}>
-              {loading ? (
-                <p>Загрузка...</p>
-              ) : (
+              {hasFilters ? (
                 <>
-                  <div className={styles.count}>Найдено: {filteredSkills.length}</div>
+                  <h2 className={styles.sectionTitle}>Подходящие предложения: {recommendedSkills.length}</h2>
                   <div className={styles.grid}>
-                    {filteredSkills.map((skill) => (
+                    {recommendedSkills.map((skill) => (
                       <TempCard key={skill.id} skill={skill} />
                     ))}
                   </div>
+                </>
+              ) : (
+                <>
+                  <Section title="Популярное" skills={popularSkills} showAll />
+                  <Section title="Новое" skills={newSkills} showAll />
+                  <Section title="Рекомендуем" skills={recommendedSkills.slice(0, 3)} />
                 </>
               )}
             </div>

@@ -10,15 +10,6 @@
   padding: 0 36px;
 }
 
-.title {
-  font-family: 'Jost', sans-serif;
-  font-weight: 600;
-  font-size: 32px;
-  line-height: 40px;
-  color: #253017;
-  margin-bottom: 32px;
-}
-
 .twoColumns {
   display: flex;
   gap: 32px;
@@ -29,16 +20,51 @@
   flex: 1;
 }
 
-.count {
+.section {
+  margin-bottom: 48px;
+}
+
+.section:last-child {
+  margin-bottom: 0;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.sectionTitle {
+  font-family: 'Jost', sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  color: #253017;
+  margin: 0;
+}
+
+.showAllButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
   font-family: 'Roboto', sans-serif;
-  font-size: 14px;
-  color: #69735D;
-  margin-bottom: 16px;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.02em;
+  color: #ABD27A;
+  cursor: pointer;
+  padding: 0;
+}
+
+.showAllButton:hover {
+  text-decoration: underline;
 }
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 24px;
 }
 
@@ -74,11 +100,4 @@
   align-items: center;
   font-size: 14px;
   color: #253017;
-}
-
-.cardFooter button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 14px;
 }
