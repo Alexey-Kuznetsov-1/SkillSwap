@@ -1,6 +1,11 @@
+/* Header */
 .header {
-  background: #F9FAF7;
+  display: flex;
+  justify-content: center;
   padding: 36px 0 20px;
+  background: #F9FAF7;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .headerContent {
@@ -9,10 +14,13 @@
   align-items: center;
   gap: 32px;
   max-width: 1440px;
+  width: 100%;
   margin: 0 auto;
   padding: 0 36px;
+  box-sizing: border-box;
 }
 
+/* Logo */
 .logo {
   display: flex;
   flex-direction: row;
@@ -39,6 +47,7 @@
   color: #253017;
 }
 
+/* Menu */
 .menu {
   display: flex;
   flex-direction: row;
@@ -57,28 +66,39 @@
   text-decoration: none;
 }
 
-.dropdown {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 4px;
-  cursor: pointer;
+/* Dropdown */
+.dropdownWrapper {
+  position: relative;
+  display: inline-block;
 }
 
-.dropdownText {
+.dropdownButton {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  cursor: pointer;
   font-family: 'Roboto', sans-serif;
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
   letter-spacing: 0.02em;
   color: #253017;
+  padding: 0;
 }
 
+.dropdownButton:hover {
+  color: #ABD27A;
+}
+
+/* Search wrapper */
 .searchWrapper {
   flex: 1;
   max-width: 648px;
 }
 
+/* Icon button */
 .iconButton {
   background: none;
   border: none;
@@ -91,6 +111,7 @@
   height: 24px;
 }
 
+/* Actions */
 .actions {
   display: flex;
   flex-direction: row;
