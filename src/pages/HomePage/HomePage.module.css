@@ -1,0 +1,84 @@
+.main {
+  background: #F9FAF7;
+  min-height: calc(100vh - 104px - 232px);
+  padding: 40px 0;
+}
+
+.container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 36px;
+}
+
+.title {
+  font-family: 'Jost', sans-serif;
+  font-weight: 600;
+  font-size: 32px;
+  line-height: 40px;
+  color: #253017;
+  margin-bottom: 32px;
+}
+
+.twoColumns {
+  display: flex;
+  gap: 32px;
+  align-items: flex-start;
+}
+
+.content {
+  flex: 1;
+}
+
+.count {
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  color: #69735D;
+  margin-bottom: 16px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.card {
+  background: #FFFFFF;
+  border-radius: 16px;
+  padding: 20px;
+  cursor: pointer;
+  transition: box-shadow 0.2s;
+  border: 1px solid #E5E7EB;
+}
+
+.card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.card h3 {
+  font-family: 'Jost', sans-serif;
+  font-size: 18px;
+  margin: 0 0 12px 0;
+}
+
+.card p {
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  color: #69735D;
+  margin: 0 0 16px 0;
+}
+
+.cardFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  color: #253017;
+}
+
+.cardFooter button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+}
