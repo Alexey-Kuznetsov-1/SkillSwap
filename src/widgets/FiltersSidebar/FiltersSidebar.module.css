@@ -1,0 +1,127 @@
+.sidebar {
+  width: 280px;
+  background: #FFFFFF;
+  border-radius: 16px;
+  padding: 24px;
+  border: 1px solid #E5E7EB;
+  height: fit-content;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.sectionTitle {
+  font-family: 'Jost', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: #253017;
+  margin: 0;
+  text-align: left;
+}
+
+.filterGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.filterLabel {
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #253017;
+  text-align: left;
+  margin: 0;
+}
+
+/* Все чекбоксы — строго по левому краю */
+.checkboxGroup,
+.categoriesContainer,
+.categoryItem,
+.subCategoryList,
+.allCategoriesMenu {
+  text-align: left;
+}
+
+.checkboxGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.checkboxGroup label,
+.categoryItem label,
+.subCategoryList label {
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  color: #253017;
+  text-align: left !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: inline-flex !important;
+  align-items: center;
+  gap: 8px;
+  justify-content: flex-start;
+}
+
+.subCategoryList label {
+  font-size: 13px;
+  color: #69735D;
+}
+
+.categoriesContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.categoryItem {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.subCategoryList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-left: 24px;
+  border-left: 2px solid #E5E7EB;
+  margin-left: 8px;
+  align-items: flex-start;
+}
+
+.allCategoriesMenu {
+  margin-top: 8px;
+  padding: 12px;
+  background: #F9FAF7;
+  border-radius: 8px;
+}
+
+.emptyMessage {
+  font-family: 'Roboto', sans-serif;
+  font-size: 13px;
+  color: #69735D;
+  margin: 0;
+  text-align: left;
+}
+
+.showMoreButton {
+  background: none;
+  border: none;
+  color: #ABD27A;
+  cursor: pointer;
+  font-size: 14px;
+  text-align: left;
+  padding: 8px 0;
+  font-family: 'Roboto', sans-serif;
+  width: fit-content;
+}
+
+.showMoreButton:hover {
+  text-decoration: underline;
+}
