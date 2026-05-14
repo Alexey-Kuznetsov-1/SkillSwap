@@ -13,15 +13,14 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/skill/:id" element={<SkillPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/create" element={<CreatePage />} />
-        <Route path="/favorites" element={<FavoritesPage />} />
-        <Route path="/example" element={<ExamplePage />} />
-        <Route path="/profile" element={<ProfilePage />} />
-        <Route path="*" element={<NotFoundPage />} />
+        <Route path='/' element={<HomePage />} />
+        <Route path='/skill/:id' element={<SkillPage />} />
+        <Route path='/login' element={<LoginPage />} />
+        <Route path='/register' element={<RegisterPage />} />
+        <Route path='/create' element={<CreatePage />} />
+        <Route path='/favorites' element={<FavoritesPage />} />
+        <Route path='/example' element={<ExamplePage />} />
+        <Route path='*' element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>
   );

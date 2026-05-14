@@ -8,6 +8,9 @@ import { Checkbox } from '@/shared/ui/Checkbox/Checkbox';
 import { Avatar } from '@/shared/ui/Avatar/Avatar';
 import { RadioGroup } from '@/shared/ui/RadioGroup/RadioGroup';
 import { Tag } from '@/shared/ui/Tag/Tag';
+// import { ModalUI } from '@/shared/ui/Modal/Modal';
+// import { Icon } from '@/shared/ui/Icon';
+// import { Button } from '@/stories/Button';
 
 const ExamplePage: React.FC = () => {
   const [count, setCount] = useState(0);
@@ -40,7 +43,13 @@ const ExamplePage: React.FC = () => {
       <Header isLoggedIn={false} />
       <main style={{ padding: '20px' }}>
         <div className='hero'>
-          <img src={viteLogo} className='base' width='170' height='179' alt='' />
+          <img
+            src={viteLogo}
+            className='base'
+            width='170'
+            height='179'
+            alt=''
+          />
           <img src={reactLogo} className='framework' alt='React logo' />
           <img src={viteLogo} className='vite' alt='Vite logo' />
         </div>
@@ -54,7 +63,11 @@ const ExamplePage: React.FC = () => {
             placeholder='Коротко опишите, чему можете научить'
             rows={4}
             maxLength={1000}
-            error={skillDescription.length > 800 ? 'Осталось мало символов!' : undefined}
+            error={
+              skillDescription.length > 800
+                ? 'Осталось мало символов!'
+                : undefined
+            }
           />
         </div>
         <div>
@@ -81,16 +94,22 @@ const ExamplePage: React.FC = () => {
         >
           Смартфоны
         </Checkbox>
-        <button
-          type='button'
-          onClick={() => setCount((count) => count + 1)}
-        >
+        <button type='button' onClick={() => setCount((count) => count + 1)}>
           Count is {count}
         </button>
         <Avatar src='https://i.pinimg.com/236x/ce/f2/ad/cef2ad42d058f72fa1de0ced9c7d3ead.jpg?nii=t' />
         <Avatar name='Денис Терёхин' />
         <Tag>+1</Tag>
         <Tag>Навык</Tag>
+
+        {/* Пример модалки  */}
+        {/* <ModalUI
+          onClose={() => console.log('Modal close attempted')}
+          icon={<Icon name='done' size='75'></Icon>}
+          title='Вы предложили обмен'
+          subtitle='Теперь выможете предложить обмен'
+          children={<Button label='Готово'></Button>}
+        ></ModalUI> */}
       </main>
     </>
   );
