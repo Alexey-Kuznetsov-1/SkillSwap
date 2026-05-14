@@ -1,0 +1,21 @@
+.main {
+  background: #F9FAF7;
+  min-height: calc(100vh - 104px - 232px);
+  padding: 40px 0;
+}
+
+.container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 36px;
+}
+
+.twoColumns {
+  display: flex;
+  gap: 32px;
+  align-items: flex-start;
+}
+
+.content {
+  flex: 1;
+}
