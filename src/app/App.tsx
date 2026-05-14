@@ -7,6 +7,7 @@ import CreatePage from '@/pages/CreatePage';
 import FavoritesPage from '@/pages/FavoritesPage';
 import ExamplePage from '@/pages/ExamplePage';
 import NotFoundPage from '@/pages/NotFoundPage/NotFoundPage';
+import ProfilePage from '@/pages/ProfilePage/ProfilePage';
 
 function App() {
   return (
