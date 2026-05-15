@@ -1,0 +1,41 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.label {
+  font-family: var(--font-text);
+  font-size: var(--font-size-text);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--font-line-height-text);
+  color: var(--color-text-main);
+  text-align: left;
+}
+
+.required .asterisk {
+  margin-left: 4px;
+  color: var(--color-error);
+}
+
+.control {
+  width: 100%;
+}
+
+.controlError :is(input, textarea, select) {
+  border-color: var(--color-error);
+}
+
+.controlError :is(input, textarea, select):focus {
+  border-color: var(--color-error);
+  box-shadow: 0 0 0 3px rgba(191, 57, 32, 0.1);
+}
+
+.errorMessage {
+  font-family: var(--font-text);
+  font-size: var(--font-size-caption);
+  line-height: var(--font-line-height-caption);
+  color: var(--color-error);
+  text-align: left;
+}
