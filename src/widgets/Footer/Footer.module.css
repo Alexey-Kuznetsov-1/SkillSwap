@@ -12,13 +12,6 @@
   gap: 60px;
 }
 
-.topRow {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: flex-start;
-}
-
 .logo {
   display: flex;
   flex-direction: row;
@@ -46,14 +39,15 @@
 .linksContainer {
   display: flex;
   flex-direction: row;
-  gap: 24px;
+  justify-content: flex-end;
+  gap: 16px;
 }
 
 .column {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  width: 324px;
+  width: 280px;
 }
 
 .link {
@@ -64,6 +58,7 @@
   letter-spacing: 0.02em;
   color: #253017;
   text-decoration: none;
+  text-align: left;
 }
 
 .link:hover {
@@ -77,4 +72,5 @@
   line-height: 16px;
   letter-spacing: 0.02em;
   color: #69735D;
+  text-align: left;
 }

@@ -96,6 +96,15 @@
 .searchWrapper {
   flex: 1;
   max-width: 648px;
+  background: #FFFFFF;
+  border-radius: 12px;
+}
+
+/* Icons group */
+.iconsGroup {
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }
 
 /* Icon button */
@@ -109,6 +118,7 @@
   justify-content: center;
   width: 24px;
   height: 24px;
+  flex-shrink: 0;
 }
 
 /* Actions */
@@ -116,7 +126,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 8px;
+  gap: 20px;
 }
 
 .userInfo {
@@ -132,5 +142,19 @@
   font-size: 16px;
   line-height: 24px;
   letter-spacing: 0.02em;
+  color: #253017;
+}
+
+.avatarPlaceholder {
+  width: 40px;
+  height: 40px;
+  background: #ABD27A;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Roboto', sans-serif;
+  font-size: 18px;
+  font-weight: 500;
   color: #253017;
 }

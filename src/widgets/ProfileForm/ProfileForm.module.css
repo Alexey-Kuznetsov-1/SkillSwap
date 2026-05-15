@@ -21,11 +21,18 @@
   align-items: center;
 }
 
-.avatar {
+.largeAvatar {
   width: 160px;
   height: 160px;
+  background: #ABD27A;
   border-radius: 50%;
-  object-fit: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Roboto', sans-serif;
+  font-size: 64px;
+  font-weight: 500;
+  color: #253017;
 }
 
 .field {

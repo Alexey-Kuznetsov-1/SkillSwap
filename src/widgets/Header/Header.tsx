@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from '@/shared/ui/Button/Button';
 import { Icon } from '@/shared/ui/Icon/Icon';
-import { Avatar } from '@/shared/ui/Avatar/Avatar';
 import { SearchInput } from '@/shared/ui/SearchInput/SearchInput';
 import CategoriesDropdown from './components/CategoriesDropdown';
 import styles from './Header.module.css';
@@ -174,24 +173,29 @@ const Header: React.FC<HeaderProps> = ({
           className={styles.searchWrapper}
         />
 
-        <button className={styles.iconButton}>
-          <Icon name="moon" size={20} />
-        </button>
-
         <div className={styles.actions}>
+          <div className={styles.iconsGroup}>
+            <button className={styles.iconButton}>
+              <Icon name="moon" size={20} />
+            </button>
+            {isLoggedIn && (
+              <>
+                <button className={styles.iconButton}>
+                  <Icon name="notification" size={24} />
+                </button>
+                <button className={styles.iconButton}>
+                  <Icon name="like" size={24} />
+                </button>
+              </>
+            )}
+          </div>
           {isLoggedIn ? (
-            <>
-              <button className={styles.iconButton}>
-                <Icon name="notification" size={24} />
-              </button>
-              <button className={styles.iconButton}>
-                <Icon name="like" size={24} />
-              </button>
-              <div className={styles.userInfo}>
-                <span className={styles.userName}>{userName}</span>
-                <Avatar src={avatarSrc} name={userName} />
+            <div className={styles.userInfo}>
+              <span className={styles.userName}>{userName}</span>
+              <div className={styles.avatarPlaceholder}>
+                {userName ? userName[0] : 'U'}
               </div>
-            </>
+            </div>
           ) : (
             <>
               <Button variant="secondary">Войти</Button>
