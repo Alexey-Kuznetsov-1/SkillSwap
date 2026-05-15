@@ -1,0 +1,71 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999;
+}
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #FFFFFF;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  padding: 24px;
+  z-index: 1000;
+  min-width: 600px;
+  margin-top: 8px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.categoryButton {
+  font-family: 'Jost', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  color: #253017;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  padding: 0;
+  margin-bottom: 4px;
+}
+
+.categoryButton:hover {
+  color: #ABD27A;
+}
+
+.subCategories {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.subCategoryButton {
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  color: #69735D;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  padding: 0;
+}
+
+.subCategoryButton:hover {
+  color: #ABD27A;
+}
