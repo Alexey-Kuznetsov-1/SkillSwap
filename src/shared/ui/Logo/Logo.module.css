@@ -1,0 +1,21 @@
+/* src/shared/ui/Logo/Logo.module.css */
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.logoIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logoText {
+  font-family: var(--font-heading);
+  font-size: 24px;
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-main);
+}

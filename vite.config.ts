@@ -5,6 +5,7 @@ import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import { storybookTest } from '@storybook/addon-vitest/vitest-plugin';
 import { playwright } from '@vitest/browser-playwright';
+
 const dirname =
   typeof __dirname !== 'undefined'
     ? __dirname
@@ -21,13 +22,19 @@ export default defineConfig({
       '@': path.resolve(rootDir, 'src'),
     },
   },
+  css: {
+    modules: {
+      // Эта настройка позволяет использовать kebab-case в CSS и обращаться к ним как есть
+      localsConvention: 'dashesOnly',
+      // Также можно добавить для консистентности
+      generateScopedName: '[name]__[local]___[hash:base64:5]',
+    },
+  },
   test: {
     projects: [
       {
         extends: true,
         plugins: [
-          // The plugin will run tests for the stories defined in your Storybook config
-          // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
           storybookTest({
             configDir: path.join(dirname, '.storybook'),
           }),
