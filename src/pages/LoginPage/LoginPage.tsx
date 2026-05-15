@@ -6,6 +6,7 @@ import * as yup from 'yup';
 import { Link, useNavigate } from 'react-router-dom';
 import { LoginHeader } from '@/widgets/LoginHeader/LoginHeader';
 import { Icon } from '@/shared/ui/Icon/Icon';
+import { Input } from '@/shared/ui/Input/Input';
 import styles from './LoginPage.module.css';
 
 interface LoginFormValues {
@@ -34,10 +35,15 @@ export const LoginPage = () => {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
+    watch,
   } = useForm<LoginFormValues>({
     resolver: yupResolver(loginSchema),
     mode: 'onBlur',
   });
+
+  const emailValue = watch('email', '');
+  const passwordValue = watch('password', '');
 
   const onSubmit = async (data: LoginFormValues) => {
     setAuthError(null);
@@ -78,7 +84,6 @@ export const LoginPage = () => {
     <div className={styles.page}>
       <LoginHeader onClose={handleClose} />
       
-      {/* Заголовок страницы между хедером и основным блоком */}
       <div className={styles.pageTitle}>
         <h1>Вход</h1>
       </div>
@@ -120,44 +125,52 @@ export const LoginPage = () => {
             </div>
 
             <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+              {/* Поле Email */}
               <div className={styles.field}>
                 <label htmlFor="email" className={styles.label}>
                   Email
+                  <span className={styles.requiredStar}>*</span>
                 </label>
-                <input
+                <Input
                   id="email"
                   type="email"
+                  value={emailValue}
+                  onChange={(value) => setValue('email', value, { shouldValidate: true })}
                   placeholder="Введите email"
-                  className={`${styles.input} ${errors.email ? styles.inputError : ''}`}
-                  {...register('email')}
-                  autoComplete="email"
+                  error={!!errors.email}
+                  size="md"
                 />
                 {errors.email && (
                   <span className={styles.fieldError}>{errors.email.message}</span>
                 )}
               </div>
 
+              {/* Поле Пароль */}
               <div className={styles.field}>
                 <label htmlFor="password" className={styles.label}>
                   Пароль
+                  <span className={styles.requiredStar}>*</span>
                 </label>
                 <div className={styles.passwordWrapper}>
-                  <input
+                  <Input
                     id="password"
                     type={showPassword ? 'text' : 'password'}
+                    value={passwordValue}
+                    onChange={(value) => setValue('password', value, { shouldValidate: true })}
                     placeholder="Введите ваш пароль"
-                    className={`${styles.input} ${styles.passwordInput} ${errors.password ? styles.inputError : ''}`}
-                    {...register('password')}
-                    autoComplete="current-password"
+                    error={!!errors.password}
+                    size="md"
+                    rightIcon={
+                      <button
+                        type="button"
+                        className={styles.eyeButton}
+                        onClick={togglePasswordVisibility}
+                        tabIndex={-1}
+                      >
+                        <Icon name={showPassword ? 'eye' : 'eye-slash'} size={20} />
+                      </button>
+                    }
                   />
-                  <button
-                    type="button"
-                    className={styles.eyeButton}
-                    onClick={togglePasswordVisibility}
-                    tabIndex={-1}
-                  >
-                    <Icon name={showPassword ? 'eye' : 'eye-slash'} size={20} />
-                  </button>
                 </div>
                 {errors.password && (
                   <span className={styles.fieldError}>{errors.password.message}</span>
@@ -165,10 +178,10 @@ export const LoginPage = () => {
               </div>
 
               {authError && (
-  <div className={styles.authError}>
-    <p className={styles.authErrorText}>{authError}</p>
-  </div>
-)}
+                <div className={styles.authError}>
+                  <p className={styles.authErrorText}>{authError}</p>
+                </div>
+              )}
 
               <button
                 type="submit"
