@@ -1,0 +1,64 @@
+/* src/widgets/LoginHeader/LoginHeader.module.css */
+
+.header {
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-accent-pale);
+  padding: 16px 0;
+  flex-shrink: 0;
+  width: 100%;
+}
+
+.container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 36px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.closeButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 147px;
+  height: 48px;
+  padding: 12px 24px;
+  background: var(--color-main);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: var(--font-text);
+  font-size: var(--font-size-text);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--font-line-height-text);
+  color: var(--color-text-main);
+}
+
+.closeButton:hover {
+  background: var(--color-bg);
+}
+
+.closeButton:active {
+  background: var(--color-accent-pale);
+}
+
+.closeIcon {
+  font-size: 18px;
+  display: inline-flex;
+  align-items: center;
+  color: var(--color-caption);
+}
+
+.closeText {
+  display: inline-flex;
+  align-items: center;
+}
+
+.closeButton:hover .closeIcon {
+  color: var(--color-accent-main);
+}

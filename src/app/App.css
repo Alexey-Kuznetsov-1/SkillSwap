@@ -2,14 +2,16 @@
 @import './styles/fonts.css';
 @import './styles/typography.css';
 
-/* Пример подключения шрифтов в стили: 
+/* Пример подключения шрифтов в стили: */
 body {
   font-family: var(--font-text), sans-serif;
   color: var(--color-text-main);
   background-color: var(--color-bg);
   margin: 0;
   padding: 0;
-} */
+} 
+
+
 
 /* Стили Vite */
 .counter {

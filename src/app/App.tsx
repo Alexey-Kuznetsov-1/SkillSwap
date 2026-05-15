@@ -1,7 +1,8 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import './App.css';  // ← ДОБАВИТЬ ЭТУ СТРОКУ
 import HomePage from '@/pages/HomePage';
 import SkillPage from '@/pages/SkillPage';
-import LoginPage from '@/pages/LoginPage';
+import { LoginPage } from '@/pages/LoginPage/LoginPage';
 import RegisterPage from '@/pages/RegisterPage';
 import CreatePage from '@/pages/CreatePage';
 import FavoritesPage from '@/pages/FavoritesPage';
