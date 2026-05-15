@@ -8,6 +8,7 @@ import { Checkbox } from '@/shared/ui/Checkbox/Checkbox';
 import { Avatar } from '@/shared/ui/Avatar/Avatar';
 import { RadioGroup } from '@/shared/ui/RadioGroup/RadioGroup';
 import { Tag } from '@/shared/ui/Tag/Tag';
+import Calendar from '../widgets/Calendar';
 // import { ModalUI } from '@/shared/ui/Modal/Modal';
 // import { Icon } from '@/shared/ui/Icon';
 // import { Button } from '@/stories/Button';
@@ -42,6 +43,7 @@ const ExamplePage: React.FC = () => {
     <>
       <Header isLoggedIn={false} />
       <main style={{ padding: '20px' }}>
+        <Calendar />
         <div className='hero'>
           <img
             src={viteLogo}
