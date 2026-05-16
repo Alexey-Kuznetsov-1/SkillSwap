@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Button } from '@/shared/ui/Button/Button';
 import { Select } from '@/shared/ui/Select/Select';
 import { Textarea } from '@/shared/ui/Textarea/Textarea';
-import { Avatar } from '@/shared/ui/Avatar/Avatar';
 import styles from './ProfileForm.module.css';
 
 interface ProfileFormProps {
@@ -133,11 +132,9 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
         </div>
 
         <div className={styles.avatarSection}>
-          <Avatar
-            src={formData.avatarSrc}
-            name={formData.name}
-            className={styles.avatar}
-          />
+          <div className={styles.largeAvatar}>
+            {formData.name ? formData.name[0] : 'U'}
+          </div>
         </div>
       </div>
     </div>

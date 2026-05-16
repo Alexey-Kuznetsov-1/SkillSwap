@@ -9,9 +9,6 @@ interface FiltersSidebarProps {
   categories: { value: string; label: string }[];
   selectedCategories: string[];
   onCategoryToggle: (categoryValue: string) => void;
-  subCategories: { value: string; label: string; parentCategory: string }[];
-  selectedSubCategories: string[];
-  onSubCategoryToggle: (subCategoryValue: string) => void;
   authorGender: string;
   onAuthorGenderChange: (value: string) => void;
   cities: string[];
@@ -39,9 +36,6 @@ const FiltersSidebar: React.FC<FiltersSidebarProps> = ({
   categories,
   selectedCategories,
   onCategoryToggle,
-  subCategories,
-  selectedSubCategories,
-  onSubCategoryToggle,
   authorGender,
   onAuthorGenderChange,
   cities,
@@ -49,7 +43,6 @@ const FiltersSidebar: React.FC<FiltersSidebarProps> = ({
   onCityToggle,
 }) => {
   const [showAllCities, setShowAllCities] = useState(false);
-  const [showAllCategoriesMenu, setShowAllCategoriesMenu] = useState(false);
 
   const visibleCities = showAllCities ? cities : cities.slice(0, VISIBLE_CITIES_COUNT);
   const hasMoreCities = cities.length > VISIBLE_CITIES_COUNT;
@@ -59,77 +52,49 @@ const FiltersSidebar: React.FC<FiltersSidebarProps> = ({
       <div className={styles.section}>
         <h3 className={styles.sectionTitle}>Фильтры</h3>
 
+        {/* Тип навыка */}
         <div className={styles.filterGroup}>
-          <RadioGroup
-            name="skillType"
-            options={typeOptions}
-            value={skillType}
-            onChange={onSkillTypeChange}
-          />
+          <div className={styles.radioGroupVertical}>
+            <RadioGroup
+              name="skillType"
+              options={typeOptions}
+              value={skillType}
+              onChange={onSkillTypeChange}
+            />
+          </div>
         </div>
 
+        {/* Навыки (категории) */}
         <div className={styles.filterGroup}>
           <label className={styles.filterLabel}>Навыки</label>
-          <div className={styles.categoriesContainer}>
-            {categories.map((category) => {
-              const isSelected = selectedCategories.includes(category.value);
-              const relatedSubs = subCategories.filter(
-                (sub) => sub.parentCategory === category.value
-              );
-
-              return (
-                <div key={category.value} className={styles.categoryItem}>
-                  <Checkbox
-                    checked={isSelected}
-                    onChange={() => onCategoryToggle(category.value)}
-                    type="category"
-                    name={`category-${category.value}`}
-                  >
-                    {category.label}
-                  </Checkbox>
-                  {isSelected && relatedSubs.length > 0 && (
-                    <div className={styles.subCategoryList}>
-                      {relatedSubs.map((sub) => (
-                        <Checkbox
-                          key={sub.value}
-                          checked={selectedSubCategories.includes(sub.value)}
-                          onChange={() => onSubCategoryToggle(sub.value)}
-                          type="subcategory"
-                          name={`subcategory-${sub.value}`}
-                        >
-                          {sub.label}
-                        </Checkbox>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
+          <div className={styles.checkboxGroup}>
+            {categories.map((category) => (
+              <Checkbox
+                key={category.value}
+                checked={selectedCategories.includes(category.value)}
+                onChange={() => onCategoryToggle(category.value)}
+                name={`category-${category.value}`}
+              >
+                {category.label}
+              </Checkbox>
+            ))}
           </div>
-
-          <button
-            className={styles.showMoreButton}
-            onClick={() => setShowAllCategoriesMenu(!showAllCategoriesMenu)}
-          >
-            Все категории {showAllCategoriesMenu ? '▼' : '▶'}
-          </button>
-          {showAllCategoriesMenu && (
-            <div className={styles.allCategoriesMenu}>
-              <p className={styles.emptyMessage}>Нет дополнительных категорий</p>
-            </div>
-          )}
         </div>
 
+        {/* Пол автора */}
         <div className={styles.filterGroup}>
           <label className={styles.filterLabel}>Пол автора</label>
-          <RadioGroup
-            name="authorGender"
-            options={genderOptions}
-            value={authorGender}
-            onChange={onAuthorGenderChange}
-          />
+          <div className={styles.radioGroupVertical}>
+            <RadioGroup
+              name="authorGender"
+              options={genderOptions}
+              value={authorGender}
+              onChange={onAuthorGenderChange}
+            />
+          </div>
         </div>
 
+        {/* Город */}
         <div className={styles.filterGroup}>
           <label className={styles.filterLabel}>Город</label>
           <div className={styles.checkboxGroup}>
@@ -138,19 +103,18 @@ const FiltersSidebar: React.FC<FiltersSidebarProps> = ({
                 key={city}
                 checked={selectedCities.includes(city)}
                 onChange={() => onCityToggle(city)}
-                type="city"
                 name={`city-${city}`}
               >
                 {city}
               </Checkbox>
             ))}
           </div>
-          {hasMoreCities && !showAllCities && (
+          {hasMoreCities && (
             <button
               className={styles.showMoreButton}
-              onClick={() => setShowAllCities(true)}
+              onClick={() => setShowAllCities(!showAllCities)}
             >
-              Показать все
+              {showAllCities ? 'Скрыть города' : 'Показать все'}
             </button>
           )}
         </div>
