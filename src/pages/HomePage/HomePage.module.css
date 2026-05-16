@@ -115,3 +115,16 @@
   font-family: 'Roboto', sans-serif;
   color: #69735D;
 }
+
+.favoriteButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 0;
+  transition: transform 0.2s;
+}
+
+.favoriteButton:hover {
+  transform: scale(1.1);
+}
