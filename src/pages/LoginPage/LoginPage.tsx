@@ -6,6 +6,7 @@ import * as yup from 'yup';
 import { Link, useNavigate } from 'react-router-dom';
 import { LoginHeader } from '@/widgets/LoginHeader/LoginHeader';
 import { Icon } from '@/shared/ui/Icon/Icon';
+import { FormField } from '@/shared/ui/FormField/FormField';
 import styles from './LoginPage.module.css';
 
 interface LoginFormValues {
@@ -78,7 +79,6 @@ export const LoginPage = () => {
     <div className={styles.page}>
       <LoginHeader onClose={handleClose} />
       
-      {/* Заголовок страницы между хедером и основным блоком */}
       <div className={styles.pageTitle}>
         <h1>Вход</h1>
       </div>
@@ -120,10 +120,12 @@ export const LoginPage = () => {
             </div>
 
             <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
-              <div className={styles.field}>
-                <label htmlFor="email" className={styles.label}>
-                  Email
-                </label>
+              <FormField 
+                label="Email" 
+                error={errors.email?.message} 
+                required 
+                htmlFor="email"
+              >
                 <input
                   id="email"
                   type="email"
@@ -132,15 +134,14 @@ export const LoginPage = () => {
                   {...register('email')}
                   autoComplete="email"
                 />
-                {errors.email && (
-                  <span className={styles.fieldError}>{errors.email.message}</span>
-                )}
-              </div>
+              </FormField>
 
-              <div className={styles.field}>
-                <label htmlFor="password" className={styles.label}>
-                  Пароль
-                </label>
+              <FormField 
+                label="Пароль" 
+                error={errors.password?.message} 
+                required 
+                htmlFor="password"
+              >
                 <div className={styles.passwordWrapper}>
                   <input
                     id="password"
@@ -159,16 +160,13 @@ export const LoginPage = () => {
                     <Icon name={showPassword ? 'eye' : 'eye-slash'} size={20} />
                   </button>
                 </div>
-                {errors.password && (
-                  <span className={styles.fieldError}>{errors.password.message}</span>
-                )}
-              </div>
+              </FormField>
 
               {authError && (
-  <div className={styles.authError}>
-    <p className={styles.authErrorText}>{authError}</p>
-  </div>
-)}
+                <div className={styles.authError}>
+                  <p className={styles.authErrorText}>{authError}</p>
+                </div>
+              )}
 
               <button
                 type="submit"
