@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef, useCallback } from 'react';
 import Header from '@/widgets/Header';
 import Footer from '@/widgets/Footer';
 import FiltersSidebar from '@/widgets/FiltersSidebar';
+import { useFavorites } from '@/shared/hooks/useFavorites';
 import styles from './HomePage.module.css';
 
 interface TempSkill {
@@ -102,6 +103,8 @@ const HomePage: React.FC = () => {
 
   const observerRef = useRef<IntersectionObserver | null>(null);
   const lastCardRef = useRef<HTMLDivElement | null>(null);
+
+  const { isFavorite, toggleFavorite } = useFavorites();
 
   const hasFilters =
     skillType !== 'all' ||
@@ -224,7 +227,15 @@ const HomePage: React.FC = () => {
       <p>{skill.description}</p>
       <div className={styles.cardFooter}>
         <span>{skill.author}, {skill.authorCity}</span>
-        <span>❤️ {skill.likes}</span>
+        <button
+          className={styles.favoriteButton}
+          onClick={(e) => {
+            e.stopPropagation();
+            toggleFavorite(skill.id);
+          }}
+        >
+          {isFavorite(skill.id) ? '❤️' : '🤍'}
+        </button>
       </div>
     </div>
   );
