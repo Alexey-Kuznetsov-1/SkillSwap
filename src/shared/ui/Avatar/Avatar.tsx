@@ -8,11 +8,12 @@ export interface AvatarProps {
   src?: string;
   name?: string;
   className?: string;
+  size?:number;
 };
 
 // Компонент круглого изображения аватарки пользоваьтеля
 export function Avatar(props:AvatarProps) {
-  const { src, name, className } = props;
+  const { src, name, className, size=48 } = props;
 
   // Шаг 1: определяем базовый класс в зависимости от src
   const baseClass = src ? avatarImageClass : avatarNoImageClass;
@@ -29,6 +30,12 @@ export function Avatar(props:AvatarProps) {
       .map(word => word.charAt(0).toUpperCase()) // берём первую букву и делаем заглавной
       .join('');  // объединяем в строку
   };
+    // Стили инлайна для динамического размера
+  const avatarStyle: React.CSSProperties = {
+    width: size,
+    height: size,
+    fontSize: `${size * 0.5}px`, // Базовый размер шрифта = 50 % от размера аватара
+  };
 
   // Если src есть — показываем изображение
   if (src) {
@@ -36,6 +43,7 @@ export function Avatar(props:AvatarProps) {
       <img
       src={src} //url изображения
       className={finalClassName} // класс стиля
+      style={avatarStyle}
       alt={`Аватар пользователя ${name || 'неизвестный'}`} // описание изображения
       />
     ); 
@@ -45,6 +53,7 @@ export function Avatar(props:AvatarProps) {
   return (
     <div
       className={finalClassName}
+      style={avatarStyle}
     >
       {name ? getInitial(name) : '?' }
     </div>
