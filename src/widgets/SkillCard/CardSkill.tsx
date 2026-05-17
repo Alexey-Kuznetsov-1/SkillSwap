@@ -1,3 +1,4 @@
+// CardSkill.tsx
 import styles from './CardSkill.module.css';
 import { Avatar } from '@/shared/ui/Avatar/Avatar';
 import Tag from '@/shared/ui/Tag/Tag';
@@ -9,12 +10,11 @@ import type {
   Category
 } from '@/api';
 import { LikeButton } from '@/shared/ui/LikeButton/LikeButton';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import type { SkillLike, User } from '@/api';
 
-        //Константы стилей
-const cardContainer = styles['card-container']; //стили корневого контейнера
+const cardContainer = styles['card-container'];
 const userInfoContainer = styles['user-info-container'];
 const userContainer = styles['user-container'];
 const textContainer = styles['text-container'];
@@ -24,7 +24,6 @@ const tagsContainer = styles['tags-container'];
 const childrenTagsContainer = styles['children-tags-container'];
 const titleTags = styles['title-tags'];
 
-//интерфейс пропсов карточки скила пользователя
 export interface PropsSkillCard {
     variant?: 'default' | 'description';
     idSkill: number;
@@ -42,12 +41,11 @@ export interface PropsSkillCard {
     initialLiked: boolean;
     likes?: number;
     className?:string
-    isAuthenticated?: boolean; // Новое поле: состояние авторизации
-    skills?: SkillCard[]; // Массив скиллов пользователя 'teach' | 'learn'
+    isAuthenticated?: boolean;
+    skills?: SkillCard[];
     userAuthenticated?: User;
   };
 
-//Компонент CardSkill
 export const CardSkill: React.FC<PropsSkillCard> = ({
   idSkill,
   skillName,
@@ -61,9 +59,9 @@ export const CardSkill: React.FC<PropsSkillCard> = ({
   authorAge,
   authorAvatar,
   initialLiked = false,
-  isAuthenticated = false, // По умолчанию — не авторизован
-  skills = [], // По умолчанию — пустой массив
-  variant = 'default', // По умолчанию — стандартный вариант
+  isAuthenticated = false,
+  skills = [],
+  variant = 'default',
   descriptionUser,
   userAuthenticated,
   ...restProps
@@ -71,28 +69,28 @@ export const CardSkill: React.FC<PropsSkillCard> = ({
     const navigate = useNavigate();
     const [isLiked, setIsLiked] = useState(initialLiked);
 
-    /*Функционал работы кнопки лайк */
+    useEffect(() => {
+        setIsLiked(initialLiked);
+    }, [initialLiked]);
+
     const handleLikeChange = async (liked: boolean) => {
       if (!isAuthenticated) {
         navigate('/register');
         return;
       }
 
-      // Проверяем, что userAuthenticated передан и содержит ID
       if (!userAuthenticated || !userAuthenticated.id) {
         console.error('Данные авторизованного пользователя отсутствуют или ID не указан');
         return;
       }
 
       try {
-        // Формируем объект SkillLike
         const likeData: SkillLike = {
-          id: Date.now(), // Временный ID (можно заменить на UUID)
-          skillId: idSkill, // ID навыка из пропсов
-          userId: userAuthenticated.id // ID пользователя из userAuthenticated
+          id: Date.now(),
+          skillId: idSkill,
+          userId: userAuthenticated.id
         };
 
-        // Получаем текущие лайки из localStorage
         const existingLikesJSON = localStorage.getItem('skillLikes');
         let existingLikes: SkillLike[] = [];
 
@@ -105,8 +103,6 @@ export const CardSkill: React.FC<PropsSkillCard> = ({
           }
         }
 
-        // Если лайк ставится (liked === true), добавляем запись
-        // Если снимается (liked === false), удаляем запись с таким skillId и userId
         let updatedLikes: SkillLike[];
         if (liked) {
           updatedLikes = [...existingLikes, likeData];
@@ -116,25 +112,21 @@ export const CardSkill: React.FC<PropsSkillCard> = ({
           );
         }
 
-        // Сохраняем обновлённый массив в localStorage
         localStorage.setItem('skillLikes', JSON.stringify(updatedLikes));
-
-        // Обновляем состояние компонента
         setIsLiked(liked);
-        console.log('Лайк успешно сохранён в localStorage:', likeData);
+        window.dispatchEvent(new Event('favoritesUpdated'));
+        window.dispatchEvent(new Event('storage'));
       } catch (error) {
         console.error('Ошибка сохранения лайка в localStorage:', error);
       }
     };
 
-   // Фильтруем скиллы по направлениям и колличеству для отображения тегов
   const renderLimitedTags = (skillList: SkillCard[], direction: 'teach' | 'learn') => {
     const filteredSkills = skillList.filter(skill => skill.direction === direction);
     if (filteredSkills.length === 0) return null;
 
     const visibleSkills = filteredSkills.slice(0, 2);
     const remainingCount = filteredSkills.length - 2;
-
 
     return (
       <>
@@ -157,22 +149,19 @@ export const CardSkill: React.FC<PropsSkillCard> = ({
     );
   };
 
-  /*Функционал кнопки "Подробнее" */
   const handleDetailsClick = () => {
-    // Заглушка для Category
     const emptyCategory: Category = {
       id: 0,
       name: 'Без категории',
-      icon: '', // обязательное поле
-      color: '#cccccc' // один цвет
+      icon: '',
+      color: '#cccccc'
     };
 
-    // Заглушка для SubcategoryWithCategory
     const emptySubcategory: SubcategoryWithCategory = {
       id: 0,
       name: 'Без подкатегории',
       categoryId: 0,
-      category: emptyCategory // обязательное поле — ссылка на категорию
+      category: emptyCategory
     };
 
     const skillDetails: SkillDetails = {
@@ -200,7 +189,6 @@ export const CardSkill: React.FC<PropsSkillCard> = ({
     navigate(`/skill/${idSkill}`, { state: { skillDetails } });
   };
 
-
   return (
     <div
       className={`${cardContainer} ${styles[`card-container--${variant}`]}`}
@@ -222,11 +210,9 @@ export const CardSkill: React.FC<PropsSkillCard> = ({
               initialLiked={isLiked}
               onLikeChange={handleLikeChange}
               size={20}
-              //disabled={!isAuthenticated} // Кнопка неактивна для неавторизованных
             />
           )}
         </div>
-        {/* Текст из description для description варианта */}
         {variant === 'description' && descriptionUser && (
         <div className={styles['description-container']}>
           <p className={styles['description-text']}>{descriptionUser}</p>
@@ -234,14 +220,12 @@ export const CardSkill: React.FC<PropsSkillCard> = ({
         )}
       </div>
       <div className={tagsContainer}>
-        {/* Блок «Может научить» — отображаются скиллы с type: 'teach' */}
         <div className={childrenTagsContainer}>
           <h4 className={titleTags}>Может научить:</h4>
           {renderLimitedTags(skills, 'teach') || (
             <span className={styles['no-skills']}>Нет скиллов для обучения</span>
           )}
         </div>
-        {/* Блок «Хочет научиться» — отображаются скиллы с type: 'learn' */}
         <div className={childrenTagsContainer}>
           <h4 className={titleTags}> Хочет научиться:</h4>
           {renderLimitedTags(skills, 'learn') || (
@@ -258,70 +242,3 @@ export const CardSkill: React.FC<PropsSkillCard> = ({
     </div>
   );
 };
-
-/*Пример использования компонента в другом компоненте */
-/*
-<CardSkill 
-        isAuthenticated={true}
-        variant="default"
-        descriptionUser="Привет! Люблю ритм, кофе
-        по утрам и людей, которые 
-        не боятся пробовать новое"
-        descriptionSkill="Описание игры на барабанах"
-        initialLiked={true}
-        idSkill={1}
-        skillName={'Игра на барабанах'}
-        typeSkill={'learn'}
-        authorName={'Василий'}
-        authorCity={'Казань'}
-        authorAge={23}
-        authorAvatar={''}
-/>
-*/
-
-/*Пример использования данных компоненты по кнопке "Подробнее" */
-
-/*
-Шаг 1. Настройка маршрута
-import { BrowserRouter as Router, Routes, Route } from 'react-router';
-import { SkillDetailsPage } from './pages/SkillDetailsPage';
-
-function App() {
-  return (
-    <Router>
-      <Routes>
-        <Route path="/skill/:id" element={<SkillDetailsPage />} />
-        ...другие маршруты
-      </Routes>
-    </Router>
-  );
-}
-*/
-
-/*
-Шаг 2. Получение данных на странице деталей
-import { useLocation } from 'react-router';
-import type { SkillDetails } from '@/api';
-
-export const SkillDetailsPage: React.FC = () => {
-  const location = useLocation();
-  const { skillDetails } = location.state as { skillDetails?: SkillDetails };
-
-  if (!skillDetails) {
-    return (
-      <div className="error-message">
-        <h2>Ошибка загрузки данных</h2>
-        <p>Данные навыка не были переданы. Попробуйте вернуться на предыдущую страницу.</p>
-        <button onClick={() => window.history.back()}>
-          Вернуться назад
-        </button>
-      </div>
-    );
-  }
-
-  return <SkillDetailsView skill={skillDetails} />;
-};
-
-и далее по ситуации)))
-*/
-

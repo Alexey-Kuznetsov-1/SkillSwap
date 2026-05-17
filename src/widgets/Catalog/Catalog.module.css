@@ -4,15 +4,13 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(280px, 1fr));
   gap: 20px;
 }
 
 .card {
-  background: #FFFFFF;
-  border-radius: 16px;
-  padding: 20px;
-  border: 1px solid #E5E7EB;
+  width: 100%;
+  max-width: 100%;
 }
 
 .cardHeader {

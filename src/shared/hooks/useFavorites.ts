@@ -1,36 +1,78 @@
+// useFavorites.ts
 import { useState, useEffect } from 'react';
 
-const FAVORITES_KEY = 'favorites';
+const FAVORITES_KEY = 'skillLikes';
+
+interface SkillLike {
+  id: number;
+  skillId: number;
+  userId: number;
+}
 
 export const useFavorites = () => {
   const [favorites, setFavorites] = useState<number[]>([]);
 
-  useEffect(() => {
+  const loadFavorites = () => {
     const stored = localStorage.getItem(FAVORITES_KEY);
     if (stored) {
       try {
-        setFavorites(JSON.parse(stored));
+        const likes: SkillLike[] = JSON.parse(stored);
+        const favoriteIds = likes.map(like => like.skillId);
+        setFavorites(favoriteIds);
       } catch (e) {
         console.error('Ошибка парсинга избранного', e);
       }
     }
+  };
+
+  useEffect(() => {
+    loadFavorites();
+    
+    const handleStorageChange = () => {
+      loadFavorites();
+    };
+    
+    window.addEventListener('storage', handleStorageChange);
+    window.addEventListener('favoritesUpdated', handleStorageChange);
+    
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('favoritesUpdated', handleStorageChange);
+    };
   }, []);
 
   const addToFavorites = (id: number) => {
-    setFavorites((prev) => {
-      if (prev.includes(id)) return prev;
-      const newFavorites = [...prev, id];
-      localStorage.setItem(FAVORITES_KEY, JSON.stringify(newFavorites));
-      return newFavorites;
-    });
+    const stored = localStorage.getItem(FAVORITES_KEY);
+    let existingLikes: SkillLike[] = [];
+    if (stored) {
+      try {
+        existingLikes = JSON.parse(stored);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    if (existingLikes.some(like => like.skillId === id)) return;
+    const newLike = { id: Date.now(), skillId: id, userId: 1 };
+    const newLikes = [...existingLikes, newLike];
+    localStorage.setItem(FAVORITES_KEY, JSON.stringify(newLikes));
+    loadFavorites();
+    window.dispatchEvent(new Event('favoritesUpdated'));
   };
 
   const removeFromFavorites = (id: number) => {
-    setFavorites((prev) => {
-      const newFavorites = prev.filter((item) => item !== id);
-      localStorage.setItem(FAVORITES_KEY, JSON.stringify(newFavorites));
-      return newFavorites;
-    });
+    const stored = localStorage.getItem(FAVORITES_KEY);
+    let existingLikes: SkillLike[] = [];
+    if (stored) {
+      try {
+        existingLikes = JSON.parse(stored);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    const newLikes = existingLikes.filter(like => like.skillId !== id);
+    localStorage.setItem(FAVORITES_KEY, JSON.stringify(newLikes));
+    loadFavorites();
+    window.dispatchEvent(new Event('favoritesUpdated'));
   };
 
   const toggleFavorite = (id: number) => {
