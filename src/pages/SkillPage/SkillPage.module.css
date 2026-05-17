@@ -1,0 +1,411 @@
+/* src/pages/SkillPage/SkillPage.module.css */
+
+/* Переопределяем глобальные ограничения */
+.page :global(#root) {
+  width: 100%;
+  max-width: none;
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Основная обертка страницы */
+.page {
+  background: #f9faf7;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Хедер */
+.header {
+  flex-shrink: 0;
+  width: 100%;
+}
+
+/* Контентная область  */
+.content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0;
+}
+
+/* Основной блок  */
+.mainBlock {
+  width: 1368px;
+  height: 932px;
+  background: #f9faf7;
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+/* Верхний блок */
+.topBlock {
+  width: 1368px;
+  height: 444px;
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+/* Левая колонка — карточка пользователя */
+.leftBlock {
+  width: 324px;
+  height: 444px;
+}
+
+/* Правая колонка — карточка навыка */
+.rightBlock {
+  width: 1020px;
+  height: 444px;
+}
+
+/* Карточка навыка */
+.skillCard {
+  width: 100%;
+  height: 100%;
+  background: #ffffff;
+  border-radius: 12px;
+  border: 2px solid #e5e7eb;
+  padding: 32px 52px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  gap: 24px;
+}
+
+/* Блок с иконками  */
+.actionBlock {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+}
+
+.actionIcon {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.actionIcon:hover {
+  opacity: 0.7;
+}
+
+/* Галерея и описание навыка */
+.galleryWrapper {
+  display: flex;
+  gap: 77px;
+  width: 100%;
+}
+
+/* Блок с описанием навыка */
+.descriptionWrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.skillTitle {
+  font-family: 'Jost', sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  color: #253017;
+  margin: 0 0 8px 0;
+}
+
+.skillCategory {
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  color: #69735d;
+  margin-bottom: 16px;
+  display: block;
+}
+
+.skillDescription {
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #253017;
+  margin: 0 0 24px 0;
+}
+
+.exchangeButton {
+  background: #abd27a;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 24px;
+  font-family: 'Jost', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #253017;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  width: 399px;
+  height: 48px;
+  gap: 20px;
+}
+
+.exchangeButton:hover {
+  opacity: 0.9;
+}
+
+/* Заглушка для галереи */
+.galleryPlaceholder {
+  width: 324px;
+  height: 324px;
+  background: #e5e7eb;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.galleryPlaceholderContent {
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  color: #69735d;
+}
+
+.galleryPlaceholderNote {
+  font-size: 12px;
+  margin-top: 8px;
+  color: #9ca197;
+}
+
+/* Нижний блок — похожие предложения (карусель) */
+.bottomBlock {
+  width: 1368px;
+  height: 428px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sectionTitle {
+  font-family: 'Jost', sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  color: #253017;
+  margin: 0;
+}
+
+/* Контейнер карусели */
+.carouselContainer {
+  position: relative;
+  flex: 1;
+}
+
+/* Карусель */
+.carousel {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  height: 100%;
+}
+
+/* Обертка для карточки с кнопкой */
+.cardWrapper {
+  position: relative;
+  height: 100%;
+}
+
+/* Кнопка "далее" (стрелка вправо) на последней карточке */
+.nextButton {
+  position: absolute;
+  right: -20px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #253017;
+  z-index: 10;
+}
+
+.nextButton:hover {
+  background: #abd27a;
+  border-color: #abd27a;
+  color: #ffffff;
+}
+
+/* Кнопка "назад" (стрелка влево) — появляется после нажатия на стрелку вправо */
+.prevButton {
+  position: absolute;
+  left: -20px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #253017;
+  z-index: 10;
+}
+
+.prevButton:hover {
+  background: #abd27a;
+  border-color: #abd27a;
+  color: #ffffff;
+}
+
+/* Футер */
+.footer {
+  flex-shrink: 0;
+  width: 100%;
+}
+
+/* Loading */
+.loading {
+  text-align: center;
+  padding: 60px 20px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 18px;
+  color: #69735d;
+}
+
+/* Error */
+.errorBlock {
+  text-align: center;
+  padding: 60px 20px;
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #e5e7eb;
+}
+
+.errorBlock h2 {
+  font-family: 'Jost', sans-serif;
+  font-size: 24px;
+  color: #253017;
+  margin: 0 0 12px 0;
+}
+
+.errorBlock p {
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  color: #69735d;
+  margin: 0;
+}
+
+/* Адаптив для маленьких экранов */
+@media (width <= 1440px) {
+  .mainBlock {
+    width: calc(100% - 72px);
+    margin: 0 36px;
+  }
+
+  .topBlock {
+    width: 100%;
+  }
+
+  .bottomBlock {
+    width: 100%;
+  }
+}
+
+@media (width <= 1024px) {
+  .topBlock {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .leftBlock {
+    width: 100%;
+    height: auto;
+  }
+
+  .rightBlock {
+    width: 100%;
+    height: auto;
+  }
+
+  .bottomBlock {
+    height: auto;
+  }
+
+  .carousel {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .mainBlock {
+    height: auto;
+    padding: 20px 0;
+  }
+
+  .nextButton {
+    right: -10px;
+  }
+
+  .prevButton {
+    left: -10px;
+  }
+}
+
+@media (width <= 768px) {
+  .galleryWrapper {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .galleryPlaceholder {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+  }
+
+  .exchangeButton {
+    width: 100%;
+  }
+
+  .carousel {
+    grid-template-columns: 1fr;
+  }
+
+  .skillCard {
+    padding: 24px;
+  }
+
+  .sectionHeader {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .nextButton {
+    right: -5px;
+  }
+
+  .prevButton {
+    left: -5px;
+  }
+}
