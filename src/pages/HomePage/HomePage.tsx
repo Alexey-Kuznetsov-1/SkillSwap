@@ -159,17 +159,30 @@ const HomePage: React.FC = () => {
   
   const popularSkills = showAllPopular ? popularSkillsAll : popularSkillsAll.slice(0, 3);
   const newSkills = showAllNew ? newSkillsAll : newSkillsAll.slice(0, 3);
-  const recommendedSkills = filteredSkills;
+  const recommendedSkills = hasFilters ? filteredSkills : filteredSkills.slice(0, 3);
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
   };
 
-  const handleCategoryToggle = (categoryValue: string) => {
-    setSelectedCategories((prev) =>
-      prev.includes(categoryValue) ? prev.filter((c) => c !== categoryValue) : [...prev, categoryValue]
+const handleCategoryToggle = (categoryValue: string) => {
+  const isSelected = selectedCategories.includes(categoryValue);
+  
+  if (isSelected) {
+    // Снимаем категорию
+    setSelectedCategories((prev) => prev.filter((c) => c !== categoryValue));
+    // Снимаем все подкатегории этой категории
+    const subCategoriesToRemove = subCategories
+      .filter((sub) => sub.parentCategory === categoryValue)
+      .map((sub) => sub.value);
+    setSelectedSubCategories((prev) =>
+      prev.filter((sub) => !subCategoriesToRemove.includes(sub))
     );
-  };
+  } else {
+    // Добавляем категорию
+    setSelectedCategories((prev) => [...prev, categoryValue]);
+  }
+};
 
   const handleSubCategoryToggle = (subCategoryValue: string) => {
     setSelectedSubCategories((prev) =>
