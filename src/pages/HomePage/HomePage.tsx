@@ -159,7 +159,7 @@ const HomePage: React.FC = () => {
   
   const popularSkills = showAllPopular ? popularSkillsAll : popularSkillsAll.slice(0, 3);
   const newSkills = showAllNew ? newSkillsAll : newSkillsAll.slice(0, 3);
-  const recommendedSkills = hasFilters ? filteredSkills : filteredSkills.slice(0, 3);
+  const recommendedSkills = hasFilters ? filteredSkills : allSkills;
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
