@@ -1,3 +1,4 @@
+// Catalog.tsx
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { useFavorites } from '@/shared/hooks/useFavorites';
 import { CardSkill } from '@/widgets/SkillCard/CardSkill';
@@ -22,7 +23,7 @@ interface CatalogProps {
 }
 
 const Catalog: React.FC<CatalogProps> = ({ skills, itemsPerPage = 6 }) => {
-  const { isFavorite, toggleFavorite } = useFavorites();
+  const { isFavorite } = useFavorites();
   const [displayedCount, setDisplayedCount] = useState(itemsPerPage);
   const [hasMore, setHasMore] = useState(true);
   const loaderRef = useRef<HTMLDivElement | null>(null);
@@ -78,7 +79,7 @@ const Catalog: React.FC<CatalogProps> = ({ skills, itemsPerPage = 6 }) => {
       <div className={styles.grid}>
         {displayedSkills.map((skill) => (
           <CardSkill
-            key={skill.id}
+            key={`${skill.id}-${isFavorite(skill.id)}`}
             idSkill={skill.id}
             skillName={skill.name}
             descriptionSkill={skill.description}

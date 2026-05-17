@@ -7,7 +7,7 @@
 .container {
   max-width: 1440px;
   margin: 0 auto;
-  padding: 0 36px;
+  padding: 0 20px;
 }
 
 .title {
@@ -16,6 +16,13 @@
   font-weight: 600;
   color: #253017;
   margin-bottom: 32px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 324px);
+  gap: 20px;
+  justify-content: center;
 }
 
 .emptyState {
@@ -54,36 +61,9 @@
   background: #9bc46a;
 }
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 24px;
-}
-
-.card {
-  background: #FFFFFF;
-  border-radius: 16px;
+.loader {
+  text-align: center;
   padding: 20px;
-  border: 1px solid #E5E7EB;
-}
-
-.card h3 {
-  font-family: 'Jost', sans-serif;
-  font-size: 18px;
-  margin: 0 0 12px 0;
-}
-
-.card p {
   font-family: 'Roboto', sans-serif;
-  font-size: 14px;
   color: #69735D;
-  margin: 0 0 16px 0;
-}
-
-.cardFooter {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 14px;
-  color: #253017;
 }

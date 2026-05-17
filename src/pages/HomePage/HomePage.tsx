@@ -1,3 +1,4 @@
+// HomePage.tsx
 import React, { useEffect, useState } from 'react';
 import Header from '@/widgets/Header';
 import Footer from '@/widgets/Footer';
@@ -85,7 +86,6 @@ const HomePage: React.FC = () => {
   const [allSkills, setAllSkills] = useState<TempSkill[]>([]);
   const [loading, setLoading] = useState(true);
   
-  // Состояния для отображения секций
   const [showAllPopular, setShowAllPopular] = useState(false);
   const [showAllNew, setShowAllNew] = useState(false);
 
@@ -96,7 +96,7 @@ const HomePage: React.FC = () => {
   const [selectedCities, setSelectedCities] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const { isFavorite, toggleFavorite } = useFavorites();
+  const { favorites } = useFavorites();
 
   const hasFilters =
     skillType !== 'all' ||
@@ -122,7 +122,6 @@ const HomePage: React.FC = () => {
     fetchSkills();
   }, []);
 
-  // Сброс "Смотреть все" при изменении фильтров
   useEffect(() => {
     setShowAllPopular(false);
     setShowAllNew(false);
@@ -169,9 +168,7 @@ const handleCategoryToggle = (categoryValue: string) => {
   const isSelected = selectedCategories.includes(categoryValue);
   
   if (isSelected) {
-    // Снимаем категорию
     setSelectedCategories((prev) => prev.filter((c) => c !== categoryValue));
-    // Снимаем все подкатегории этой категории
     const subCategoriesToRemove = subCategories
       .filter((sub) => sub.parentCategory === categoryValue)
       .map((sub) => sub.value);
@@ -179,7 +176,6 @@ const handleCategoryToggle = (categoryValue: string) => {
       prev.filter((sub) => !subCategoriesToRemove.includes(sub))
     );
   } else {
-    // Добавляем категорию
     setSelectedCategories((prev) => [...prev, categoryValue]);
   }
 };

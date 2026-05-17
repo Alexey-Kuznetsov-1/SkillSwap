@@ -2,15 +2,21 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Header from '@/widgets/Header';
 import Footer from '@/widgets/Footer';
+import { CardSkill } from '@/widgets/SkillCard/CardSkill';
 import { useFavorites } from '@/shared/hooks/useFavorites';
+import type { User } from '@/api';
 import styles from './FavoritesPage.module.css';
 
 interface Skill {
   id: number;
-  title: string;
+  name: string;
   description: string;
+  type: 'teach' | 'learn';
+  userId: number;
   author: string;
   authorCity: string;
+  authorAge: number;
+  authorAvatar: string;
 }
 
 const FavoritesPage: React.FC = () => {
@@ -19,6 +25,20 @@ const FavoritesPage: React.FC = () => {
   const [skills, setSkills] = useState<Skill[]>([]);
   const [loading, setLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const userAuthenticated: User = {
+    id: 1,
+    name: 'Текущий пользователь',
+    avatarUrl: '',
+    email: '',
+    about: '',
+    birthDay: '',
+    gender: '',
+    cityId: 1,
+    registrationDate: '',
+  };
+
+  const isAuthenticated = !!localStorage.getItem('token');
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -35,7 +55,8 @@ const FavoritesPage: React.FC = () => {
       try {
         const response = await fetch('/db/skills.json');
         const data = await response.json();
-        setSkills(data.skills || []);
+        const skillsData = data.data || data.skills || [];
+        setSkills(skillsData);
       } catch (error) {
         console.error('Ошибка загрузки навыков:', error);
       } finally {
@@ -91,14 +112,22 @@ const FavoritesPage: React.FC = () => {
           <h1 className={styles.title}>Избранное</h1>
           <div className={styles.grid}>
             {favoriteSkills.map((skill) => (
-              <div key={skill.id} className={styles.card}>
-                <h3>{skill.title}</h3>
-                <p>{skill.description}</p>
-                <div className={styles.cardFooter}>
-                  <span>{skill.author}, {skill.authorCity}</span>
-                  <span>❤️</span>
-                </div>
-              </div>
+              <CardSkill
+                key={skill.id}
+                idSkill={skill.id}
+                skillName={skill.name}
+                descriptionSkill={skill.description}
+                typeSkill={skill.type}
+                authorName={skill.author}
+                authorCity={skill.authorCity}
+                authorAge={skill.authorAge}
+                authorAvatar={skill.authorAvatar}
+                initialLiked={true}
+                isAuthenticated={isAuthenticated}
+                userAuthenticated={userAuthenticated}
+                variant="default"
+                skills={[]}
+              />
             ))}
           </div>
         </div>
