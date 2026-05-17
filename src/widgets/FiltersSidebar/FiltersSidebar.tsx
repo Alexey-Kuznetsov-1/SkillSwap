@@ -9,6 +9,9 @@ interface FiltersSidebarProps {
   categories: { value: string; label: string }[];
   selectedCategories: string[];
   onCategoryToggle: (categoryValue: string) => void;
+  subCategories: { value: string; label: string; parentCategory: string }[];
+  selectedSubCategories: string[];
+  onSubCategoryToggle: (subCategoryValue: string) => void;
   authorGender: string;
   onAuthorGenderChange: (value: string) => void;
   cities: string[];
@@ -36,6 +39,9 @@ const FiltersSidebar: React.FC<FiltersSidebarProps> = ({
   categories,
   selectedCategories,
   onCategoryToggle,
+  subCategories,
+  selectedSubCategories,
+  onSubCategoryToggle,
   authorGender,
   onAuthorGenderChange,
   cities,
@@ -43,16 +49,32 @@ const FiltersSidebar: React.FC<FiltersSidebarProps> = ({
   onCityToggle,
 }) => {
   const [showAllCities, setShowAllCities] = useState(false);
+  const [expandedCategories, setExpandedCategories] = useState<string[]>([]);
 
   const visibleCities = showAllCities ? cities : cities.slice(0, VISIBLE_CITIES_COUNT);
   const hasMoreCities = cities.length > VISIBLE_CITIES_COUNT;
+
+  const handleCategoryToggle = (categoryValue: string) => {
+    onCategoryToggle(categoryValue);
+    // Автоматически раскрываем подкатегории при выборе категории
+    if (!selectedCategories.includes(categoryValue)) {
+      setExpandedCategories((prev) => [...prev, categoryValue]);
+    }
+  };
+
+  const toggleExpand = (categoryValue: string) => {
+    setExpandedCategories((prev) =>
+      prev.includes(categoryValue)
+        ? prev.filter((c) => c !== categoryValue)
+        : [...prev, categoryValue]
+    );
+  };
 
   return (
     <aside className={styles.sidebar}>
       <div className={styles.section}>
         <h3 className={styles.sectionTitle}>Фильтры</h3>
 
-        {/* Тип навыка */}
         <div className={styles.filterGroup}>
           <div className={styles.radioGroupVertical}>
             <RadioGroup
@@ -64,24 +86,55 @@ const FiltersSidebar: React.FC<FiltersSidebarProps> = ({
           </div>
         </div>
 
-        {/* Навыки (категории) */}
         <div className={styles.filterGroup}>
           <label className={styles.filterLabel}>Навыки</label>
           <div className={styles.checkboxGroup}>
-            {categories.map((category) => (
-              <Checkbox
-                key={category.value}
-                checked={selectedCategories.includes(category.value)}
-                onChange={() => onCategoryToggle(category.value)}
-                name={`category-${category.value}`}
-              >
-                {category.label}
-              </Checkbox>
-            ))}
+            {categories.map((category) => {
+              const isSelected = selectedCategories.includes(category.value);
+              const categorySubs = subCategories.filter(
+                (sub) => sub.parentCategory === category.value
+              );
+              const isExpanded = expandedCategories.includes(category.value);
+
+              return (
+                <div key={category.value} className={styles.categoryItem}>
+                  <div className={styles.categoryHeader}>
+                    <Checkbox
+                      checked={isSelected}
+                      onChange={() => handleCategoryToggle(category.value)}
+                      name={`category-${category.value}`}
+                    >
+                      {category.label}
+                    </Checkbox>
+                    {isSelected && categorySubs.length > 0 && (
+                      <button
+                        className={styles.expandButton}
+                        onClick={() => toggleExpand(category.value)}
+                      >
+                        {isExpanded ? '▲' : '▼'}
+                      </button>
+                    )}
+                  </div>
+                  {isExpanded && isSelected && categorySubs.length > 0 && (
+                    <div className={styles.subCategoryList}>
+                      {categorySubs.map((sub) => (
+                        <Checkbox
+                          key={sub.value}
+                          checked={selectedSubCategories.includes(sub.value)}
+                          onChange={() => onSubCategoryToggle(sub.value)}
+                          name={`subcategory-${sub.value}`}
+                        >
+                          {sub.label}
+                        </Checkbox>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
 
-        {/* Пол автора */}
         <div className={styles.filterGroup}>
           <label className={styles.filterLabel}>Пол автора</label>
           <div className={styles.radioGroupVertical}>
@@ -94,7 +147,6 @@ const FiltersSidebar: React.FC<FiltersSidebarProps> = ({
           </div>
         </div>
 
-        {/* Город */}
         <div className={styles.filterGroup}>
           <label className={styles.filterLabel}>Город</label>
           <div className={styles.checkboxGroup}>
@@ -109,12 +161,12 @@ const FiltersSidebar: React.FC<FiltersSidebarProps> = ({
               </Checkbox>
             ))}
           </div>
-          {hasMoreCities && (
+          {hasMoreCities && !showAllCities && (
             <button
               className={styles.showMoreButton}
-              onClick={() => setShowAllCities(!showAllCities)}
+              onClick={() => setShowAllCities(true)}
             >
-              {showAllCities ? 'Скрыть города' : 'Показать все'}
+              Показать все
             </button>
           )}
         </div>
