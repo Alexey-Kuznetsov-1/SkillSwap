@@ -84,6 +84,10 @@ const allCities = [
 const HomePage: React.FC = () => {
   const [allSkills, setAllSkills] = useState<TempSkill[]>([]);
   const [loading, setLoading] = useState(true);
+  
+  // Состояния для отображения секций
+  const [showAllPopular, setShowAllPopular] = useState(false);
+  const [showAllNew, setShowAllNew] = useState(false);
 
   const [skillType, setSkillType] = useState('all');
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
@@ -107,7 +111,8 @@ const HomePage: React.FC = () => {
       try {
         const response = await fetch('/db/skills.json');
         const data = await response.json();
-        setAllSkills(data.skills || []);
+        const skillsData = data.data || data.skills || [];
+        setAllSkills(skillsData);
       } catch (error) {
         console.error('Ошибка загрузки навыков:', error);
       } finally {
@@ -116,6 +121,12 @@ const HomePage: React.FC = () => {
     };
     fetchSkills();
   }, []);
+
+  // Сброс "Смотреть все" при изменении фильтров
+  useEffect(() => {
+    setShowAllPopular(false);
+    setShowAllNew(false);
+  }, [skillType, selectedCategories, selectedSubCategories, authorGender, selectedCities, searchQuery]);
 
   let filteredSkills = [...allSkills];
 
@@ -143,9 +154,12 @@ const HomePage: React.FC = () => {
     );
   }
 
-  const popularSkills = [...allSkills].sort((a, b) => b.likes - a.likes).slice(0, 3);
-  const newSkills = [...allSkills].sort((a, b) => b.id - a.id).slice(0, 3);
-  const recommendedSkills = filteredSkills.slice(0, 3);
+  const popularSkillsAll = [...allSkills].sort((a, b) => b.likes - a.likes);
+  const newSkillsAll = [...allSkills].sort((a, b) => b.id - a.id);
+  
+  const popularSkills = showAllPopular ? popularSkillsAll : popularSkillsAll.slice(0, 3);
+  const newSkills = showAllNew ? newSkillsAll : newSkillsAll.slice(0, 3);
+  const recommendedSkills = filteredSkills;
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
@@ -216,14 +230,24 @@ const HomePage: React.FC = () => {
                   <div className={styles.section}>
                     <div className={styles.sectionHeader}>
                       <h2 className={styles.sectionTitle}>Популярное</h2>
-                      <button className={styles.showAllButton}>Смотреть все</button>
+                      <button 
+                        className={styles.showAllButton}
+                        onClick={() => setShowAllPopular(!showAllPopular)}
+                      >
+                        {showAllPopular ? 'Скрыть' : 'Смотреть все'}
+                      </button>
                     </div>
                     <Catalog skills={popularSkills} />
                   </div>
                   <div className={styles.section}>
                     <div className={styles.sectionHeader}>
                       <h2 className={styles.sectionTitle}>Новое</h2>
-                      <button className={styles.showAllButton}>Смотреть все</button>
+                      <button 
+                        className={styles.showAllButton}
+                        onClick={() => setShowAllNew(!showAllNew)}
+                      >
+                        {showAllNew ? 'Скрыть' : 'Смотреть все'}
+                      </button>
                     </div>
                     <Catalog skills={newSkills} />
                   </div>
