@@ -1,14 +1,11 @@
 /* Основные стили аватарки, при наличии изображения */
 .avatar--image {
-    width: 48px; /* Ширина аватарки */
-    height: 48px; /* Высота аватарки */
     border-radius: 50%; /* Скругление углов для создания круглой формы */
     object-fit: cover; /* Подгон изображения под размеры блока с сохранением пропорций */
 }
 
 .avatar--no-image {
-  width: 48px;
-  height: 48px;
+  box-sizing: border-box;
   border-radius: 50%;
   display: flex;
   justify-content: center;
@@ -17,4 +14,7 @@
   border: 1px solid green;
   background-color: #FFFFFF;
   color: #253017;
+  /* Динамический размер шрифта*/
+  font-size: 0.8em; /* 80 % от базового размера */
+  padding: 0.15em; /* Относительно размера шрифта */
 }
