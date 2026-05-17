@@ -1,5 +1,6 @@
 .sidebar {
   width: 240px;
+  flex-shrink: 0;
   background: #FFFFFF;
   border-radius: 16px;
   padding: 24px;
@@ -30,14 +31,13 @@
 
 .filterLabel {
   font-family: 'Roboto', sans-serif;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 500;
   color: #253017;
   text-align: left;
   margin: 0;
 }
 
-/* Вертикальное расположение RadioGroup */
 .radioGroupVertical {
   display: flex;
   flex-direction: column;
@@ -54,9 +54,11 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  color: #253017;
 }
 
-/* Чекбоксы */
 .checkboxGroup {
   display: flex;
   flex-direction: column;
@@ -65,7 +67,7 @@
 
 .checkboxGroup label {
   font-family: 'Roboto', sans-serif;
-  font-size: 14px;
+  font-size: 16px;
   color: #253017;
   text-align: left;
   display: inline-flex;
@@ -73,7 +75,6 @@
   gap: 8px;
 }
 
-/* Скрываем скрытый input, который дублирует чекбокс */
 .checkboxGroup input[type="checkbox"] {
   display: none;
 }
@@ -83,7 +84,7 @@
   border: none;
   color: #ABD27A;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 16px;
   text-align: left;
   padding: 8px 0 4px;
   font-family: 'Roboto', sans-serif;
