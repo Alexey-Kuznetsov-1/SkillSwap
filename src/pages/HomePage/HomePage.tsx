@@ -1,7 +1,8 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from '@/widgets/Header';
 import Footer from '@/widgets/Footer';
 import FiltersSidebar from '@/widgets/FiltersSidebar';
+import Catalog from '@/widgets/Catalog';
 import { useFavorites } from '@/shared/hooks/useFavorites';
 import styles from './HomePage.module.css';
 
@@ -80,14 +81,9 @@ const allCities = [
   'Уфа', 'Красноярск', 'Пермь', 'Воронеж', 'Волгоград',
 ];
 
-const PAGE_SIZE = 6;
-
 const HomePage: React.FC = () => {
   const [allSkills, setAllSkills] = useState<TempSkill[]>([]);
   const [loading, setLoading] = useState(true);
-  const [loadingMore, setLoadingMore] = useState(false);
-  const [page, setPage] = useState(1);
-  const [hasMore, setHasMore] = useState(true);
 
   const [skillType, setSkillType] = useState('all');
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
@@ -95,14 +91,6 @@ const HomePage: React.FC = () => {
   const [authorGender, setAuthorGender] = useState('any');
   const [selectedCities, setSelectedCities] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
-
-  const [displayedSkills, setDisplayedSkills] = useState<TempSkill[]>([]);
-  const [popularSkills, setPopularSkills] = useState<TempSkill[]>([]);
-  const [newSkills, setNewSkills] = useState<TempSkill[]>([]);
-  const [recommendedSkills, setRecommendedSkills] = useState<TempSkill[]>([]);
-
-  const observerRef = useRef<IntersectionObserver | null>(null);
-  const lastCardRef = useRef<HTMLDivElement | null>(null);
 
   const { isFavorite, toggleFavorite } = useFavorites();
 
@@ -129,75 +117,39 @@ const HomePage: React.FC = () => {
     fetchSkills();
   }, []);
 
-  useEffect(() => {
-    let filtered = [...allSkills];
+  let filteredSkills = [...allSkills];
 
-    if (skillType !== 'all') {
-      filtered = filtered.filter((skill) => skill.type === skillType);
-    }
-    if (selectedCategories.length > 0) {
-      filtered = filtered.filter((skill) => selectedCategories.includes(skill.category));
-    }
-    if (selectedSubCategories.length > 0) {
-      filtered = filtered.filter((skill) => selectedSubCategories.includes(skill.subCategory));
-    }
-    if (authorGender !== 'any') {
-      filtered = filtered.filter((skill) => skill.authorGender === authorGender);
-    }
-    if (selectedCities.length > 0) {
-      filtered = filtered.filter((skill) => selectedCities.includes(skill.authorCity));
-    }
-    if (searchQuery) {
-      const query = searchQuery.toLowerCase();
-      filtered = filtered.filter(
-        (skill) =>
-          skill.title.toLowerCase().includes(query) ||
-          skill.description.toLowerCase().includes(query)
-      );
-    }
+  if (skillType !== 'all') {
+    filteredSkills = filteredSkills.filter((skill) => skill.type === skillType);
+  }
+  if (selectedCategories.length > 0) {
+    filteredSkills = filteredSkills.filter((skill) => selectedCategories.includes(skill.category));
+  }
+  if (selectedSubCategories.length > 0) {
+    filteredSkills = filteredSkills.filter((skill) => selectedSubCategories.includes(skill.subCategory));
+  }
+  if (authorGender !== 'any') {
+    filteredSkills = filteredSkills.filter((skill) => skill.authorGender === authorGender);
+  }
+  if (selectedCities.length > 0) {
+    filteredSkills = filteredSkills.filter((skill) => selectedCities.includes(skill.authorCity));
+  }
+  if (searchQuery) {
+    const query = searchQuery.toLowerCase();
+    filteredSkills = filteredSkills.filter(
+      (skill) =>
+        skill.title.toLowerCase().includes(query) ||
+        skill.description.toLowerCase().includes(query)
+    );
+  }
 
-    setRecommendedSkills(filtered);
-  }, [allSkills, skillType, selectedCategories, selectedSubCategories, authorGender, selectedCities, searchQuery]);
+  const popularSkills = [...allSkills].sort((a, b) => b.likes - a.likes).slice(0, 3);
+  const newSkills = [...allSkills].sort((a, b) => b.id - a.id).slice(0, 3);
+  const recommendedSkills = filteredSkills.slice(0, 3);
 
-  useEffect(() => {
-    if (!hasFilters) return;
-    const start = 0;
-    const end = page * PAGE_SIZE;
-    setDisplayedSkills(recommendedSkills.slice(start, end));
-    setHasMore(end < recommendedSkills.length);
-  }, [recommendedSkills, page, hasFilters]);
-
-  useEffect(() => {
-    setPage(1);
-    setHasMore(true);
-  }, [skillType, selectedCategories, selectedSubCategories, authorGender, selectedCities, searchQuery]);
-
-  useEffect(() => {
-    if (allSkills.length === 0) return;
-    setPopularSkills([...allSkills].sort((a, b) => b.likes - a.likes).slice(0, 3));
-    setNewSkills([...allSkills].sort((a, b) => b.id - a.id).slice(0, 3));
-  }, [allSkills]);
-
-  const handleObserver = useCallback((entries: IntersectionObserverEntry[]) => {
-    const target = entries[0];
-    if (target.isIntersecting && hasMore && !loadingMore && hasFilters) {
-      setPage((prev) => prev + 1);
-    }
-  }, [hasMore, loadingMore, hasFilters]);
-
-  useEffect(() => {
-    if (observerRef.current) observerRef.current.disconnect();
-    observerRef.current = new IntersectionObserver(handleObserver);
-    if (lastCardRef.current) observerRef.current.observe(lastCardRef.current);
-    return () => observerRef.current?.disconnect();
-  }, [handleObserver, displayedSkills]);
-
-  useEffect(() => {
-    if (!hasFilters) return;
-    setLoadingMore(true);
-    const timer = setTimeout(() => setLoadingMore(false), 500);
-    return () => clearTimeout(timer);
-  }, [page]);
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+  };
 
   const handleCategoryToggle = (categoryValue: string) => {
     setSelectedCategories((prev) =>
@@ -216,43 +168,6 @@ const HomePage: React.FC = () => {
       prev.includes(city) ? prev.filter((c) => c !== city) : [...prev, city]
     );
   };
-
-  const handleSearch = (query: string) => {
-    setSearchQuery(query);
-  };
-
-  const TempCard = ({ skill, isLast = false }: { skill: TempSkill; isLast?: boolean }) => (
-    <div className={styles.card} ref={isLast ? lastCardRef : null}>
-      <h3>{skill.title}</h3>
-      <p>{skill.description}</p>
-      <div className={styles.cardFooter}>
-        <span>{skill.author}, {skill.authorCity}</span>
-        <button
-          className={styles.favoriteButton}
-          onClick={(e) => {
-            e.stopPropagation();
-            toggleFavorite(skill.id);
-          }}
-        >
-          {isFavorite(skill.id) ? '❤️' : '🤍'}
-        </button>
-      </div>
-    </div>
-  );
-
-  const Section = ({ title, skills, showAll = false }: { title: string; skills: TempSkill[]; showAll?: boolean }) => (
-    <section className={styles.section}>
-      <div className={styles.sectionHeader}>
-        <h2 className={styles.sectionTitle}>{title}</h2>
-        {showAll && <button className={styles.showAllButton}>Смотреть все</button>}
-      </div>
-      <div className={styles.grid}>
-        {skills.slice(0, 3).map((skill) => (
-          <TempCard key={skill.id} skill={skill} />
-        ))}
-      </div>
-    </section>
-  );
 
   if (loading) {
     return (
@@ -293,22 +208,31 @@ const HomePage: React.FC = () => {
             <div className={styles.content}>
               {hasFilters ? (
                 <>
-                  <h2 className={styles.sectionTitle}>Подходящие предложения: {recommendedSkills.length}</h2>
-                  <div className={styles.grid}>
-                    {displayedSkills.map((skill, idx) => (
-                      <TempCard key={skill.id} skill={skill} isLast={idx === displayedSkills.length - 1} />
-                    ))}
-                  </div>
-                  {loadingMore && <p className={styles.loadingMore}>Загрузка...</p>}
-                  {!hasMore && displayedSkills.length > 0 && (
-                    <p className={styles.endMessage}>Вы посмотрели все предложения</p>
-                  )}
+                  <h2 className={styles.sectionTitle}>Подходящие предложения</h2>
+                  <Catalog skills={filteredSkills} />
                 </>
               ) : (
                 <>
-                  <Section title="Популярное" skills={popularSkills} showAll />
-                  <Section title="Новое" skills={newSkills} showAll />
-                  <Section title="Рекомендуем" skills={recommendedSkills.slice(0, 3)} />
+                  <div className={styles.section}>
+                    <div className={styles.sectionHeader}>
+                      <h2 className={styles.sectionTitle}>Популярное</h2>
+                      <button className={styles.showAllButton}>Смотреть все</button>
+                    </div>
+                    <Catalog skills={popularSkills} />
+                  </div>
+                  <div className={styles.section}>
+                    <div className={styles.sectionHeader}>
+                      <h2 className={styles.sectionTitle}>Новое</h2>
+                      <button className={styles.showAllButton}>Смотреть все</button>
+                    </div>
+                    <Catalog skills={newSkills} />
+                  </div>
+                  <div className={styles.section}>
+                    <div className={styles.sectionHeader}>
+                      <h2 className={styles.sectionTitle}>Рекомендуем</h2>
+                    </div>
+                    <Catalog skills={recommendedSkills} />
+                  </div>
                 </>
               )}
             </div>

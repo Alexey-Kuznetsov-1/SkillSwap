@@ -1,0 +1,79 @@
+.catalog {
+  width: 100%;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.card {
+  background: #FFFFFF;
+  border-radius: 16px;
+  padding: 20px;
+  border: 1px solid #E5E7EB;
+  text-align: left;
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.authorName {
+  font-family: 'Jost', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 4px 0;
+  color: #253017;
+  text-align: left;
+}
+
+.authorInfo {
+  font-family: 'Roboto', sans-serif;
+  font-size: 12px;
+  color: #69735D;
+  margin: 0 0 8px 0;
+  text-align: left;
+}
+
+.skillTitle {
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #253017;
+  margin: 0 0 8px 0;
+  text-align: left;
+}
+
+.description {
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  color: #69735D;
+  margin: 0;
+  line-height: 1.4;
+  text-align: left;
+}
+
+.favoriteButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 0;
+  transition: transform 0.2s;
+}
+
+.favoriteButton:hover {
+  transform: scale(1.1);
+}
+
+.empty {
+  text-align: center;
+  padding: 40px;
+  font-family: 'Roboto', sans-serif;
+  color: #69735D;
+}
