@@ -1,0 +1,45 @@
+.paginator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px 0;
+  flex-wrap: wrap;
+}
+
+.button, .page {
+  min-width: 36px;
+  height: 36px;
+  padding: 0 10px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text-h);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-family: var(--sans);
+  transition: all 0.2s ease;
+}
+
+.button:hover:not(:disabled), .page:hover:not(.active) {
+  background: var(--accent-bg);
+  border-color: var(--accent-border);
+}
+
+.button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.active {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+  font-weight: 600;
+}
+
+.ellipsis {
+  padding: 0 4px;
+  color: var(--text);
+  user-select: none;
+}
