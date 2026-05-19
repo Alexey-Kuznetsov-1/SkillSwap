@@ -1,5 +1,5 @@
 // src/pages/RegisterPage/RegisterPage.tsx
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -14,7 +14,69 @@ import { Textarea } from '@/shared/ui/Textarea/Textarea';
 import { ImageUploadField } from '../../shared/ui/ImageDropper/ImageDropper';
 import type { RegistrationFormData } from '@/api/types';
 import { parse, isValid } from 'date-fns';
+import { registerUser } from '../../api/skills.api';
+import { getMockDbState } from '@/api/mock-db-store';
 
+// Предварительно загруженные данные
+let cachedCities: { value: string; label: string }[] = [];
+let cachedCategories: { value: number; label: string }[] = [];
+let cachedSubcategories: {
+  value: number;
+  label: string;
+  categoryId: number;
+}[] = [];
+
+const loadInitialData = async () => {
+  if (cachedCities.length > 0 && cachedCategories.length > 0) {
+    return {
+      cities: cachedCities,
+      categories: cachedCategories,
+      subcategories: cachedSubcategories,
+    };
+  }
+
+  const dbState = await getMockDbState();
+
+  // Города
+  cachedCities = dbState.cities.map((city) => ({
+    value: city.name,
+    label: city.name,
+  }));
+
+  // Категории
+  cachedCategories = dbState.categories.map((cat) => ({
+    value: cat.id,
+    label: cat.name,
+  }));
+
+  // Подкатегории с привязкой к категориям
+  cachedSubcategories = dbState.subcategories.map((sub) => ({
+    value: sub.id,
+    label: sub.name,
+    categoryId: sub.categoryId,
+  }));
+
+  return {
+    cities: cachedCities,
+    categories: cachedCategories,
+    subcategories: cachedSubcategories,
+  };
+};
+
+type CategoryType = 'learn' | 'teach';
+
+const getCategoryField = (type: CategoryType) =>
+  type === 'learn' ? 'categoryToLearn' : 'categoryToTeach';
+
+const getSubcategoryField = (type: CategoryType) =>
+  type === 'learn' ? 'subcategoryToLearn' : 'subcategoryToTeach';
+
+const filterSubcategoriesByCategory = (categoryId: number) =>
+  cachedSubcategories
+    .filter((sub) => sub.categoryId === categoryId)
+    .map((sub) => ({ value: sub.value, label: sub.label }));
+
+// Синхронная валидация на основе кэшированных данных
 const registrationSchema = yup.object({
   email: yup
     .string()
@@ -27,8 +89,8 @@ const registrationSchema = yup.object({
 
   avatar: yup
     .mixed<File>()
-    .nullable()
-    .defined() // исключает undefined, оставляет только null или File
+    .nullable() // разрешает null
+    .defined()
     .test('fileSize', 'Аватар не должен превышать 5 МБ', (value) => {
       if (!value) return true;
       return value.size <= 5 * 1024 * 1024;
@@ -47,12 +109,58 @@ const registrationSchema = yup.object({
       return isValid(parsedDate);
     }),
   gender: yup.string().required('Пол обязателен'),
-  city: yup.string().required('Город обязателен'),
-  categoryToLearn: yup.number().required('Категория обязательна'),
-  subcategoryToLearn: yup.number().required('Подкатегория обязательна'),
+  city: yup
+    .string()
+    .required('Город обязателен')
+    .test('valid-city', 'Город не найден в базе', (value) => {
+      if (!value) return false;
+      return cachedCities.some(
+        (city) => city.value.toLowerCase() === value.toLowerCase(),
+      );
+    }),
+  categoryToLearn: yup
+    .number()
+    .required('Категория обязательна')
+    .test('valid-category', 'Категория не найдена', (value) => {
+      return cachedCategories.some((cat) => cat.value === value);
+    }),
+  subcategoryToLearn: yup
+    .number()
+    .required('Подкатегория обязательна')
+    .test(
+      'valid-subcategory',
+      'Подкатегория не найдена',
+      (value, { parent }) => {
+        const subcategory = cachedSubcategories.find(
+          (sub) => sub.value === value,
+        );
+        return (
+          !!subcategory && subcategory.categoryId === parent.categoryToLearn
+        );
+      },
+    ),
 
-  categoryToTeach: yup.number().required('Категория навыка обязательна'),
-  subcategoryToTeach: yup.number().required('Подкатегория навыка обязательна'),
+  categoryToTeach: yup
+    .number()
+    .required('Категория навыка обязательна')
+    .test('valid-category-teach', 'Категория не найдена', (value) => {
+      return cachedCategories.some((cat) => cat.value === value);
+    }),
+  subcategoryToTeach: yup
+    .number()
+    .required('Подкатегория навыка обязательна')
+    .test(
+      'valid-subcategory-teach',
+      'Подкатегория не найдена',
+      (value, { parent }) => {
+        const subcategory = cachedSubcategories.find(
+          (sub) => sub.value === value,
+        );
+        return (
+          !!subcategory && subcategory.categoryId === parent.categoryToTeach
+        );
+      },
+    ),
   skillName: yup.string().required('Название навыка обязательно'),
   skillDescription: yup
     .string()
@@ -63,48 +171,54 @@ const registrationSchema = yup.object({
     .of(
       yup
         .mixed<File>()
-        .defined() // исключает undefined для элементов массива
+        .defined()
         .test('fileSize', 'Файл не должен превышать 10 МБ', (file) => {
           if (!file) return true;
           return file.size <= 10 * 1024 * 1024;
         }),
     )
-    .defined() // исключает undefined для самого массива
+    .defined()
     .min(1, 'Необходимо загрузить хотя бы одно фото')
     .max(5, 'Можно загрузить не более 5 фото'),
 });
+
+const genderOptions = [
+  { value: 'female', label: 'Женский' },
+  { value: 'male', label: 'Мужской' },
+];
 
 const RegisterPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  const [openSelects, setOpenSelects] = useState<Record<string, boolean>>({});
   const [authError, setAuthError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-
   const [showPassword, setShowPassword] = useState(false);
-
   const [collectedData, setCollectedData] = useState<
     Partial<RegistrationFormData>
   >({});
 
+  // Оптимизированные состояния с данными из моков
+  const [cityOptions, setCityOptions] = useState(cachedCities);
+  const [categoryOptions, setCategoryOptions] = useState(cachedCategories);
+  const [subcategoryOptions, setSubcategoryOptions] = useState<
+    { value: number; label: string }[]
+  >([]);
+
   const [birthDate, setBirthDate] = useState<string>('');
   const [selectedCity, setSelectedCity] = useState<string>('');
-  const [categoryToLearn, setCategoryToLearn] = useState<number | undefined>(
-    undefined,
+  const [categoryToLearn, setCategoryToLearn] = useState<number | null>(null);
+  const [subcategoryToLearn, setSubcategoryToLearn] = useState<number | null>(
+    null,
   );
-  const [subcategoryToLearn, setSubcategoryToLearn] = useState<
-    number | undefined
-  >(undefined);
-  const [categoryToTeach, setCategoryToTeach] = useState<number | undefined>(
-    undefined,
+  const [categoryToTeach, setCategoryToTeach] = useState<number | null>(null);
+  const [subcategoryToTeach, setSubcategoryToTeach] = useState<number | null>(
+    null,
   );
-  const [subcategoryToTeach, setSubcategoryToTeach] = useState<
-    number | undefined
-  >(undefined);
   const [currentContainer, setCurrentContainer] = useState<1 | 2 | 3>(1);
   const [avatar, setAvatar] = useState<File | null>(null);
   const [uploadedPhotos, setUploadedPhotos] = useState<File[]>([]);
-  // Добавляем состояние для сбора данных всех шагов
 
   // Эффект для синхронизации currentContainer с хэшем
   useEffect(() => {
@@ -115,14 +229,39 @@ const RegisterPage = () => {
       return 1;
     };
 
-    // Устанавливаем начальное состояние только один раз
     const initialStep = getStepFromHash();
     setCurrentContainer(initialStep);
-  }, [location.hash]); // Зависимость только от хэша
+  }, [location.hash]);
 
   useEffect(() => {
     navigate(`#step${currentContainer}`, { replace: true });
   }, [currentContainer, navigate]);
+
+  useEffect(() => {
+    const loadData = async () => {
+      if (cityOptions.length > 0) return; // уже загружены
+
+      try {
+        const { cities, categories, subcategories } = await loadInitialData();
+        setCityOptions(cities);
+        setCategoryOptions(categories);
+        cachedSubcategories = subcategories;
+        setSubcategoryOptions([]);
+      } catch (error) {
+        console.error('Ошибка загрузки начальных данных:', error);
+        setAuthError('Не удалось загрузить данные. Попробуйте позже.');
+      }
+    };
+    loadData();
+  }, [cityOptions.length]);
+
+  const openSelect = (id: string) => {
+    setOpenSelects((prev) => ({ ...prev, [id]: true }));
+  };
+
+  const closeSelect = (id: string) => {
+    setOpenSelects((prev) => ({ ...prev, [id]: false }));
+  };
 
   const {
     register,
@@ -134,91 +273,214 @@ const RegisterPage = () => {
     getValues,
   } = useForm<RegistrationFormData>({
     resolver: yupResolver(registrationSchema),
-    mode: 'onBlur',
+    mode: 'onChange', // валидация при каждом изменении поля
+    reValidateMode: 'onChange', // повторная валидация при изменении
+    defaultValues: {
+      email: '',
+      password: '',
+      avatar: null,
+      name: '',
+      birthDate: '',
+      gender: '',
+      city: '',
+      categoryToLearn: 0,
+      subcategoryToLearn: 0,
+      categoryToTeach: 0,
+      subcategoryToTeach: 0,
+      skillName: '',
+      skillDescription: '',
+      photos: [],
+    },
   });
 
-  const [genderValue, setGenderValue] = useState<string>('');
+  const filteredSubcategories = useMemo(() => {
+    if (categoryToLearn === null) {
+      return [];
+    }
+
+    return filterSubcategoriesByCategory(categoryToLearn);
+  }, [categoryToLearn]);
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/incompatible-library
-    const subscription = watch((value, { name }) => {
-      if (name === 'gender') {
-        setGenderValue(value.gender || '');
-      }
+    setSubcategoryOptions(filteredSubcategories);
+
+    // Сбрасываем выбранную подкатегорию, если она не относится к новой категории
+    if (
+      subcategoryToLearn !== null &&
+      !filteredSubcategories.some((sub) => sub.value === subcategoryToLearn)
+    ) {
+      setSubcategoryToLearn(null);
+      setValue('subcategoryToLearn', 0);
+    }
+  }, [filteredSubcategories, subcategoryToLearn, setValue]);
+
+  const validateCurrentStep = useCallback(async (): Promise<boolean> => {
+    if (currentContainer === 1) {
+      const result = await trigger(['email', 'password']);
+      console.log('Валидация шага 1:', result, errors);
+      return result;
+    } else if (currentContainer === 2) {
+      const result = await trigger([
+        'avatar',
+        'name',
+        'birthDate',
+        'gender',
+        'city',
+        'categoryToLearn',
+        'subcategoryToLearn',
+      ]);
+      console.log('Валидация шага 2:', result, errors);
+      return result;
+    } else if (currentContainer === 3) {
+      const result = await trigger([
+        'categoryToTeach',
+        'subcategoryToTeach',
+        'skillName',
+        'skillDescription',
+        'photos',
+      ]);
+      console.log('Валидация шага 3:', result, errors);
+      return result;
+    }
+    return true;
+  }, [currentContainer, trigger, errors]);
+
+  // Единый обработчик выбора города
+  const handleCitySelect = async (cityName: string) => {
+    setSelectedCity(cityName);
+    setValue('city', cityName);
+    setCollectedData((prev) => ({ ...prev, city: cityName }));
+
+    await validateCurrentStep();
+  };
+
+  const handleCategorySelect = async (
+    categoryId: number,
+    type: CategoryType,
+  ) => {
+    const categoryField = getCategoryField(type);
+    const setCategory =
+      type === 'learn' ? setCategoryToLearn : setCategoryToTeach;
+
+    // Обновляем локальное состояние
+    setCategory(categoryId);
+
+    // Устанавливаем значение в форме
+    setValue(categoryField, categoryId, {
+      shouldValidate: true,
+      shouldDirty: true,
     });
-    return subscription.unsubscribe;
-  }, [watch]);
 
-  const handleNext = useCallback(
-    async (e?: React.MouseEvent | React.FormEvent) => {
-      e?.preventDefault();
+    // Фильтруем подкатегории для выбранной категории
+    const filtered = filterSubcategoriesByCategory(categoryId);
+    setSubcategoryOptions(filtered);
 
-      let isValid = true;
+    // Сброс подкатегории, если она не относится к новой категории
+    const currentSubcategory =
+      type === 'learn' ? subcategoryToLearn : subcategoryToTeach;
+    const setSubcategory =
+      type === 'learn' ? setSubcategoryToLearn : setSubcategoryToTeach;
+    const subcategoryField = getSubcategoryField(type);
 
-      if (currentContainer === 1) {
-        isValid = await trigger(['email', 'password']);
-      } else if (currentContainer === 2) {
-        isValid = await trigger([
-          'avatar',
-          'name',
-          'birthDate',
-          'gender',
-          'city',
-          'categoryToLearn',
-          'subcategoryToLearn',
-        ]);
-      } else if (currentContainer === 3) {
-        isValid = await trigger([
-          'categoryToTeach',
-          'subcategoryToTeach',
-          'skillName',
-          'skillDescription',
-          'photos',
-        ]);
-      }
+    if (
+      currentSubcategory !== null &&
+      !filtered.some((sub) => sub.value === currentSubcategory)
+    ) {
+      setSubcategory(null);
+      setValue(subcategoryField, 0, {
+        shouldValidate: true,
+        shouldDirty: true,
+      });
+    }
 
-      if (!isValid) {
-        const firstErrorField = Object.keys(errors)[0];
-        const errorElement = document.getElementById(firstErrorField);
-        errorElement?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        return;
-      }
+    // Обновляем collectedData
+    setCollectedData((prev) => ({
+      ...prev,
+      [categoryField]: categoryId,
+      [subcategoryField]: null, // сбрасываем подкатегорию
+    }));
 
-      const currentStepData: Partial<RegistrationFormData> = {};
+    // Запускаем валидацию
+    await validateCurrentStep();
+  };
+
+  const handleSubcategorySelect = async (
+    subcategoryId: number,
+    type: CategoryType,
+  ) => {
+    const setSubcategory =
+      type === 'learn' ? setSubcategoryToLearn : setSubcategoryToTeach;
+    const subcategoryField = getSubcategoryField(type);
+
+    // Обновляем локальное состояние
+    setSubcategory(subcategoryId);
+
+    // Устанавливаем значение в форме
+    setValue(subcategoryField, subcategoryId, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+
+    // Обновляем collectedData
+    setCollectedData((prev) => ({
+      ...prev,
+      [subcategoryField]: subcategoryId,
+    }));
+
+    // Запускаем валидацию
+    await validateCurrentStep();
+  };
+
+  // Обработчик загрузки аватара
+  const handleAvatarUpload = async (file: File) => {
+    setAvatar(file);
+    setValue('avatar', file);
+
+    setCollectedData((prev) => ({ ...prev, avatar: file }));
+    await validateCurrentStep();
+  };
+
+  // Обработчик загрузки фото навыков
+  const handlePhotoUpload = async (files: File[]) => {
+    setUploadedPhotos(files);
+    setValue('photos', files);
+    if (currentContainer === 3) {
+      setCollectedData((prev) => ({ ...prev, photos: files }));
+    }
+    await validateCurrentStep();
+  };
+
+  const collectCurrentStepData =
+    useCallback((): Partial<RegistrationFormData> => {
       switch (currentContainer) {
         case 1:
-          currentStepData.email = getValues('email');
-          currentStepData.password = getValues('password');
-          break;
+          return {
+            email: getValues('email'),
+            password: getValues('password'),
+          };
         case 2:
-          currentStepData.avatar = avatar;
-          currentStepData.name = getValues('name');
-          currentStepData.birthDate = birthDate;
-          currentStepData.gender = getValues('gender');
-          currentStepData.city = selectedCity;
-          currentStepData.categoryToLearn = categoryToLearn;
-          currentStepData.subcategoryToLearn = subcategoryToLearn;
-          break;
+          return {
+            avatar,
+            name: getValues('name'),
+            birthDate,
+            gender: getValues('gender'),
+            city: selectedCity,
+            categoryToLearn: categoryToLearn ?? undefined,
+            subcategoryToLearn: subcategoryToLearn ?? undefined,
+          };
         case 3:
-          currentStepData.categoryToTeach = categoryToTeach;
-          currentStepData.subcategoryToTeach = subcategoryToTeach;
-          currentStepData.skillName = getValues('skillName');
-          currentStepData.skillDescription = getValues('skillDescription');
-          currentStepData.photos = uploadedPhotos;
-          break;
+          return {
+            categoryToTeach: categoryToTeach ?? undefined,
+            subcategoryToTeach: subcategoryToTeach ?? undefined,
+            skillName: getValues('skillName'),
+            skillDescription: getValues('skillDescription'),
+            photos: uploadedPhotos,
+          };
+        default:
+          return {};
       }
-
-      setCollectedData((prev) => ({ ...prev, ...currentStepData }));
-
-      // Только обновляем состояние — навигация будет в эффекте
-      setCurrentContainer((prev) =>
-        prev < 3 ? ((prev + 1) as 1 | 2 | 3) : prev,
-      );
-    },
-    [
+    }, [
       currentContainer,
-      trigger,
-      errors,
       getValues,
       avatar,
       birthDate,
@@ -228,117 +490,167 @@ const RegisterPage = () => {
       categoryToTeach,
       subcategoryToTeach,
       uploadedPhotos,
+    ]);
+
+  const restoreStepData = useCallback(
+    (step: 1 | 2 | 3) => {
+      const data = collectedData;
+      switch (step) {
+        case 1:
+          if (data.email) setValue('email', data.email);
+          if (data.password) setValue('password', data.password);
+          break;
+        case 2:
+          if (data.name) setValue('name', data.name);
+          if (data.birthDate) {
+            setBirthDate(data.birthDate);
+            setValue('birthDate', data.birthDate);
+          }
+          if (data.gender) setValue('gender', data.gender);
+          if (data.city) {
+            setSelectedCity(data.city);
+            setValue('city', data.city);
+          }
+          if (data.avatar) {
+            setAvatar(data.avatar);
+            setValue('avatar', data.avatar);
+          }
+          if (data.categoryToLearn !== undefined) {
+            setCategoryToLearn(data.categoryToLearn);
+            setValue('categoryToLearn', data.categoryToLearn);
+          }
+          if (data.subcategoryToLearn !== undefined) {
+            setSubcategoryToLearn(data.subcategoryToLearn);
+            setValue('subcategoryToLearn', data.subcategoryToLearn);
+          }
+          break;
+        case 3:
+          if (data.categoryToTeach !== undefined) {
+            setCategoryToTeach(data.categoryToTeach);
+            setValue('categoryToTeach', data.categoryToTeach);
+          }
+          if (data.subcategoryToTeach !== undefined) {
+            setSubcategoryToTeach(data.subcategoryToTeach);
+            setValue('subcategoryToTeach', data.subcategoryToTeach);
+          }
+          if (data.skillName) setValue('skillName', data.skillName);
+          if (data.skillDescription)
+            setValue('skillDescription', data.skillDescription);
+          if (data.photos) {
+            setUploadedPhotos(data.photos);
+            setValue('photos', data.photos);
+          }
+          break;
+      }
+    },
+    [
+      collectedData,
+      setValue,
+      setBirthDate,
+      setSelectedCity,
+      setAvatar,
+      setCategoryToLearn,
+      setSubcategoryToLearn,
+      setCategoryToTeach,
+      setSubcategoryToTeach,
+      setUploadedPhotos,
+    ],
+  );
+
+  // Обработчик перехода к следующему шагу
+  const handleNext = useCallback(
+    async (e?: React.MouseEvent | React.FormEvent) => {
+      e?.preventDefault();
+
+      const isValid = await validateCurrentStep();
+
+      if (!isValid) {
+        const firstErrorField = Object.keys(errors)[0];
+        const errorElement = document.getElementById(firstErrorField);
+        errorElement?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+        });
+        return;
+      }
+
+      // Собираем данные текущего шага
+      const currentStepData = collectCurrentStepData();
+      setCollectedData((prev) => ({ ...prev, ...currentStepData }));
+
+      console.log('=== ДАННЫЕ ПОСЛЕ ШАГА', currentContainer, '===');
+      console.log('Данные текущего шага:', currentStepData);
+      console.log('Все собранные данные:', {
+        ...collectedData,
+        ...currentStepData,
+      });
+      console.log('=====================================');
+
+      // Дополнительная проверка полноты данных
+      if (currentContainer === 2) {
+        const requiredFields = ['name', 'birthDate', 'gender', 'city'];
+        const missingFields = requiredFields.filter(
+          (field) => !currentStepData[field as keyof typeof currentStepData],
+        );
+        if (missingFields.length > 0) {
+          console.error('Не заполнены обязательные поля:', missingFields);
+          return;
+        }
+      }
+
+      if (currentContainer < 3) {
+        setCurrentContainer((prev) => (prev + 1) as 1 | 2 | 3);
+      }
+    },
+    [
+      currentContainer,
+      errors,
+      validateCurrentStep,
+      collectCurrentStepData,
+      collectedData,
     ],
   );
 
   const handleBack = useCallback(() => {
-    // Сначала обновляем состояние
+    setAuthError(null);
     setCurrentContainer((prev: 1 | 2 | 3) => {
       const newStep = prev > 1 ? ((prev - 1) as 1 | 2 | 3) : prev;
-
-      // Восстанавливаем данные предыдущего шага в форму
-      if (newStep === 1 && collectedData.email) {
-        setValue('email', collectedData.email);
-        if (collectedData.password) {
-          setValue('password', collectedData.password);
-        }
-      } else if (newStep === 2) {
-        if (collectedData.name) {
-          setValue('name', collectedData.name);
-        }
-        if (collectedData.birthDate) {
-          setBirthDate(collectedData.birthDate);
-          setValue('birthDate', collectedData.birthDate);
-        }
-        if (collectedData.gender) {
-          setValue('gender', collectedData.gender);
-        }
-        if (collectedData.city) {
-          setSelectedCity(collectedData.city);
-          setValue('city', collectedData.city);
-        }
-        if (collectedData.avatar) {
-          // восстанавливаем аватар
-          setAvatar(collectedData.avatar);
-          setValue('avatar', collectedData.avatar);
-        }
-        if (collectedData.categoryToLearn !== undefined) {
-          setCategoryToLearn(collectedData.categoryToLearn);
-          setValue('categoryToLearn', collectedData.categoryToLearn);
-        }
-        if (collectedData.subcategoryToLearn !== undefined) {
-          setSubcategoryToLearn(collectedData.subcategoryToLearn);
-          setValue('subcategoryToLearn', collectedData.subcategoryToLearn);
-        }
-      } else if (newStep === 3) {
-        if (collectedData.categoryToTeach !== undefined) {
-          setCategoryToTeach(collectedData.categoryToTeach);
-          setValue('categoryToTeach', collectedData.categoryToTeach);
-        }
-        if (collectedData.subcategoryToTeach !== undefined) {
-          setSubcategoryToTeach(collectedData.subcategoryToTeach);
-          setValue('subcategoryToTeach', collectedData.subcategoryToTeach);
-        }
-        if (collectedData.skillName) {
-          setValue('skillName', collectedData.skillName);
-        }
-        if (collectedData.skillDescription) {
-          setValue('skillDescription', collectedData.skillDescription);
-        }
-        if (collectedData.photos) {
-          setUploadedPhotos(collectedData.photos);
-          setValue('photos', collectedData.photos);
-        }
-      }
-
+      restoreStepData(newStep);
       return newStep;
     });
-  }, [
-    collectedData,
-    setValue,
-    setBirthDate,
-    setSelectedCity,
-    setCategoryToLearn,
-    setSubcategoryToLearn,
-    setCategoryToTeach,
-    setSubcategoryToTeach,
-    setUploadedPhotos,
-  ]);
+  }, [restoreStepData]);
 
   const onSubmit = async (data: RegistrationFormData) => {
     setAuthError(null);
     setIsLoading(true);
 
     try {
-      // Объединяем данные всех шагов с финальными данными формы
+      // Собираем все данные из формы и локальных состояний
       const fullData: RegistrationFormData = {
         ...collectedData,
-        ...data,
-        birthDate: birthDate || collectedData.birthDate || '',
-        city: selectedCity || collectedData.city || '',
-        categoryToLearn: categoryToLearn ?? collectedData.categoryToLearn ?? 0,
-        subcategoryToLearn:
-          subcategoryToLearn ?? collectedData.subcategoryToLearn ?? 0,
-        categoryToTeach: categoryToTeach ?? collectedData.categoryToTeach ?? 0,
-        subcategoryToTeach:
-          subcategoryToTeach ?? collectedData.subcategoryToTeach ?? 0,
-        avatar: avatar ?? collectedData.avatar ?? null, // добавляем аватар
-        photos:
-          uploadedPhotos.length > 0
-            ? uploadedPhotos
-            : collectedData.photos || [],
+        email: getValues('email'),
+        password: getValues('password'),
+        name: getValues('name'),
+        birthDate: getValues('birthDate'),
+        gender: getValues('gender'),
+        city: getValues('city'),
+        categoryToLearn: getValues('categoryToLearn'),
+        subcategoryToLearn: getValues('subcategoryToLearn'),
+        categoryToTeach: getValues('categoryToTeach'),
+        subcategoryToTeach: getValues('subcategoryToTeach'),
+        skillName: getValues('skillName'),
+        skillDescription: getValues('skillDescription'),
+        avatar: avatar || null,
+        photos: uploadedPhotos.length > 0 ? uploadedPhotos : data.photos || [],
       };
 
-      console.log('Финальный объект для моков:', fullData);
+      console.log('Отправка данных:', fullData);
 
-      // Моковая регистрация
-      const mockResponse = {
-        userId: 'mock-user-id-' + Date.now(),
-        skillId: 'mock-skill-id-' + Date.now(),
-      };
+      const { userId, skillId } = await registerUser(fullData);
+      navigate(`/skill/${skillId}`);
 
       localStorage.setItem('isAuthenticated', 'true');
-      localStorage.setItem('userId', mockResponse.userId);
+      localStorage.setItem('userId', userId.toString());
       navigate('/');
     } catch (error) {
       if (error instanceof Error) {
@@ -351,6 +663,7 @@ const RegisterPage = () => {
     }
   };
 
+  // Обработчик входа через соцсети
   const handleSocialLogin = (provider: 'google' | 'apple') => {
     console.log(`Login with ${provider}`);
   };
@@ -364,77 +677,25 @@ const RegisterPage = () => {
   };
 
   // Обработчик выбора даты
-
-  const handleDateSelect = (dateString: string) => {
+  const handleDateSelect = async (dateString: string) => {
     setBirthDate(dateString);
     setValue('birthDate', dateString, {
-      shouldValidate: true, // принудительная валидация
+      shouldValidate: true,
       shouldDirty: true,
     });
 
+    setCollectedData((prev) => ({ ...prev, birthDate: dateString }));
+    await validateCurrentStep();
+  };
+
+  const handleRemoveAvatar = () => {
+    setAvatar(null);
+    setValue('avatar', null, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
     if (currentContainer === 2) {
-      setCollectedData((prev) => ({ ...prev, birthDate: dateString }));
-    }
-  };
-
-  // Обработчик выбора города
-  const handleCitySelect = (city: string) => {
-    setSelectedCity(city);
-    setValue('city', city);
-    if (currentContainer === 2) {
-      setCollectedData((prev) => ({ ...prev, city }));
-    }
-  };
-
-  // Обработчик выбора категории
-  const handleCategorySelect = (categoryId: number) => {
-    setCategoryToTeach(categoryId);
-    setValue('categoryToTeach', categoryId);
-    if (currentContainer === 3) {
-      setCollectedData((prev) => ({ ...prev, categoryToTeach: categoryId }));
-    }
-  };
-
-  const handleSubcategorySelect = (subcategoryId: number) => {
-    setSubcategoryToTeach(subcategoryId);
-    setValue('subcategoryToTeach', subcategoryId);
-    if (currentContainer === 3) {
-      setCollectedData((prev) => ({
-        ...prev,
-        subcategoryToTeach: subcategoryId,
-      }));
-    }
-  };
-
-  const handleLearnCategorySelect = (categoryId: number) => {
-    setCategoryToLearn(categoryId);
-    setValue('categoryToLearn', categoryId);
-    if (currentContainer === 2) {
-      setCollectedData((prev) => ({ ...prev, categoryToLearn: categoryId }));
-    }
-  };
-
-  const handleLearnSubcategorySelect = (subCategoryId: number) => {
-    setSubcategoryToLearn(subCategoryId);
-    setValue('subcategoryToLearn', subCategoryId);
-    if (currentContainer === 2) {
-      setCollectedData((prev) => ({ ...prev, categoryToLearn: subCategoryId }));
-    }
-  };
-
-  const handleAvatarUpload = (file: File) => {
-    setAvatar(file);
-    setValue('avatar', file);
-    if (currentContainer === 2) {
-      setCollectedData((prev) => ({ ...prev, avatar: file }));
-    }
-  };
-
-  const handlePhotoUpload = (files: File[]) => {
-    setUploadedPhotos(files);
-    setValue('photos', files);
-    if (currentContainer === 3) {
-      setCollectedData((prev) => ({ ...prev, photos: files }));
+      setCollectedData((prev) => ({ ...prev, avatar: null }));
     }
   };
 
@@ -617,6 +878,7 @@ const RegisterPage = () => {
                   }}
                   className={styles['form']}
                 >
+                  {/* Аватарка */}
                   <div className={styles['field']}>
                     <ImageUploadField
                       onUpload={handleAvatarUpload}
@@ -627,6 +889,8 @@ const RegisterPage = () => {
                         'image/png',
                         'image/webp',
                       ]}
+                      onRemove={handleRemoveAvatar}
+                      hasError={!!errors.avatar}
                     />
                     {errors.avatar && (
                       <span className={styles['field-error']}>
@@ -635,6 +899,7 @@ const RegisterPage = () => {
                     )}
                   </div>
 
+                  {/* Имя */}
                   <div className={styles['field']}>
                     <label htmlFor='name' className={styles['label']}>
                       Имя
@@ -655,6 +920,7 @@ const RegisterPage = () => {
                   </div>
 
                   <div className={styles['personal-parameters']}>
+                    {/* Календарь */}
                     <div className={styles['field']}>
                       <DatePicker
                         onDateSelect={handleDateSelect}
@@ -669,21 +935,50 @@ const RegisterPage = () => {
                       )}
                     </div>
 
+                    {/* Пол */}
                     <div className={styles['field']}>
                       <label htmlFor='gender' className={styles['label']}>
                         Пол
                       </label>
-                      <select
-                        id='gender'
-                        className={`${styles['input']} ${errors.gender ? styles['input-error'] : ''}`}
-                        onChange={(e) => setValue('gender', e.target.value)}
-                        value={genderValue}
-                        autoComplete='sex'
-                      >
-                        <option value=''>Не указан</option>
-                        <option value='male'>Мужской</option>
-                        <option value='female'>Женский</option>
-                      </select>
+                      <div className={styles['select-wrapper']}>
+                        <select
+                          id='gender'
+                          className={`${styles['input']} ${styles['select']} ${
+                            getValues('gender')
+                              ? styles['select-with-selection']
+                              : ''
+                          } ${errors.gender ? styles['input-error'] : ''}`}
+                          onChange={(e) => {
+                            setValue('gender', e.target.value);
+                            closeSelect('gender'); // сброс состояния после выбора
+                          }}
+                          value={getValues('gender') || ''}
+                          onFocus={() => openSelect('gender')}
+                          onBlur={() => closeSelect('gender')}
+                        >
+                          <option
+                            className={styles['placeholder']}
+                            value=''
+                            disabled
+                          >
+                            Не указан
+                          </option>
+                          {genderOptions.map((option) => (
+                            <option
+                              className={styles['option']}
+                              key={option.value}
+                              value={option.value}
+                            >
+                              {option.label}
+                            </option>
+                          ))}
+                        </select>
+                        <Icon
+                          name='chevron-down'
+                          size='24'
+                          className={`${styles['select-arrow']} ${openSelects['gender'] ? styles['arrow-rotated'] : ''}`}
+                        />
+                      </div>
                       {errors.gender && (
                         <span className={styles['field-error']}>
                           {errors.gender.message}
@@ -692,19 +987,49 @@ const RegisterPage = () => {
                     </div>
                   </div>
 
+                  {/* Город */}
                   <div className={styles['field']}>
                     <label htmlFor='city' className={styles['label']}>
                       Город
                     </label>
-                    <input
-                      id='city'
-                      type='text'
-                      placeholder='Введите город'
-                      className={`${styles['input']} ${errors.city ? styles['input-error'] : ''}`}
-                      value={selectedCity}
-                      onChange={(e) => handleCitySelect(e.target.value)}
-                      autoComplete='address-level2'
-                    />
+                    <div className={styles['select-wrapper']}>
+                      <select
+                        id='city'
+                        className={`${styles['input']} ${styles['select']} ${
+                          selectedCity ? styles['select-with-selection'] : ''
+                        } ${errors.city ? styles['input-error'] : ''}`}
+                        onChange={(e) => {
+                          handleCitySelect(e.target.value);
+                          closeSelect('city');
+                        }}
+                        value={selectedCity}
+                        autoComplete='address-level2'
+                        onFocus={() => openSelect('city')}
+                        onBlur={() => closeSelect('city')}
+                      >
+                        <option
+                          className={styles['placeholder']}
+                          value=''
+                          disabled
+                        >
+                          Введите город
+                        </option>
+                        {cityOptions.map((option) => (
+                          <option
+                            className={styles['option']}
+                            key={option.value}
+                            value={option.value}
+                          >
+                            {option.label}
+                          </option>
+                        ))}
+                      </select>
+                      <Icon
+                        name='chevron-down'
+                        size='24'
+                        className={`${styles['select-arrow']} ${openSelects['city'] ? styles['arrow-rotated'] : ''}`}
+                      />
+                    </div>
                     {errors.city && (
                       <span className={styles['field-error']}>
                         {errors.city.message}
@@ -712,6 +1037,7 @@ const RegisterPage = () => {
                     )}
                   </div>
 
+                  {/* Категория */}
                   <div className={styles['field']}>
                     <label
                       htmlFor='category-to-learn'
@@ -719,16 +1045,47 @@ const RegisterPage = () => {
                     >
                       Категория навыка, которому хотите научиться
                     </label>
-                    <select
-                      id='category-to-learn'
-                      className={`${styles['input']} ${errors.categoryToLearn ? styles['input-error'] : ''}`}
-                      onChange={(e) =>
-                        handleLearnCategorySelect(Number(e.target.value))
-                      }
-                      value={categoryToLearn ?? ''}
-                    >
-                      <option value=''>Выберите категорию навыка</option>
-                    </select>
+
+                    <div className={styles['select-wrapper']}>
+                      <select
+                        id='category-to-learn'
+                        className={`${styles['input']} ${styles['select']} ${
+                          categoryToLearn ? styles['select-with-selection'] : ''
+                        } ${errors.categoryToLearn ? styles['input-error'] : ''}`}
+                        onChange={(e) => {
+                          const value = Number(e.target.value);
+                          if (!isNaN(value)) {
+                            handleCategorySelect(value, 'learn');
+                          }
+                          closeSelect('categoryToLearn');
+                        }}
+                        value={categoryToLearn ?? ''}
+                        onFocus={() => openSelect('categoryToLearn')}
+                        onBlur={() => closeSelect('categoryToLearn')}
+                      >
+                        <option
+                          className={styles['placeholder']}
+                          value=''
+                          disabled
+                        >
+                          Выберите категорию навыка
+                        </option>
+                        {categoryOptions.map((option) => (
+                          <option
+                            className={styles['option']}
+                            key={option.value}
+                            value={option.value}
+                          >
+                            {option.label}
+                          </option>
+                        ))}
+                      </select>
+                      <Icon
+                        name='chevron-down'
+                        size='24'
+                        className={`${styles['select-arrow']} ${openSelects['categoryToLearn'] ? styles['arrow-rotated'] : ''}`}
+                      />
+                    </div>
                     {errors.categoryToLearn && (
                       <span className={styles['field-error']}>
                         {errors.categoryToLearn.message}
@@ -736,23 +1093,56 @@ const RegisterPage = () => {
                     )}
                   </div>
 
+                  {/* Подкатегория */}
                   <div className={styles['field']}>
                     <label
                       htmlFor='subcategory-to-learn'
                       className={styles['label']}
                     >
-                      Подкатегория навыка, которому хотите научить
+                      Подкатегория навыка, которому хотите научиться
                     </label>
-                    <select
-                      id='subcategory-to-learn'
-                      className={`${styles['input']} ${errors.subcategoryToLearn ? styles['input-error'] : ''}`}
-                      onChange={(e) =>
-                        handleLearnSubcategorySelect(Number(e.target.value))
-                      }
-                      value={subcategoryToLearn ?? ''}
-                    >
-                      <option value=''>Выберите подкатегорию навыка</option>
-                    </select>
+                    <div className={styles['select-wrapper']}>
+                      <select
+                        id='subcategory-to-learn'
+                        className={`${styles['input']} ${styles['select']} ${
+                          subcategoryToLearn
+                            ? styles['select-with-selection']
+                            : ''
+                        } ${errors.subcategoryToLearn ? styles['input-error'] : ''}`}
+                        onChange={(e) => {
+                          const value = Number(e.target.value);
+                          if (!isNaN(value)) {
+                            handleSubcategorySelect(value, 'learn');
+                          }
+                          closeSelect('subcategoryToLearn');
+                        }}
+                        value={subcategoryToLearn ?? ''}
+                        onFocus={() => openSelect('subcategoryToLearn')}
+                        onBlur={() => closeSelect('subcategoryToLearn')}
+                      >
+                        <option
+                          className={styles['placeholder']}
+                          value=''
+                          disabled
+                        >
+                          Выберите подкатегорию навыка
+                        </option>
+                        {subcategoryOptions.map((option) => (
+                          <option
+                            className={styles['option']}
+                            key={option.value}
+                            value={option.value}
+                          >
+                            {option.label}
+                          </option>
+                        ))}
+                      </select>
+                      <Icon
+                        name='chevron-down'
+                        size='24'
+                        className={`${styles['select-arrow']} ${openSelects['subcategoryToLearn'] ? styles['arrow-rotated'] : ''}`}
+                      />
+                    </div>
                     {errors.subcategoryToLearn && (
                       <span className={styles['field-error']}>
                         {errors.subcategoryToLearn.message}
@@ -762,17 +1152,19 @@ const RegisterPage = () => {
 
                   <div className={styles['actions']}>
                     <Button
+                      className={styles['actions-button']}
                       type='button'
                       variant='secondary'
                       onClick={handleBack}
                       children='Назад'
                     />
                     <Button
+                      className={styles['actions-button']}
                       type='button'
                       variant='primary'
                       onClick={() => handleNext()}
                       disabled={isLoading}
-                      children={isLoading ? 'Загрузка...' : 'Далее'}
+                      children={isLoading ? 'Загрузка...' : 'Продолжить'}
                     />
                   </div>
                 </form>
@@ -806,56 +1198,7 @@ const RegisterPage = () => {
                   onSubmit={handleSubmit(onSubmit)}
                   className={styles['form']}
                 >
-                  <div className={styles['field']}>
-                    <label
-                      htmlFor='category-to-teach'
-                      className={styles['label']}
-                    >
-                      Категория навыка, которому хотите научить
-                    </label>
-                    <select
-                      id='category-to-teach'
-                      className={`${styles['input']} ${errors.categoryToTeach ? styles['input-error'] : ''}`}
-                      onChange={(e) =>
-                        handleCategorySelect(Number(e.target.value))
-                      }
-                      value={categoryToTeach ?? ''}
-                    >
-                      <option value=''>Выберите категорию</option>
-                      {/* Здесь будут опции из categories */}
-                    </select>
-                    {errors.categoryToTeach && (
-                      <span className={styles['field-error']}>
-                        {errors.categoryToTeach.message}
-                      </span>
-                    )}
-                  </div>
-
-                  <div className={styles['field']}>
-                    <label
-                      htmlFor='subcategory-to-teach'
-                      className={styles['label']}
-                    >
-                      Категория навыка, которому хотите научить
-                    </label>
-                    <select
-                      id='subcategory-to-teach'
-                      className={`${styles['input']} ${errors.subcategoryToTeach ? styles['input-error'] : ''}`}
-                      onChange={(e) =>
-                        handleSubcategorySelect(Number(e.target.value))
-                      }
-                      value={subcategoryToTeach ?? ''}
-                    >
-                      <option value=''>Выберите категорию</option>
-                      {/* Здесь будут опции из categories */}
-                    </select>
-                    {errors.subcategoryToTeach && (
-                      <span className={styles['field-error']}>
-                        {errors.subcategoryToTeach.message}
-                      </span>
-                    )}
-                  </div>
-
+                  {/* Название навыка */}
                   <div className={styles['field']}>
                     <label htmlFor='skill-name' className={styles['label']}>
                       Название навыка
@@ -863,13 +1206,128 @@ const RegisterPage = () => {
                     <input
                       id='skill-name'
                       type='text'
-                      placeholder='Например: Основы JavaScript'
+                      placeholder='Введите название вашего навыка'
                       className={`${styles['input']} ${errors.skillName ? styles['input-error'] : ''}`}
                       {...register('skillName')}
                     />
                     {errors.skillName && (
                       <span className={styles['field-error']}>
                         {errors.skillName.message}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Категория навыка */}
+                  <div className={styles['field']}>
+                    <label
+                      htmlFor='category-to-teach'
+                      className={styles['label']}
+                    >
+                      Категория навыка
+                    </label>
+
+                    <div className={styles['select-wrapper']}>
+                      <select
+                        id='category-to-teach'
+                        className={`${styles['input']} ${styles['select']} ${
+                          categoryToTeach ? styles['select-with-selection'] : ''
+                        } ${errors.categoryToTeach ? styles['input-error'] : ''}`}
+                        onChange={(e) => {
+                          const value = Number(e.target.value);
+                          if (!isNaN(value)) {
+                            handleCategorySelect(value, 'teach');
+                          }
+                          closeSelect('categoryToTeach');
+                        }}
+                        value={categoryToTeach ?? ''}
+                        onFocus={() => openSelect('categoryToTeach')}
+                        onBlur={() => closeSelect('categoryToTeach')}
+                      >
+                        <option
+                          className={styles['placeholder']}
+                          value=''
+                          disabled
+                        >
+                          Выберите категорию навыка
+                        </option>
+                        {categoryOptions.map((option) => (
+                          <option
+                            className={styles['option']}
+                            key={option.value}
+                            value={option.value}
+                          >
+                            {option.label}
+                          </option>
+                        ))}
+                      </select>
+                      <Icon
+                        name='chevron-down'
+                        size='24'
+                        className={`${styles['select-arrow']} ${openSelects['categoryToTeach'] ? styles['arrow-rotated'] : ''}`}
+                      />
+                    </div>
+                    {errors.categoryToTeach && (
+                      <span className={styles['field-error']}>
+                        {errors.categoryToTeach.message}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Подкатегория навыка */}
+                  <div className={styles['field']}>
+                    <label
+                      htmlFor='subcategory-to-teach'
+                      className={styles['label']}
+                    >
+                      Подкатегория навыка
+                    </label>
+
+                    <div className={styles['select-wrapper']}>
+                      <select
+                        id='subcategory-to-teach'
+                        className={`${styles['input']} ${styles['select']} ${
+                          subcategoryToTeach
+                            ? styles['select-with-selection']
+                            : ''
+                        } ${errors.subcategoryToTeach ? styles['input-error'] : ''}`}
+                        onChange={(e) => {
+                          const value = Number(e.target.value);
+                          if (!isNaN(value)) {
+                            handleSubcategorySelect(value, 'teach');
+                          }
+                          closeSelect('subcategoryToTeach');
+                        }}
+                        value={subcategoryToTeach ?? ''}
+                        onFocus={() => openSelect('subcategoryToTeach')}
+                        onBlur={() => closeSelect('subcategoryToTeach')}
+                        disabled={!categoryToTeach} // блокируем, если категория не выбрана
+                      >
+                        <option
+                          className={styles['placeholder']}
+                          value=''
+                          disabled
+                        >
+                          Выберите подкатегорию навыка
+                        </option>
+                        {subcategoryOptions.map((option) => (
+                          <option
+                            className={styles['option']}
+                            key={option.value}
+                            value={option.value}
+                          >
+                            {option.label}
+                          </option>
+                        ))}
+                      </select>
+                      <Icon
+                        name='chevron-down'
+                        size='24'
+                        className={`${styles['select-arrow']} ${openSelects['subcategoryToTeach'] ? styles['arrow-rotated'] : ''}`}
+                      />
+                    </div>
+                    {errors.subcategoryToTeach && (
+                      <span className={styles['field-error']}>
+                        {errors.subcategoryToTeach.message}
                       </span>
                     )}
                   </div>
@@ -883,13 +1341,20 @@ const RegisterPage = () => {
                     </label>
                     <Textarea
                       id='skill-description'
-                      {...register('skillDescription')}
-                      placeholder='Расскажите подробнее о навыке, которому хотите научить...'
+                      value={watch('skillDescription')}
+                      onChange={(e) => {
+                        setValue('skillDescription', e.target.value);
+                      }}
+                      onBlur={() => {
+                        trigger('skillDescription');
+                      }}
+                      placeholder='Коротко опишите, чему можете научить'
                       className={`${styles['textarea']} ${errors.skillDescription ? styles['input-error'] : ''}`}
                       rows={4}
+                      error={errors.skillDescription?.message}
                     />
                     {errors.skillDescription && (
-                      <span className={styles['field-error']}>
+                      <span className={styles['textarea-error']}>
                         {errors.skillDescription.message}
                       </span>
                     )}
@@ -900,9 +1365,9 @@ const RegisterPage = () => {
                     <ImageUploadField
                       onFilesChange={handlePhotoUpload}
                       uploadedFiles={uploadedPhotos}
-                      label='Перетащите до 5 фото навыков сюда или кликните для выбора'
+                      label='Перетащите или выберите изображение навыка'
                       singleSelection={false}
-                      maxFiles={7}
+                      maxFiles={5}
                       acceptedFormats={[
                         'image/jpeg',
                         'image/png',
@@ -910,7 +1375,7 @@ const RegisterPage = () => {
                       ]}
                     />
                     {errors.photos && (
-                      <span className={styles['field-error']}>
+                      <span className={styles['drop-error']}>
                         {errors.photos.message}
                       </span>
                     )}
@@ -918,18 +1383,18 @@ const RegisterPage = () => {
 
                   <div className={styles['actions']}>
                     <Button
+                      className={styles['actions-button']}
                       type='button'
                       variant='secondary'
                       onClick={handleBack}
                       children='Назад'
                     />
                     <Button
+                      className={styles['actions-button']}
                       type='submit'
                       variant='primary'
                       disabled={isLoading}
-                      children={
-                        isLoading ? 'Регистрация...' : 'Завершить регистрацию'
-                      }
+                      children={isLoading ? 'Регистрация...' : 'Продолжить'}
                     />
                   </div>
                 </form>

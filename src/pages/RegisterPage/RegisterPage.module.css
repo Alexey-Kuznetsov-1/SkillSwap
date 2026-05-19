@@ -270,10 +270,88 @@
 
 .personal-parameters {
   display: flex;
+  justify-content: space-between;
+}
+
+.personal-parameters .field {
+  width: inherit;
 }
 
 .personal-parameters .input {
   width: 206px;
+  height: 50px;
+}
+
+.select-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.select {
+  width: 100%;
+  padding-right: 40px; /* место для иконки */
+  font-size: var(--font-size-text);
+  font-weight: var(--font-weight-regular);
+  color: var(--color-caption);
+  line-height: var(--font-line-height-text);
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.select-arrow {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  transition: transform 0.2s ease-in-out;
+}
+
+.arrow-rotated {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.select:focus + .select-arrow {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.select:hover {
+  background-color: var(--color-background-hover);
+}
+
+.select option {
+  color: var(--color-caption);
+}
+
+.select > .placeholder {
+  font-size: var(--font-size-text);
+  font-weight: var(--font-weight-regular);
+  color: var(--color-text-main);
+  line-height: 24px;
+}
+
+.select-with-selection {
+  color: var(--color-text-main); /* цвет текста при выборе */
+}
+
+.actions {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.actions-button {
+  width: 208px;
 }
 
 /* Стили для третьего шага */
+.drop-error,
+.textarea-error {
+  position: absolute;
+  right: 0;
+  top: 6px;
+  font-size: var(--font-size-caption);
+  line-height: var(--font-line-height-caption);
+  color: var(--color-error);
+}

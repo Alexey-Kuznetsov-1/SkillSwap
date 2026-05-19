@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import styles from './ImageDropper.module.css';
+import { Icon } from '../Icon/Icon';
 
 interface ImageUploadFieldProps {
   onUpload?: (file: File) => void;
@@ -9,6 +10,8 @@ interface ImageUploadFieldProps {
   maxFiles?: number;
   label?: string;
   singleSelection?: boolean;
+  onRemove?: () => void;
+  hasError?: boolean;
 }
 
 export const ImageUploadField: React.FC<ImageUploadFieldProps> = ({
@@ -19,7 +22,12 @@ export const ImageUploadField: React.FC<ImageUploadFieldProps> = ({
   maxFiles = 5,
   label = 'Перетащите фото сюда или кликните для выбора',
   singleSelection = false,
+  onRemove,
+  hasError = false,
 }) => {
+  const [localUploadedFiles, setLocalUploadedFiles] = useState<File[]>(
+    uploadedFiles || [],
+  );
   const [isDragOver, setIsDragOver] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
@@ -52,12 +60,20 @@ export const ImageUploadField: React.FC<ImageUploadFieldProps> = ({
       if (validFiles.length > 0) {
         let combinedFiles: File[];
         if (singleSelection) {
+          // Очищаем старые превью и файлы перед установкой нового
+          previewUrls.forEach((url) => URL.revokeObjectURL(url));
+          setPreviewUrls([]);
+          setLocalUploadedFiles([validFiles[0]]); // обновляем состояние
           combinedFiles = [validFiles[0]];
         } else {
-          combinedFiles = [...uploadedFiles, ...validFiles].slice(0, maxFiles);
+          combinedFiles = [...localUploadedFiles, ...validFiles].slice(
+            0,
+            maxFiles,
+          );
+          setLocalUploadedFiles(combinedFiles); // обновляем состояние
         }
 
-        // Вызываем соответствующую функцию в зависимости от режима
+        // Обновляем состояния
         if (singleSelection && onUpload) {
           onUpload(combinedFiles[0]);
         } else if (onFilesChange) {
@@ -65,17 +81,12 @@ export const ImageUploadField: React.FC<ImageUploadFieldProps> = ({
         }
 
         try {
-          // Всегда очищаем старые превью в режиме одиночного выбора
-          if (singleSelection) {
-            previewUrls.forEach((url) => URL.revokeObjectURL(url));
-          }
-
           const newUrls = validFiles.map((file) => URL.createObjectURL(file));
-          setPreviewUrls(
-            singleSelection
-              ? newUrls.slice(0, 1)
-              : [...previewUrls, ...newUrls].slice(0, maxFiles),
-          );
+          if (singleSelection) {
+            setPreviewUrls(newUrls.slice(0, 1));
+          } else {
+            setPreviewUrls([...previewUrls, ...newUrls].slice(0, maxFiles));
+          }
         } catch (error) {
           console.error('Ошибка создания URL для превью:', error);
           alert('Не удалось создать превью для некоторых файлов.');
@@ -90,7 +101,7 @@ export const ImageUploadField: React.FC<ImageUploadFieldProps> = ({
     [
       acceptedFormats,
       maxFiles,
-      uploadedFiles,
+      localUploadedFiles,
       onFilesChange,
       onUpload,
       singleSelection,
@@ -132,25 +143,35 @@ export const ImageUploadField: React.FC<ImageUploadFieldProps> = ({
     // Отзываем URL для удаляемого изображения
     URL.revokeObjectURL(previewUrls[index]);
 
-    const updatedFiles = uploadedFiles.filter((_, i) => i !== index);
+    // Обновляем массив превью
+    const newPreviewUrls = previewUrls.filter((_, i) => i !== index);
+    setPreviewUrls(newPreviewUrls);
+
+    // Обновляем список файлов
+    const updatedFiles = localUploadedFiles.filter((_, i) => i !== index);
+    setLocalUploadedFiles(updatedFiles);
 
     // Вызываем соответствующий колбэк
-    if (singleSelection && onUpload && updatedFiles.length > 0) {
-      onUpload(updatedFiles[0]);
+    if (singleSelection && onUpload) {
+      if (updatedFiles.length > 0) {
+        onUpload(updatedFiles[0]);
+      } else {
+        onUpload(null as unknown as File);
+      }
     } else if (onFilesChange) {
       onFilesChange(updatedFiles);
     }
 
-    // Обновляем превью: очищаем полностью в режиме одиночного выбора, иначе фильтруем
-    setPreviewUrls((prev) =>
-      singleSelection ? [] : prev.filter((_, i) => i !== index),
-    );
+    // Вызываем onRemove, если передан
+    onRemove?.();
   };
 
   // Для одиночного выбора показываем круглый превью
   if (singleSelection) {
     return (
-      <div className={styles['container']}>
+      <div
+        className={`${styles['container']} ${hasError ? styles['error'] : ''}`}
+      >
         <div
           className={`${styles['icon-upload']} ${isDragOver ? styles['drag-over'] : ''}`}
           onClick={handleClick}
@@ -164,11 +185,24 @@ export const ImageUploadField: React.FC<ImageUploadFieldProps> = ({
           }
         >
           {previewUrls.length > 0 ? (
-            <img
-              src={previewUrls[0]}
-              alt='Preview'
-              className={styles['preview-image']}
-            />
+            <div className={styles['preview-container']}>
+              <img
+                src={previewUrls[0]}
+                alt='Preview'
+                className={styles['preview-image']}
+              />
+              <button
+                type='button'
+                className={styles['remove-avatar-button']}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  removeImage(0); // удаляем единственное изображение
+                }}
+                aria-label='Удалить аватар'
+              >
+                ×
+              </button>
+            </div>
           ) : (
             <div className={styles['upload-icon']}>
               <svg
@@ -220,23 +254,13 @@ export const ImageUploadField: React.FC<ImageUploadFieldProps> = ({
             <span className={styles['spinner']}>⏳</span>
           </div>
         )}
-
-        {previewUrls.length > 0 && (
-          <button
-            type='button'
-            className={styles['remove-button']}
-            onClick={() => removeImage(0)}
-          >
-            Удалить фото
-          </button>
-        )}
       </div>
     );
   }
 
   // Для множественного выбора — сетка превью
   return (
-    <div className={styles['container']}>
+    <div className={`${styles['container']} ${styles['container-multiple']}`}>
       <div
         className={`${styles['drop-zone']} ${isDragOver ? styles['drag-over'] : ''}`}
         onDrop={handleDrop}
@@ -260,8 +284,11 @@ export const ImageUploadField: React.FC<ImageUploadFieldProps> = ({
         />
         {previewUrls.length === 0 ? (
           <div className={styles['placeholder']}>
-            <span className={styles['icon']}>📷</span>
-            <p>{label}</p>
+            <p className={styles['label']}>{label}</p>
+            <span className={styles['icon']}>
+              <Icon name='gallery-add' size='24' />
+              Выбрать изображения
+            </span>
           </div>
         ) : (
           <div className={styles['preview-grid']}>
@@ -270,7 +297,7 @@ export const ImageUploadField: React.FC<ImageUploadFieldProps> = ({
                 <img
                   src={url}
                   alt={`Preview ${index + 1}`}
-                  className={styles['preview-image']}
+                  className={styles['preview-image-multiple']}
                 />
                 <button
                   type='button'
