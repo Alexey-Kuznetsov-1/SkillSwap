@@ -1,7 +1,10 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+// HomePage.tsx
+import React, { useEffect, useState } from 'react';
 import Header from '@/widgets/Header';
 import Footer from '@/widgets/Footer';
 import FiltersSidebar from '@/widgets/FiltersSidebar';
+import Catalog from '@/widgets/Catalog';
+import { useFavorites } from '@/shared/hooks/useFavorites';
 import styles from './HomePage.module.css';
 
 interface TempSkill {
@@ -29,52 +32,20 @@ const categories = [
 ];
 
 const subCategories = [
-  {
-    value: 'team_management',
-    label: 'Управление командой',
-    parentCategory: 'business',
-  },
-  {
-    value: 'marketing',
-    label: 'Маркетинг и реклама',
-    parentCategory: 'business',
-  },
+  { value: 'team_management', label: 'Управление командой', parentCategory: 'business' },
+  { value: 'marketing', label: 'Маркетинг и реклама', parentCategory: 'business' },
   { value: 'sales', label: 'Продажи и переговоры', parentCategory: 'business' },
-  {
-    value: 'personal_brand',
-    label: 'Личный бренд',
-    parentCategory: 'business',
-  },
-  {
-    value: 'resume',
-    label: 'Резюме и собеседование',
-    parentCategory: 'business',
-  },
-  {
-    value: 'time_management',
-    label: 'Тайм-менеджмент',
-    parentCategory: 'business',
-  },
-  {
-    value: 'project_management',
-    label: 'Проектное управление',
-    parentCategory: 'business',
-  },
-  {
-    value: 'entrepreneurship',
-    label: 'Предпринимательство',
-    parentCategory: 'business',
-  },
+  { value: 'personal_brand', label: 'Личный бренд', parentCategory: 'business' },
+  { value: 'resume', label: 'Резюме и собеседование', parentCategory: 'business' },
+  { value: 'time_management', label: 'Тайм-менеджмент', parentCategory: 'business' },
+  { value: 'project_management', label: 'Проектное управление', parentCategory: 'business' },
+  { value: 'entrepreneurship', label: 'Предпринимательство', parentCategory: 'business' },
   { value: 'drawing', label: 'Рисование и иллюстрация', parentCategory: 'art' },
   { value: 'photography', label: 'Фотография', parentCategory: 'art' },
   { value: 'video_editing', label: 'Видеомонтаж', parentCategory: 'art' },
   { value: 'music', label: 'Музыка и звук', parentCategory: 'art' },
   { value: 'acting', label: 'Актёрское мастерство', parentCategory: 'art' },
-  {
-    value: 'creative_writing',
-    label: 'Креативное письмо',
-    parentCategory: 'art',
-  },
+  { value: 'creative_writing', label: 'Креативное письмо', parentCategory: 'art' },
   { value: 'art_therapy', label: 'Арт-терапия', parentCategory: 'art' },
   { value: 'diy', label: 'Декор и DIY', parentCategory: 'art' },
   { value: 'english', label: 'Английский', parentCategory: 'languages' },
@@ -83,32 +54,12 @@ const subCategories = [
   { value: 'german', label: 'Немецкий', parentCategory: 'languages' },
   { value: 'chinese', label: 'Китайский', parentCategory: 'languages' },
   { value: 'japanese', label: 'Японский', parentCategory: 'languages' },
-  {
-    value: 'exam_prep',
-    label: 'Подготовка к экзаменам (IELTS, TOEFL)',
-    parentCategory: 'languages',
-  },
-  {
-    value: 'personal_development',
-    label: 'Личностное развитие',
-    parentCategory: 'education',
-  },
-  {
-    value: 'learning_skills',
-    label: 'Навыки обучения',
-    parentCategory: 'education',
-  },
-  {
-    value: 'cognitive_techniques',
-    label: 'Когнитивные техники',
-    parentCategory: 'education',
-  },
+  { value: 'exam_prep', label: 'Подготовка к экзаменам (IELTS, TOEFL)', parentCategory: 'languages' },
+  { value: 'personal_development', label: 'Личностное развитие', parentCategory: 'education' },
+  { value: 'learning_skills', label: 'Навыки обучения', parentCategory: 'education' },
+  { value: 'cognitive_techniques', label: 'Когнитивные техники', parentCategory: 'education' },
   { value: 'speed_reading', label: 'Скорочтение', parentCategory: 'education' },
-  {
-    value: 'teaching_skills',
-    label: 'Навыки преподавания',
-    parentCategory: 'education',
-  },
+  { value: 'teaching_skills', label: 'Навыки преподавания', parentCategory: 'education' },
   { value: 'coaching', label: 'Коучинг', parentCategory: 'education' },
   { value: 'cleaning', label: 'Уборка и организация', parentCategory: 'home' },
   { value: 'home_finance', label: 'Домашние финансы', parentCategory: 'home' },
@@ -118,68 +69,34 @@ const subCategories = [
   { value: 'storage', label: 'Хранение вещей', parentCategory: 'home' },
   { value: 'yoga', label: 'Йога и медитация', parentCategory: 'health' },
   { value: 'nutrition', label: 'Питание и ЗОЖ', parentCategory: 'health' },
-  {
-    value: 'mental_health',
-    label: 'Ментальное здоровье',
-    parentCategory: 'health',
-  },
+  { value: 'mental_health', label: 'Ментальное здоровье', parentCategory: 'health' },
   { value: 'mindfulness', label: 'Осознанность', parentCategory: 'health' },
-  {
-    value: 'fitness',
-    label: 'Физические тренировки',
-    parentCategory: 'health',
-  },
+  { value: 'fitness', label: 'Физические тренировки', parentCategory: 'health' },
   { value: 'sleep', label: 'Сон и восстановление', parentCategory: 'health' },
-  {
-    value: 'work_life_balance',
-    label: 'Баланс жизни и работы',
-    parentCategory: 'health',
-  },
+  { value: 'work_life_balance', label: 'Баланс жизни и работы', parentCategory: 'health' },
 ];
 
 const allCities = [
-  'Москва',
-  'Санкт-Петербург',
-  'Новосибирск',
-  'Екатеринбург',
-  'Казань',
-  'Нижний Новгород',
-  'Челябинск',
-  'Самара',
-  'Омск',
-  'Ростов-на-Дону',
-  'Уфа',
-  'Красноярск',
-  'Пермь',
-  'Воронеж',
-  'Волгоград',
+  'Москва', 'Санкт-Петербург', 'Новосибирск', 'Екатеринбург', 'Казань',
+  'Нижний Новгород', 'Челябинск', 'Самара', 'Омск', 'Ростов-на-Дону',
+  'Уфа', 'Красноярск', 'Пермь', 'Воронеж', 'Волгоград',
 ];
-
-const PAGE_SIZE = 6;
 
 const HomePage: React.FC = () => {
   const [allSkills, setAllSkills] = useState<TempSkill[]>([]);
   const [loading, setLoading] = useState(true);
-  const [loadingMore, setLoadingMore] = useState(false);
-  const [page, setPage] = useState(1);
-  const [hasMore, setHasMore] = useState(true);
+  
+  const [showAllPopular, setShowAllPopular] = useState(false);
+  const [showAllNew, setShowAllNew] = useState(false);
 
   const [skillType, setSkillType] = useState('all');
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [selectedSubCategories, setSelectedSubCategories] = useState<string[]>(
-    [],
-  );
+  const [selectedSubCategories, setSelectedSubCategories] = useState<string[]>([]);
   const [authorGender, setAuthorGender] = useState('any');
   const [selectedCities, setSelectedCities] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const [displayedSkills, setDisplayedSkills] = useState<TempSkill[]>([]);
-  const [popularSkills, setPopularSkills] = useState<TempSkill[]>([]);
-  const [newSkills, setNewSkills] = useState<TempSkill[]>([]);
-  const [recommendedSkills, setRecommendedSkills] = useState<TempSkill[]>([]);
-
-  const observerRef = useRef<IntersectionObserver | null>(null);
-  const lastCardRef = useRef<HTMLDivElement | null>(null);
+  const { favorites } = useFavorites();
 
   const hasFilters =
     skillType !== 'all' ||
@@ -194,7 +111,8 @@ const HomePage: React.FC = () => {
       try {
         const response = await fetch('/db/skills.json');
         const data = await response.json();
-        setAllSkills(data.skills || []);
+        const skillsData = data.data || data.skills || [];
+        setAllSkills(skillsData);
       } catch (error) {
         console.error('Ошибка загрузки навыков:', error);
       } finally {
@@ -205,171 +123,74 @@ const HomePage: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    let filtered = [...allSkills];
+    setShowAllPopular(false);
+    setShowAllNew(false);
+  }, [skillType, selectedCategories, selectedSubCategories, authorGender, selectedCities, searchQuery]);
 
-    if (skillType !== 'all') {
-      filtered = filtered.filter((skill) => skill.type === skillType);
-    }
-    if (selectedCategories.length > 0) {
-      filtered = filtered.filter((skill) =>
-        selectedCategories.includes(skill.category),
-      );
-    }
-    if (selectedSubCategories.length > 0) {
-      filtered = filtered.filter((skill) =>
-        selectedSubCategories.includes(skill.subCategory),
-      );
-    }
-    if (authorGender !== 'any') {
-      filtered = filtered.filter(
-        (skill) => skill.authorGender === authorGender,
-      );
-    }
-    if (selectedCities.length > 0) {
-      filtered = filtered.filter((skill) =>
-        selectedCities.includes(skill.authorCity),
-      );
-    }
-    if (searchQuery) {
-      const query = searchQuery.toLowerCase();
-      filtered = filtered.filter(
-        (skill) =>
-          skill.title.toLowerCase().includes(query) ||
-          skill.description.toLowerCase().includes(query),
-      );
-    }
+  let filteredSkills = [...allSkills];
 
-    setRecommendedSkills(filtered);
-  }, [
-    allSkills,
-    skillType,
-    selectedCategories,
-    selectedSubCategories,
-    authorGender,
-    selectedCities,
-    searchQuery,
-  ]);
-
-  useEffect(() => {
-    if (!hasFilters) return;
-    const start = 0;
-    const end = page * PAGE_SIZE;
-    setDisplayedSkills(recommendedSkills.slice(start, end));
-    setHasMore(end < recommendedSkills.length);
-  }, [recommendedSkills, page, hasFilters]);
-
-  useEffect(() => {
-    setPage(1);
-    setHasMore(true);
-  }, [
-    skillType,
-    selectedCategories,
-    selectedSubCategories,
-    authorGender,
-    selectedCities,
-    searchQuery,
-  ]);
-
-  useEffect(() => {
-    if (allSkills.length === 0) return;
-    setPopularSkills(
-      [...allSkills].sort((a, b) => b.likes - a.likes).slice(0, 3),
+  if (skillType !== 'all') {
+    filteredSkills = filteredSkills.filter((skill) => skill.type === skillType);
+  }
+  if (selectedCategories.length > 0) {
+    filteredSkills = filteredSkills.filter((skill) => selectedCategories.includes(skill.category));
+  }
+  if (selectedSubCategories.length > 0) {
+    filteredSkills = filteredSkills.filter((skill) => selectedSubCategories.includes(skill.subCategory));
+  }
+  if (authorGender !== 'any') {
+    filteredSkills = filteredSkills.filter((skill) => skill.authorGender === authorGender);
+  }
+  if (selectedCities.length > 0) {
+    filteredSkills = filteredSkills.filter((skill) => selectedCities.includes(skill.authorCity));
+  }
+  if (searchQuery) {
+    const query = searchQuery.toLowerCase();
+    filteredSkills = filteredSkills.filter(
+      (skill) =>
+        skill.title.toLowerCase().includes(query) ||
+        skill.description.toLowerCase().includes(query)
     );
-    setNewSkills([...allSkills].sort((a, b) => b.id - a.id).slice(0, 3));
-  }, [allSkills]);
+  }
 
-  const handleObserver = useCallback(
-    (entries: IntersectionObserverEntry[]) => {
-      const target = entries[0];
-      if (target.isIntersecting && hasMore && !loadingMore && hasFilters) {
-        setPage((prev) => prev + 1);
-      }
-    },
-    [hasMore, loadingMore, hasFilters],
-  );
-
-  useEffect(() => {
-    if (observerRef.current) observerRef.current.disconnect();
-    observerRef.current = new IntersectionObserver(handleObserver);
-    if (lastCardRef.current) observerRef.current.observe(lastCardRef.current);
-    return () => observerRef.current?.disconnect();
-  }, [handleObserver, displayedSkills]);
-
-  useEffect(() => {
-    if (!hasFilters) return;
-    setLoadingMore(true);
-    const timer = setTimeout(() => setLoadingMore(false), 500);
-    return () => clearTimeout(timer);
-  }, [page]);
-
-  const handleCategoryToggle = (categoryValue: string) => {
-    setSelectedCategories((prev) =>
-      prev.includes(categoryValue)
-        ? prev.filter((c) => c !== categoryValue)
-        : [...prev, categoryValue],
-    );
-  };
-
-  const handleSubCategoryToggle = (subCategoryValue: string) => {
-    setSelectedSubCategories((prev) =>
-      prev.includes(subCategoryValue)
-        ? prev.filter((c) => c !== subCategoryValue)
-        : [...prev, subCategoryValue],
-    );
-  };
-
-  const handleCityToggle = (city: string) => {
-    setSelectedCities((prev) =>
-      prev.includes(city) ? prev.filter((c) => c !== city) : [...prev, city],
-    );
-  };
+  const popularSkillsAll = [...allSkills].sort((a, b) => b.likes - a.likes);
+  const newSkillsAll = [...allSkills].sort((a, b) => b.id - a.id);
+  
+  const popularSkills = showAllPopular ? popularSkillsAll : popularSkillsAll.slice(0, 3);
+  const newSkills = showAllNew ? newSkillsAll : newSkillsAll.slice(0, 3);
+  const recommendedSkills = hasFilters ? filteredSkills : allSkills;
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
   };
 
-  const TempCard = ({
-    skill,
-    isLast = false,
-  }: {
-    skill: TempSkill;
-    isLast?: boolean;
-  }) => (
-    <div className={styles.card} ref={isLast ? lastCardRef : null}>
-      <h3>{skill.title}</h3>
-      <p>{skill.description}</p>
-      <div className={styles.cardFooter}>
-        <span>
-          {skill.author}, {skill.authorCity}
-        </span>
-        <span>❤️ {skill.likes}</span>
-      </div>
-    </div>
-  );
+const handleCategoryToggle = (categoryValue: string) => {
+  const isSelected = selectedCategories.includes(categoryValue);
+  
+  if (isSelected) {
+    setSelectedCategories((prev) => prev.filter((c) => c !== categoryValue));
+    const subCategoriesToRemove = subCategories
+      .filter((sub) => sub.parentCategory === categoryValue)
+      .map((sub) => sub.value);
+    setSelectedSubCategories((prev) =>
+      prev.filter((sub) => !subCategoriesToRemove.includes(sub))
+    );
+  } else {
+    setSelectedCategories((prev) => [...prev, categoryValue]);
+  }
+};
 
-  const Section = ({
-    title,
-    skills,
-    showAll = false,
-  }: {
-    title: string;
-    skills: TempSkill[];
-    showAll?: boolean;
-  }) => (
-    <section className={styles.section}>
-      <div className={styles.sectionHeader}>
-        <h2 className={styles.sectionTitle}>{title}</h2>
-        {showAll && (
-          <button className={styles.showAllButton}>Смотреть все</button>
-        )}
-      </div>
-      <div className={styles.grid}>
-        {skills.slice(0, 3).map((skill) => (
-          <TempCard key={skill.id} skill={skill} />
-        ))}
-      </div>
-    </section>
-  );
+  const handleSubCategoryToggle = (subCategoryValue: string) => {
+    setSelectedSubCategories((prev) =>
+      prev.includes(subCategoryValue) ? prev.filter((c) => c !== subCategoryValue) : [...prev, subCategoryValue]
+    );
+  };
+
+  const handleCityToggle = (city: string) => {
+    setSelectedCities((prev) =>
+      prev.includes(city) ? prev.filter((c) => c !== city) : [...prev, city]
+    );
+  };
 
   if (loading) {
     return (
@@ -410,35 +231,41 @@ const HomePage: React.FC = () => {
             <div className={styles.content}>
               {hasFilters ? (
                 <>
-                  <h2 className={styles.sectionTitle}>
-                    Подходящие предложения: {recommendedSkills.length}
-                  </h2>
-                  <div className={styles.grid}>
-                    {displayedSkills.map((skill, idx) => (
-                      <TempCard
-                        key={skill.id}
-                        skill={skill}
-                        isLast={idx === displayedSkills.length - 1}
-                      />
-                    ))}
-                  </div>
-                  {loadingMore && (
-                    <p className={styles.loadingMore}>Загрузка...</p>
-                  )}
-                  {!hasMore && displayedSkills.length > 0 && (
-                    <p className={styles.endMessage}>
-                      Вы посмотрели все предложения
-                    </p>
-                  )}
+                  <h2 className={styles.sectionTitle}>Подходящие предложения</h2>
+                  <Catalog skills={filteredSkills} />
                 </>
               ) : (
                 <>
-                  <Section title='Популярное' skills={popularSkills} showAll />
-                  <Section title='Новое' skills={newSkills} showAll />
-                  <Section
-                    title='Рекомендуем'
-                    skills={recommendedSkills.slice(0, 3)}
-                  />
+                  <div className={styles.section}>
+                    <div className={styles.sectionHeader}>
+                      <h2 className={styles.sectionTitle}>Популярное</h2>
+                      <button 
+                        className={styles.showAllButton}
+                        onClick={() => setShowAllPopular(!showAllPopular)}
+                      >
+                        {showAllPopular ? 'Скрыть' : 'Смотреть все'}
+                      </button>
+                    </div>
+                    <Catalog skills={popularSkills} />
+                  </div>
+                  <div className={styles.section}>
+                    <div className={styles.sectionHeader}>
+                      <h2 className={styles.sectionTitle}>Новое</h2>
+                      <button 
+                        className={styles.showAllButton}
+                        onClick={() => setShowAllNew(!showAllNew)}
+                      >
+                        {showAllNew ? 'Скрыть' : 'Смотреть все'}
+                      </button>
+                    </div>
+                    <Catalog skills={newSkills} />
+                  </div>
+                  <div className={styles.section}>
+                    <div className={styles.sectionHeader}>
+                      <h2 className={styles.sectionTitle}>Рекомендуем</h2>
+                    </div>
+                    <Catalog skills={recommendedSkills} />
+                  </div>
                 </>
               )}
             </div>

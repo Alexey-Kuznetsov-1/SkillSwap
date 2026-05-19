@@ -1,0 +1,147 @@
+@import '../../app/styles/fonts.css';
+
+:root {
+  --font-text: 'Roboto';
+  --color-text-main: #253017;
+  --color-bg:  #FFFFFF;
+}
+
+/*Стили для варианта default*/
+
+.card-container {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  border-radius: 12px;
+  background-color: var(--color-bg);
+  width: 100%;
+  max-width: 100%;
+  min-height: 368px;
+}
+
+.user-info-container {
+  gap: 20px;
+  display: inline-flex;
+  flex-direction: column;
+}
+
+.user-container {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  column-gap: 12px;
+}
+
+.avatar-size {
+  width: 100px;
+  height: 100px;
+}
+
+.text-container {
+  display: flex;
+  text-align: left;
+  gap: 4px;
+  flex-direction: column;
+}
+
+.text-name--user {
+  font-family: Open Sans, sans-serif;
+  font-weight: 600;
+  font-style: SemiBold;
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: -1.1%;
+  vertical-align: middle;
+  color: var(--color-text-main);
+}
+
+.text-city--age {
+  font-family: var(--font-text), sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 2%;
+  vertical-align: middle;
+  color: var(--color-text-main);
+}
+
+.likes {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.tags-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.children-tags-container {
+  display: inline-flex;
+  gap: 8px;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: fit-content;
+}
+
+.title-tags {
+  font-family: var(--font-text), sans-serif;
+  color: var(--color-text-main);
+  margin: 0;
+  padding: 0;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  vertical-align: middle;
+}
+
+/*Стили для контейнера и текста варианта и поля description*/
+
+.description-container {
+  margin: 0;
+  padding: 0;
+  min-height: 72px;
+}
+
+.description-text {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.02em;
+  vertical-align: middle;
+  text-align: left;
+}
+
+/*Стили в зависимости от выбранного варианта компонента*/
+
+
+
+.card-container--default {
+  padding: 20px;
+  gap: 20px;
+}
+
+.card-container--description {
+  padding: 32px;
+  gap: 24px;
+}
+
+.card-container--default .tags-container {
+  gap: 12px;
+}
+
+.card-container--description .tags-container {
+  gap: 24px;
+}
+
+.card-container--default  .children-tags-container {
+  gap: 8px;
+  min-height: 64px;
+}
+
+.card-container--description .children-tags-container {
+  gap: 14px;
+  min-height: 70px;
+}

@@ -6,6 +6,7 @@ import * as yup from 'yup';
 import { Link, useNavigate } from 'react-router-dom';
 import { LoginHeader } from '@/widgets/LoginHeader/LoginHeader';
 import { Icon } from '@/shared/ui/Icon/Icon';
+import { FormField } from '@/shared/ui/FormField/FormField';
 import { Input } from '@/shared/ui/Input/Input';
 import styles from './LoginPage.module.css';
 
@@ -126,11 +127,12 @@ export const LoginPage = () => {
 
             <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
               {/* Поле Email */}
-              <div className={styles.field}>
-                <label htmlFor="email" className={styles.label}>
-                  Email
-                  <span className={styles.requiredStar}>*</span>
-                </label>
+              <FormField 
+                label="Email" 
+                error={errors.email?.message} 
+                required 
+                htmlFor="email"
+              >
                 <Input
                   id="email"
                   type="email"
@@ -140,17 +142,15 @@ export const LoginPage = () => {
                   error={!!errors.email}
                   size="md"
                 />
-                {errors.email && (
-                  <span className={styles.fieldError}>{errors.email.message}</span>
-                )}
-              </div>
+              </FormField>
 
               {/* Поле Пароль */}
-              <div className={styles.field}>
-                <label htmlFor="password" className={styles.label}>
-                  Пароль
-                  <span className={styles.requiredStar}>*</span>
-                </label>
+              <FormField 
+                label="Пароль" 
+                error={errors.password?.message} 
+                required 
+                htmlFor="password"
+              >
                 <div className={styles.passwordWrapper}>
                   <Input
                     id="password"
@@ -172,10 +172,7 @@ export const LoginPage = () => {
                     }
                   />
                 </div>
-                {errors.password && (
-                  <span className={styles.fieldError}>{errors.password.message}</span>
-                )}
-              </div>
+              </FormField>
 
               {authError && (
                 <div className={styles.authError}>

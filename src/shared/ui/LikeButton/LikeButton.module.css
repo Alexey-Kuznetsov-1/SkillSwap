@@ -1,0 +1,33 @@
+.likeButton {
+  border: none;
+  background: transparent;
+  padding-top: 3px;
+  padding-inline: 2px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.likeButton:hover:not(.disabled) {
+  transform: scale(1.1);
+}
+
+.likeButton:active:not(.disabled) {
+  transform: scale(0.95);
+}
+
+.liked .icon {
+  filter: brightness(0) saturate(100%) invert(43%) sepia(89%) saturate(1303%) hue-rotate(85deg) brightness(96%) contrast(92%);
+}
+
+.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.icon {
+  transition: filter 0.3s ease;
+}

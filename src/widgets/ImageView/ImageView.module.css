@@ -1,0 +1,135 @@
+.container {
+  width: fit-content;
+}
+
+.gallery {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+/* Контейнер с большой картинкой */
+.mainImageContainer {
+  position: relative;
+  width: 324px;
+  height: 324px;
+  flex-shrink: 0;
+  flex-grow: 0;
+}
+
+.mainImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+/* Кнопки навигации */
+.navButton {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.8);
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 2;
+  transition: background 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navButton:hover {
+  background: white;
+}
+
+.navButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.prevButton {
+  left: 10px;
+}
+
+.nextButton {
+  right: 10px;
+}
+
+/* Контейнер с миниатюрами */
+.thumbnailsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Миниатюры */
+.thumbnail {
+  box-sizing: border-box;
+  width: 92px;
+  height: 92px;
+  border-radius: 6px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border-color 0.3s;
+}
+
+.thumbnail:hover {
+  border-color: #ABD27A;
+}
+
+.active {
+  border-color: #ABD27A;
+}
+
+.thumbnailImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Блок с дополнительными изображениями («+N») */
+.moreImages {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  width: 92px;
+  height: 92px;
+  /*cursor: pointer; /* Делаем кликабельным */
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #FFFFFF80;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #253017;
+  font-family: Inter, sans-serif;
+  font-weight: 400;
+  font-style: Regular;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: -1.1%;
+  vertical-align: middle;
+  z-index: 2;
+  pointer-events: none; /* Разрешаем клики на изображение под наложением */
+}
+
+/* Заглушка при отсутствии изображений */
+.noImages {
+  padding: 24px;
+  text-align: center;
+  color: #253017;
+  border: 1px dashed #ABD27A;
+  border-radius: 12px;
+}

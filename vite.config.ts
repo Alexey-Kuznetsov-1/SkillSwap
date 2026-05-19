@@ -25,9 +25,7 @@ export default defineConfig({
   css: {
     modules: {
       // Эта настройка позволяет использовать kebab-case в CSS и обращаться к ним как есть
-      localsConvention: 'dashesOnly',
-      // Также можно добавить для консистентности
-      generateScopedName: '[name]__[local]___[hash:base64:5]',
+      localsConvention: 'dashes',
     },
   },
   test: {
