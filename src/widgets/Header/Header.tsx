@@ -1,4 +1,6 @@
+// src/widgets/Header/Header.tsx
 import React, { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/shared/ui/Button/Button';
 import { Icon } from '@/shared/ui/Icon/Icon';
 import { SearchInput } from '@/shared/ui/SearchInput/SearchInput';
@@ -13,6 +15,7 @@ interface HeaderProps {
 }
 
 const categories = [
+  // ... массив categories без изменений (такой же как был)
   {
     value: 'business_career',
     label: 'Бизнес и карьера',
@@ -99,6 +102,7 @@ const Header: React.FC<HeaderProps> = ({
   avatarSrc = '',
   onSearch,
 }) => {
+  const navigate = useNavigate();
   const [searchValue, setSearchValue] = useState('');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -136,10 +140,27 @@ const Header: React.FC<HeaderProps> = ({
     closeDropdown();
   };
 
+  const handleLoginClick = () => {
+    navigate('/login');
+  };
+
+  const handleRegisterClick = () => {
+    navigate('/register');
+  };
+
+  const handleLogoClick = () => {
+    navigate('/');
+  };
+
+  const handleProfileClick = () => {
+    navigate('/profile');
+  };
+
   return (
     <header className={styles.header}>
       <div className={styles.headerContent}>
-        <div className={styles.logo}>
+        {/* Логотип — ссылка на главную */}
+        <div className={styles.logo} onClick={handleLogoClick}>
           <div className={styles.logoIcon}>
             <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
               <rect width="40" height="40" rx="20" fill="#ABD27A"/>
@@ -190,16 +211,24 @@ const Header: React.FC<HeaderProps> = ({
             )}
           </div>
           {isLoggedIn ? (
-            <div className={styles.userInfo}>
+            <div className={styles.userInfo} onClick={handleProfileClick}>
               <span className={styles.userName}>{userName}</span>
               <div className={styles.avatarPlaceholder}>
-                {userName ? userName[0] : 'U'}
+                {avatarSrc ? (
+                  <img src={avatarSrc} alt={userName} className={styles.avatarImage} />
+                ) : (
+                  userName ? userName[0] : 'U'
+                )}
               </div>
             </div>
           ) : (
             <>
-              <Button variant="secondary">Войти</Button>
-              <Button variant="primary">Зарегистрироваться</Button>
+              <Button variant="secondary" onClick={handleLoginClick}>
+                Войти
+              </Button>
+              <Button variant="primary" onClick={handleRegisterClick}>
+                Зарегистрироваться
+              </Button>
             </>
           )}
         </div>

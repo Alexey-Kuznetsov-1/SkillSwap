@@ -28,6 +28,7 @@
   padding: 0px;
   gap: 12px;
   height: 40px;
+  cursor: pointer;
 }
 
 .logoIcon {
@@ -134,6 +135,7 @@
   flex-direction: row;
   align-items: center;
   gap: 12px;
+  cursor: pointer;
 }
 
 .userName {
