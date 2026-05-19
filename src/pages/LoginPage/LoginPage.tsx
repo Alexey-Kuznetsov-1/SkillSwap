@@ -7,6 +7,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { LoginHeader } from '@/widgets/LoginHeader/LoginHeader';
 import { Icon } from '@/shared/ui/Icon/Icon';
 import { FormField } from '@/shared/ui/FormField/FormField';
+import { Input } from '@/shared/ui/Input/Input';
 import styles from './LoginPage.module.css';
 
 interface LoginFormValues {
@@ -35,10 +36,15 @@ export const LoginPage = () => {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
+    watch,
   } = useForm<LoginFormValues>({
     resolver: yupResolver(loginSchema),
     mode: 'onBlur',
   });
+
+  const emailValue = watch('email', '');
+  const passwordValue = watch('password', '');
 
   const onSubmit = async (data: LoginFormValues) => {
     setAuthError(null);
@@ -120,22 +126,25 @@ export const LoginPage = () => {
             </div>
 
             <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+              {/* Поле Email */}
               <FormField 
                 label="Email" 
                 error={errors.email?.message} 
                 required 
                 htmlFor="email"
               >
-                <input
+                <Input
                   id="email"
                   type="email"
+                  value={emailValue}
+                  onChange={(value) => setValue('email', value, { shouldValidate: true })}
                   placeholder="Введите email"
-                  className={`${styles.input} ${errors.email ? styles.inputError : ''}`}
-                  {...register('email')}
-                  autoComplete="email"
+                  error={!!errors.email}
+                  size="md"
                 />
               </FormField>
 
+              {/* Поле Пароль */}
               <FormField 
                 label="Пароль" 
                 error={errors.password?.message} 
@@ -143,22 +152,25 @@ export const LoginPage = () => {
                 htmlFor="password"
               >
                 <div className={styles.passwordWrapper}>
-                  <input
+                  <Input
                     id="password"
                     type={showPassword ? 'text' : 'password'}
+                    value={passwordValue}
+                    onChange={(value) => setValue('password', value, { shouldValidate: true })}
                     placeholder="Введите ваш пароль"
-                    className={`${styles.input} ${styles.passwordInput} ${errors.password ? styles.inputError : ''}`}
-                    {...register('password')}
-                    autoComplete="current-password"
+                    error={!!errors.password}
+                    size="md"
+                    rightIcon={
+                      <button
+                        type="button"
+                        className={styles.eyeButton}
+                        onClick={togglePasswordVisibility}
+                        tabIndex={-1}
+                      >
+                        <Icon name={showPassword ? 'eye' : 'eye-slash'} size={20} />
+                      </button>
+                    }
                   />
-                  <button
-                    type="button"
-                    className={styles.eyeButton}
-                    onClick={togglePasswordVisibility}
-                    tabIndex={-1}
-                  >
-                    <Icon name={showPassword ? 'eye' : 'eye-slash'} size={20} />
-                  </button>
                 </div>
               </FormField>
 
