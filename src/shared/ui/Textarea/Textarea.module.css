@@ -19,7 +19,7 @@
   box-sizing: border-box;
   width: 100%;
   min-width: 436px;
-  min-height: 96px;
+  height: 96px;
   padding: 15px 20px;
   overflow: auto;
   font-family: var(--font-text);

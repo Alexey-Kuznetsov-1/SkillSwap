@@ -1,0 +1,257 @@
+/* Базовые стили контейнера */
+.container {
+  display: flex;
+  align-self: center;
+}
+
+/* Общие стили для зоны загрузки */
+.upload-zone {
+  position: relative;
+  cursor: pointer;
+  border-radius: 50%;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.upload-zone:hover {
+  background-color: var(--color-accent-pale);
+}
+
+.upload-zone.drag-over {
+  background-color: var(--color-accent-light);
+  border: 1px dashed var(--color-accent-dark);
+}
+
+/* Стили для одиночного выбора */
+.icon-upload {
+  width: 70px;
+  height: 70px;
+  border: 1px solid transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-upload:hover {
+  background-color: var(--color-accent-light);
+  border-radius: 50%;
+  transition: background-color 0.4s;
+}
+
+.preview-container {
+  position: relative;
+  display: inline-block;
+}
+
+.preview-container:hover {
+  border: 1px solid var(--color-accent-dark);
+  border-radius: 50%;
+  transition: border 0.4s;
+}
+
+.preview-image {
+  display: flex;
+  justify-content: center;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.remove-avatar-button {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 20px;
+  height: 20px;
+  background: #ff4444;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  transition: all 0.15s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.remove-avatar-button:hover {
+  background: #cc0000;
+  transform: scale(1.1);
+}
+
+.upload-icon {
+  line-height: 1;
+  text-align: center;
+}
+
+/* Стили для множественного выбора */
+
+.container-multiple {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  font-size: var(--font-size-text);
+  font-family: var(--font-text);
+  line-height: var(--font-line-height-text);
+  color: var(--color-caption);
+}
+
+.drop-zone {
+  height: 94px;
+  width: 100%;
+  border: 1px dashed var(--color-caption);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.drop-zone:hover {
+  border-color: #007bff;
+  background-color: #f8f9fa;
+}
+
+.drop-zone.dragOver {
+  border-color: #007bff;
+  background-color: #e3f2fd;
+}
+
+.placeholder {
+  text-align: center;
+}
+
+.icon {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 8px;
+  font-size: var(--font-size-text);
+  font-family: var(--font-text);
+  line-height: var(--font-line-height-text);
+  color: var(--color-accent-dark);
+}
+
+.placeholder p {
+  font-size: var(--font-size-text);
+  font-family: var(--font-text);
+  line-height: var(--font-line-height-text);
+  color: var(--color-caption);
+}
+
+.preview-grid {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  gap: 8px;
+  width: 100%;
+}
+
+.preview-item {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 6px;
+  overflow: hidden;
+  transition: transform 0.2s ease;
+}
+
+.preview-item:hover {
+  transform: translateY(-2px);
+}
+
+.preview-image-multiple {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+}
+
+.remove-button {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: var(--color-alarm);
+  border: 1px solid #ddd;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  z-index: 10;
+}
+
+.preview-item:hover .remove-button {
+  opacity: 1;
+}
+
+/* Информационные элементы */
+.info {
+  position: absolute;
+  bottom: 0;
+  left: 5px;
+  font-size: 12px;
+  color: #666;
+  text-align: center;
+  padding: 4px 0;
+}
+
+/* Скрытый input для выбора файлов */
+.file-input {
+  display: none;
+}
+
+/* Индикаторы загрузки */
+.loading-indicator,
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  border-radius: 8px;
+}
+
+.loading-indicator {
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.loading-overlay {
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+
+/* Анимации */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

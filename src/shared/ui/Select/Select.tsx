@@ -8,6 +8,7 @@ type TSelectOption = {
 };
 
 type TSelectProps = {
+  id?: string;
   options: TSelectOption[];
   value: string;
   onChange: (value: string) => void;
@@ -16,6 +17,7 @@ type TSelectProps = {
   error?: string;
   disabled?: boolean;
   className?: string;
+  autoComplete?: string;
 };
 
 export function Select({
@@ -27,6 +29,7 @@ export function Select({
   error,
   disabled = false,
   className = '',
+  autoComplete,
 }: TSelectProps) {
   const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
     onChange(event.target.value);
@@ -42,6 +45,7 @@ export function Select({
         onChange={handleChange}
         disabled={disabled}
         aria-invalid={Boolean(error)}
+        autoComplete={autoComplete}
       >
         {placeholder ? (
           <option value='' disabled>

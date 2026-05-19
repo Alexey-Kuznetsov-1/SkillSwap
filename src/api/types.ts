@@ -166,3 +166,20 @@ export type SkillsCatalogResult = {
   // Есть ли следующая порция данных.
   hasMore: boolean;
 };
+
+export interface RegistrationFormData {
+  email: string;
+  password: string;
+  avatar: File | null;
+  name: string;
+  birthDate: string;
+  gender: string;
+  city: string;
+  categoryToLearn: number;
+  subcategoryToLearn: number;
+  categoryToTeach: number;
+  subcategoryToTeach: number;
+  skillName: string;
+  skillDescription: string;
+  photos: File[];
+}

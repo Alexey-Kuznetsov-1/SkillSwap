@@ -8,13 +8,25 @@ import { Icon } from '../../shared/ui/Icon/Icon';
 import { Button } from '../../shared/ui/Button/Button';
 import { ru } from '@daypicker/react/locale';
 
-export default function DatePicker() {
+interface DatePickerProps {
+  onDateSelect: (date: string) => void;
+  selectedDate?: Date;
+  label?: string;
+}
+
+export default function DatePicker({
+  onDateSelect,
+  selectedDate: initialDate,
+  label = 'Дата рождения',
+}: DatePickerProps) {
   const calendarRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [month, setMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState(
+    initialDate ? format(initialDate, 'MM.dd.yyyy') : '',
+  );
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 
   const toggleCalendar = useCallback((e: React.MouseEvent) => {
@@ -47,10 +59,12 @@ export default function DatePicker() {
     if (!date) {
       setInputValue('');
       setSelectedDate(undefined);
+      onDateSelect('');
     } else {
       setSelectedDate(date);
-      setInputValue(format(date, 'MM.dd.yyyy'));
+      setInputValue(format(date, 'dd.MM.yyyy'));
       setMonth(date);
+      onDateSelect(format(date, 'yyyy-MM-dd'));
     }
     setIsCalendarOpen(false);
   };
@@ -58,7 +72,7 @@ export default function DatePicker() {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
 
-    const parsedDate = parse(e.target.value, 'MM.dd.yyyy', new Date());
+    const parsedDate = parse(e.target.value, 'dd.MM.yyyy', new Date());
     if (isValid(parsedDate)) {
       setSelectedDate(parsedDate);
       setMonth(parsedDate);
@@ -74,7 +88,7 @@ export default function DatePicker() {
   return (
     <div className={styles.container}>
       <label htmlFor='calendar-input' className={styles.label}>
-        Дата рождения
+        {label}
       </label>
       <div
         className={styles['group']}
@@ -91,6 +105,7 @@ export default function DatePicker() {
           value={inputValue}
           placeholder='дд.мм.гггг'
           onChange={handleInputChange}
+          autoComplete='bday'
         />
         <Icon name='calendar' size='24' className={styles.icon}></Icon>
       </div>
@@ -124,13 +139,18 @@ export default function DatePicker() {
                   variant='secondary'
                   children='Отменить'
                   type='reset'
-                  onClick={() => console.log('Отменить')}
+                  onClick={() => {
+                    setInputValue(''); // сбрасываем значение инпута
+                    setSelectedDate(undefined); // очищаем выбранную дату
+                    setIsCalendarOpen(false); // закрываем календарь
+                    onDateSelect(''); // передаём пустое значение родительскому компоненту
+                  }}
                 />
                 <Button
                   variant='primary'
                   children='Выбрать'
                   type='submit'
-                  onClick={() => console.log('Выбрать')}
+                  onClick={() => setIsCalendarOpen(false)}
                 />
               </div>
             }

@@ -1,0 +1,20 @@
+.container {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: center;
+}
+
+.line {
+  width: 60px;
+  border: 2px solid var(--color-accent-pale);
+  border-radius: 8px;
+}
+
+.green {
+  border-color: var(--color-accent-main);
+}
+
+.gray {
+  border-color: var(--color-accent-pale);
+}

@@ -1,11 +1,5 @@
 @import '../../app/styles/fonts.css';
 
-:root {
-  --font-text: 'Roboto';
-  --color-text-main: #253017;
-  --color-bg:  #FFFFFF;
-}
-
 /*Стили для варианта default*/
 
 .card-container {
@@ -45,7 +39,9 @@
 }
 
 .text-name--user {
-  font-family: Open Sans, sans-serif;
+  font-family:
+    Open Sans,
+    sans-serif;
   font-weight: 600;
   font-style: SemiBold;
   font-size: 20px;
@@ -116,8 +112,6 @@
 
 /*Стили в зависимости от выбранного варианта компонента*/
 
-
-
 .card-container--default {
   padding: 20px;
   gap: 20px;
@@ -136,7 +130,7 @@
   gap: 24px;
 }
 
-.card-container--default  .children-tags-container {
+.card-container--default .children-tags-container {
   gap: 8px;
   min-height: 64px;
 }
