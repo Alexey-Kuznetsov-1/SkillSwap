@@ -23,6 +23,7 @@ const textCityAg = styles['text-city--age'];
 const tagsContainer = styles['tags-container'];
 const childrenTagsContainer = styles['children-tags-container'];
 const titleTags = styles['title-tags'];
+const childrenTags = styles['children-tags'];
 
 export interface PropsSkillCard {
     variant?: 'default' | 'description';
@@ -91,7 +92,7 @@ export const CardSkill: React.FC<PropsSkillCard> = ({
 
     const handleLikeChange = async (liked: boolean) => {
       if (!isAuthenticated) {
-        navigate('/register');
+        navigate('/login');
         return;
       }
 
@@ -242,15 +243,19 @@ export const CardSkill: React.FC<PropsSkillCard> = ({
       <div className={tagsContainer}>
         <div className={childrenTagsContainer}>
           <h4 className={titleTags}>Может научить:</h4>
-          {renderLimitedTags(skills, 'teach') || (
-            <span className={styles['no-skills']}>Нет скиллов для обучения</span>
-          )}
+          <div className={childrenTags}>
+            {renderLimitedTags(skills, 'teach') || (
+              <span className={styles['no-skills']}>Нет скиллов для обучения</span>
+            )}
+          </div>
         </div>
         <div className={childrenTagsContainer}>
           <h4 className={titleTags}> Хочет научиться:</h4>
-          {renderLimitedTags(wantedSkills, 'learn') || (
-            <span className={styles['no-skills']}>Пока не хочет ничему учиться</span>
-          )}
+          <div className={childrenTags}>
+            {renderLimitedTags(wantedSkills, 'learn') || (
+              <span className={styles['no-skills']}>Пока не хочет ничему учиться</span>
+            )}
+          </div>
         </div>
       </div>
       {variant === 'default' && (
