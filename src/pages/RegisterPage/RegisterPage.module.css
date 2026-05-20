@@ -338,6 +338,7 @@
 .actions {
   display: flex;
   width: 100%;
+  margin-top: 16px;
   justify-content: space-between;
 }
 
@@ -354,4 +355,58 @@
   font-size: var(--font-size-caption);
   line-height: var(--font-line-height-caption);
   color: var(--color-error);
+}
+
+/* Модалка */
+
+.skill-data-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 44px;
+  width: 904px;
+}
+
+.confirmation-content {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  width: 420px;
+}
+
+.skill-title {
+  font-size: var(--font-size-heading-section);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-main);
+  line-height: var(--font-line-height-heading-section);
+  margin: 0 0 4px;
+}
+
+.skill-category {
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-regular);
+  color: var(--color-caption);
+  line-height: var(--font-line-height-caption);
+  margin-bottom: 20px;
+}
+
+.skill-description {
+  font-size: var(--font-size-text);
+  font-weight: var(--font-weight-regular);
+  color: var(--color-text-main);
+  line-height: var(--font-line-height-text);
+  letter-spacing: 2%;
+  max-height: 176px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.confirmation-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: auto;
+}
+
+.actions-button-modal {
+  width: 204px;
 }
