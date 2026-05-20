@@ -43,6 +43,7 @@ export interface PropsSkillCard {
     className?:string
     isAuthenticated?: boolean;
     skills?: SkillCard[];
+    wantedSkills?: SkillCard[];
     userAuthenticated?: User;
   };
 
@@ -61,11 +62,26 @@ export const CardSkill: React.FC<PropsSkillCard> = ({
   initialLiked = false,
   isAuthenticated = false,
   skills = [],
+  wantedSkills = [],
   variant = 'default',
   descriptionUser,
   userAuthenticated,
   ...restProps
 }) => {
+    // 📊 ЛОГ ДЛЯ ОТЛАДКИ
+    console.log('🔍 CardSkill received:', { 
+      idSkill,
+      skillName,
+      authorName,
+      authorCity,
+      authorAge,
+      typeSkill,
+      skillsCount: skills.length,
+      wantedSkillsCount: wantedSkills.length,
+      skills: skills.map(s => ({ id: s.id, name: s.name, direction: s.direction })),
+      wantedSkills: wantedSkills.map(s => ({ id: s.id, name: s.name, direction: s.direction }))
+    });
+
     const navigate = useNavigate();
     const [isLiked, setIsLiked] = useState(initialLiked);
 
@@ -122,7 +138,11 @@ export const CardSkill: React.FC<PropsSkillCard> = ({
     };
 
   const renderLimitedTags = (skillList: SkillCard[], direction: 'teach' | 'learn') => {
+    console.log(`📋 renderLimitedTags для ${direction}:`, skillList.map(s => ({ name: s.name, direction: s.direction })));
+    
     const filteredSkills = skillList.filter(skill => skill.direction === direction);
+    console.log(`📋 Отфильтровано для ${direction}:`, filteredSkills.length);
+    
     if (filteredSkills.length === 0) return null;
 
     const visibleSkills = filteredSkills.slice(0, 2);
@@ -228,7 +248,7 @@ export const CardSkill: React.FC<PropsSkillCard> = ({
         </div>
         <div className={childrenTagsContainer}>
           <h4 className={titleTags}> Хочет научиться:</h4>
-          {renderLimitedTags(skills, 'learn') || (
+          {renderLimitedTags(wantedSkills, 'learn') || (
             <span className={styles['no-skills']}>Пока не хочет ничему учиться</span>
           )}
         </div>

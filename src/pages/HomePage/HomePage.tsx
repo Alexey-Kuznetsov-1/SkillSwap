@@ -1,27 +1,13 @@
-// HomePage.tsx
+// src/pages/HomePage/HomePage.tsx
 import React, { useEffect, useState } from 'react';
 import Header from '@/widgets/Header';
 import Footer from '@/widgets/Footer';
 import FiltersSidebar from '@/widgets/FiltersSidebar';
 import Catalog from '@/widgets/Catalog';
-import { useFavorites } from '@/shared/hooks/useFavorites';
+import { getSkillsCatalog, type SkillCard } from '@/api';
 import styles from './HomePage.module.css';
 
-interface TempSkill {
-  id: number;
-  title: string;
-  description: string;
-  type: 'teach' | 'learn';
-  category: string;
-  subCategory: string;
-  author: string;
-  authorCity: string;
-  authorGender: string;
-  authorAge: number;
-  authorAvatar: string;
-  likes: number;
-}
-
+// Константы для фильтров (оставляем как было)
 const categories = [
   { value: 'business', label: 'Бизнес и карьера' },
   { value: 'art', label: 'Творчество и искусство' },
@@ -82,6 +68,21 @@ const allCities = [
   'Уфа', 'Красноярск', 'Пермь', 'Воронеж', 'Волгоград',
 ];
 
+interface TempSkill {
+  id: number;
+  title: string;
+  description: string;
+  type: 'teach' | 'learn';
+  category: string;
+  subCategory: string;
+  author: string;
+  authorCity: string;
+  authorGender: string;
+  authorAge: number;
+  authorAvatar: string;
+  likes: number;
+}
+
 const HomePage: React.FC = () => {
   const [allSkills, setAllSkills] = useState<TempSkill[]>([]);
   const [loading, setLoading] = useState(true);
@@ -96,8 +97,6 @@ const HomePage: React.FC = () => {
   const [selectedCities, setSelectedCities] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const { favorites } = useFavorites();
-
   const hasFilters =
     skillType !== 'all' ||
     selectedCategories.length > 0 ||
@@ -106,13 +105,29 @@ const HomePage: React.FC = () => {
     selectedCities.length > 0 ||
     searchQuery;
 
+  // Загрузка навыков через API
   useEffect(() => {
     const fetchSkills = async () => {
       try {
-        const response = await fetch('/db/skills.json');
-        const data = await response.json();
-        const skillsData = data.data || data.skills || [];
-        setAllSkills(skillsData);
+        const result = await getSkillsCatalog({ limit: 100 });
+        console.log('✅ HomePage загружено навыков:', result.items.length);
+        
+        const transformedSkills: TempSkill[] = result.items.map(skill => ({
+          id: skill.id,
+          title: skill.name,
+          description: skill.description,
+          type: skill.direction,
+          category: skill.category,
+          subCategory: skill.subcategory,
+          author: skill.author.name,
+          authorCity: skill.author.city,
+          authorGender: '',
+          authorAge: skill.author.age,
+          authorAvatar: skill.author.avatarUrl,
+          likes: skill.likesCount
+        }));
+        
+        setAllSkills(transformedSkills);
       } catch (error) {
         console.error('Ошибка загрузки навыков:', error);
       } finally {
@@ -156,29 +171,30 @@ const HomePage: React.FC = () => {
   const popularSkillsAll = [...allSkills].sort((a, b) => b.likes - a.likes);
   const newSkillsAll = [...allSkills].sort((a, b) => b.id - a.id);
   
-  const popularSkills = showAllPopular ? popularSkillsAll : popularSkillsAll.slice(0, 3);
-  const newSkills = showAllNew ? newSkillsAll : newSkillsAll.slice(0, 3);
+  // ✅ УБИРАЕМ slice(0, 3) - показываем ВСЕ карточки
+  const popularSkills = showAllPopular ? popularSkillsAll : popularSkillsAll;
+  const newSkills = showAllNew ? newSkillsAll : newSkillsAll;
   const recommendedSkills = hasFilters ? filteredSkills : allSkills;
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
   };
 
-const handleCategoryToggle = (categoryValue: string) => {
-  const isSelected = selectedCategories.includes(categoryValue);
-  
-  if (isSelected) {
-    setSelectedCategories((prev) => prev.filter((c) => c !== categoryValue));
-    const subCategoriesToRemove = subCategories
-      .filter((sub) => sub.parentCategory === categoryValue)
-      .map((sub) => sub.value);
-    setSelectedSubCategories((prev) =>
-      prev.filter((sub) => !subCategoriesToRemove.includes(sub))
-    );
-  } else {
-    setSelectedCategories((prev) => [...prev, categoryValue]);
-  }
-};
+  const handleCategoryToggle = (categoryValue: string) => {
+    const isSelected = selectedCategories.includes(categoryValue);
+    
+    if (isSelected) {
+      setSelectedCategories((prev) => prev.filter((c) => c !== categoryValue));
+      const subCategoriesToRemove = subCategories
+        .filter((sub) => sub.parentCategory === categoryValue)
+        .map((sub) => sub.value);
+      setSelectedSubCategories((prev) =>
+        prev.filter((sub) => !subCategoriesToRemove.includes(sub))
+      );
+    } else {
+      setSelectedCategories((prev) => [...prev, categoryValue]);
+    }
+  };
 
   const handleSubCategoryToggle = (subCategoryValue: string) => {
     setSelectedSubCategories((prev) =>
@@ -232,7 +248,7 @@ const handleCategoryToggle = (categoryValue: string) => {
               {hasFilters ? (
                 <>
                   <h2 className={styles.sectionTitle}>Подходящие предложения</h2>
-                  <Catalog skills={filteredSkills} />
+                  <Catalog skills={filteredSkills} allSkills={allSkills} />
                 </>
               ) : (
                 <>
@@ -246,7 +262,7 @@ const handleCategoryToggle = (categoryValue: string) => {
                         {showAllPopular ? 'Скрыть' : 'Смотреть все'}
                       </button>
                     </div>
-                    <Catalog skills={popularSkills} />
+                    <Catalog skills={popularSkills} allSkills={allSkills} />
                   </div>
                   <div className={styles.section}>
                     <div className={styles.sectionHeader}>
@@ -258,13 +274,13 @@ const handleCategoryToggle = (categoryValue: string) => {
                         {showAllNew ? 'Скрыть' : 'Смотреть все'}
                       </button>
                     </div>
-                    <Catalog skills={newSkills} />
+                    <Catalog skills={newSkills} allSkills={allSkills} />
                   </div>
                   <div className={styles.section}>
                     <div className={styles.sectionHeader}>
                       <h2 className={styles.sectionTitle}>Рекомендуем</h2>
                     </div>
-                    <Catalog skills={recommendedSkills} />
+                    <Catalog skills={recommendedSkills} allSkills={allSkills} />
                   </div>
                 </>
               )}

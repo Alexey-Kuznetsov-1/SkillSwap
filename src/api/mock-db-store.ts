@@ -1,3 +1,4 @@
+// src/api/mock-db-store.ts
 import { fetchJson, type ApiListResponse } from '@/api/client';
 import type {
   Category,
@@ -21,7 +22,6 @@ type MockDbState = {
   userSubcategoriesWantToLearn: UserSubcategoryWantToLearn[];
 };
 
-// Пути ко всем mock-таблицам проекта.
 const DB_PATHS = {
   skills: '/db/skills.json',
   categories: '/db/categories.json',
@@ -33,13 +33,12 @@ const DB_PATHS = {
   userSubcategoriesWantToLearn: '/db/user-subcategories-want-to-learn.json'
 } as const;
 
-// Кэш состояния в памяти текущего запуска приложения.
 let cachedState: MockDbState | null = null;
-// Защита от параллельной повторной загрузки одних и тех же данных.
 let loadingPromise: Promise<MockDbState> | null = null;
 
 async function loadAllMockData(): Promise<MockDbState> {
-  // Загружаем все JSON параллельно один раз на старт.
+  console.log('🔄 Начинаем загрузку mock-данных...');
+
   const [
     skillsRes,
     categoriesRes,
@@ -60,33 +59,56 @@ async function loadAllMockData(): Promise<MockDbState> {
     fetchJson<ApiListResponse<UserSubcategoryWantToLearn>>(DB_PATHS.userSubcategoriesWantToLearn)
   ]);
 
+  const skillsData = Array.isArray(skillsRes.skills) 
+    ? skillsRes.skills 
+    : (Array.isArray(skillsRes.data) ? skillsRes.data : []);
+  
+  const categoriesData = Array.isArray(categoriesRes.data) ? categoriesRes.data : [];
+  const subcategoriesData = Array.isArray(subcategoriesRes.data) ? subcategoriesRes.data : [];
+  const usersData = Array.isArray(usersRes.data) ? usersRes.data : [];
+  const skillImagesData = Array.isArray(skillImagesRes.data) ? skillImagesRes.data : [];
+  const skillLikesData = Array.isArray(skillLikesRes.data) ? skillLikesRes.data : [];
+  const citiesData = Array.isArray(citiesRes.data) ? citiesRes.data : [];
+  const userSubcategoriesWantToLearnData = Array.isArray(userSubcategoriesWantToLearnRes.data) 
+    ? userSubcategoriesWantToLearnRes.data 
+    : [];
+
+  console.log('✅ Загружено:', {
+    skills: skillsData.length,
+    categories: categoriesData.length,
+    subcategories: subcategoriesData.length,
+    users: usersData.length,
+    skillImages: skillImagesData.length,
+    skillLikes: skillLikesData.length,
+    cities: citiesData.length,
+    userSubcategoriesWantToLearn: userSubcategoriesWantToLearnData.length
+  });
+
   return {
-    skills: skillsRes.data,
-    categories: categoriesRes.data,
-    subcategories: subcategoriesRes.data,
-    users: usersRes.data,
-    skillImages: skillImagesRes.data,
-    skillLikes: skillLikesRes.data,
-    cities: citiesRes.data,
-    userSubcategoriesWantToLearn: userSubcategoriesWantToLearnRes.data
+    skills: skillsData,
+    categories: categoriesData,
+    subcategories: subcategoriesData,
+    users: usersData,
+    skillImages: skillImagesData,
+    skillLikes: skillLikesData,
+    cities: citiesData,
+    userSubcategoriesWantToLearn: userSubcategoriesWantToLearnData
   };
 }
 
 export async function initMockDbStore(): Promise<MockDbState> {
-  // Если уже инициализировано — сразу возвращаем данные.
   if (cachedState) {
+    console.log('📦 Возвращаем кэшированные данные');
     return cachedState;
   }
 
   if (!loadingPromise) {
-    // Если загрузка еще не начата — запускаем ее и сохраняем промис.
     loadingPromise = loadAllMockData()
       .then((state) => {
         cachedState = state;
         return state;
       })
       .finally(() => {
-        // После завершения снимаем "флаг загрузки".
         loadingPromise = null;
       });
   }
@@ -95,16 +117,13 @@ export async function initMockDbStore(): Promise<MockDbState> {
 }
 
 export async function getMockDbState(): Promise<MockDbState> {
-  // Ленивая инициализация на случай вызова API до bootstrap.
   if (cachedState) {
     return cachedState;
   }
-
   return initMockDbStore();
 }
 
 export function resetMockDbStore(): void {
-  // Нужен в тестах/отладке, чтобы принудительно сбросить состояние.
   cachedState = null;
   loadingPromise = null;
 }
