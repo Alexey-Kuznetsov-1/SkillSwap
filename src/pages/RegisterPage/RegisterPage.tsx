@@ -14,8 +14,10 @@ import { Textarea } from '@/shared/ui/Textarea/Textarea';
 import { ImageUploadField } from '../../shared/ui/ImageDropper/ImageDropper';
 import type { RegistrationFormData } from '@/api/types';
 import { parse, isValid } from 'date-fns';
-import { registerUser } from '../../api/skills.api';
+import { useAuth } from '../../shared/hooks/useAuth';
 import { getMockDbState } from '@/api/mock-db-store';
+import { ModalUI } from '@/shared/ui/Modal/Modal';
+import { ImageView } from '../../widgets/ImageView/ImageView';
 
 // Предварительно загруженные данные
 let cachedCities: { value: string; label: string }[] = [];
@@ -71,11 +73,6 @@ const getCategoryField = (type: CategoryType) =>
 const getSubcategoryField = (type: CategoryType) =>
   type === 'learn' ? 'subcategoryToLearn' : 'subcategoryToTeach';
 
-const filterSubcategoriesByCategory = (categoryId: number) =>
-  cachedSubcategories
-    .filter((sub) => sub.categoryId === categoryId)
-    .map((sub) => ({ value: sub.value, label: sub.label }));
-
 // Синхронная валидация на основе кэшированных данных
 const registrationSchema = yup.object({
   email: yup
@@ -88,17 +85,22 @@ const registrationSchema = yup.object({
     .min(8, 'Пароль должен быть не менее 8 символов'),
 
   avatar: yup
-    .mixed<File>()
-    .nullable() // разрешает null
+    .string() // теперь string вместо mixed<File>
+    .nullable()
     .defined()
-    .test('fileSize', 'Аватар не должен превышать 5 МБ', (value) => {
-      if (!value) return true;
-      return value.size <= 5 * 1024 * 1024;
-    })
-    .test('fileType', 'Допустимые форматы: JPG, PNG, WEBP', (value) => {
-      if (!value) return true;
-      return ['image/jpeg', 'image/png', 'image/webp'].includes(value.type);
-    }),
+    .test(
+      'valid-avatar',
+      'Аватар должен быть корректным URL или null',
+      (value) => {
+        if (!value) return true; // null допустим
+        try {
+          new URL(value); // проверяем, что это валидный URL
+          return true;
+        } catch {
+          return false;
+        }
+      },
+    ),
   name: yup.string().required('Имя обязательно'),
   birthDate: yup
     .string()
@@ -108,7 +110,14 @@ const registrationSchema = yup.object({
       const parsedDate = parse(value, 'yyyy-MM-dd', new Date());
       return isValid(parsedDate);
     }),
-  gender: yup.string().required('Пол обязателен'),
+  gender: yup
+    .string()
+    .required('Пол обязателен')
+    .transform((value) => (value === '' ? undefined : value))
+    .test('valid-gender', 'Выберите корректный пол', (value) => {
+      if (!value) return false;
+      return ['female', 'male'].includes(value);
+    }),
   city: yup
     .string()
     .required('Город обязателен')
@@ -131,6 +140,7 @@ const registrationSchema = yup.object({
       'valid-subcategory',
       'Подкатегория не найдена',
       (value, { parent }) => {
+        if (!value || !parent.categoryToLearn) return false;
         const subcategory = cachedSubcategories.find(
           (sub) => sub.value === value,
         );
@@ -151,8 +161,9 @@ const registrationSchema = yup.object({
     .required('Подкатегория навыка обязательна')
     .test(
       'valid-subcategory-teach',
-      'Подкатегория не найдена',
+      'Подкатегория не найдена или не соответствует категории',
       (value, { parent }) => {
+        if (!value || !parent.categoryToTeach) return false;
         const subcategory = cachedSubcategories.find(
           (sub) => sub.value === value,
         );
@@ -191,6 +202,17 @@ const RegisterPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  const { login } = useAuth();
+  const [uploadedPhotoUrls, setUploadedPhotoUrls] = useState<string[]>([]);
+
+  const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
+  const generateUserId = (): string => {
+    return (
+      'user-' +
+      Math.random().toString(36).substr(2, 9) +
+      Date.now().toString().substr(-4)
+    );
+  };
   const [openSelects, setOpenSelects] = useState<Record<string, boolean>>({});
   const [authError, setAuthError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -205,17 +227,8 @@ const RegisterPage = () => {
   const [subcategoryOptions, setSubcategoryOptions] = useState<
     { value: number; label: string }[]
   >([]);
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
 
-  const [birthDate, setBirthDate] = useState<string>('');
-  const [selectedCity, setSelectedCity] = useState<string>('');
-  const [categoryToLearn, setCategoryToLearn] = useState<number | null>(null);
-  const [subcategoryToLearn, setSubcategoryToLearn] = useState<number | null>(
-    null,
-  );
-  const [categoryToTeach, setCategoryToTeach] = useState<number | null>(null);
-  const [subcategoryToTeach, setSubcategoryToTeach] = useState<number | null>(
-    null,
-  );
   const [currentContainer, setCurrentContainer] = useState<1 | 2 | 3>(1);
   const [avatar, setAvatar] = useState<File | null>(null);
   const [uploadedPhotos, setUploadedPhotos] = useState<File[]>([]);
@@ -239,21 +252,26 @@ const RegisterPage = () => {
 
   useEffect(() => {
     const loadData = async () => {
-      if (cityOptions.length > 0) return; // уже загружены
+      if (cityOptions.length > 0 && categoryOptions.length > 0) {
+        return;
+      }
+
+      if (isLoading) return;
 
       try {
         const { cities, categories, subcategories } = await loadInitialData();
         setCityOptions(cities);
         setCategoryOptions(categories);
         cachedSubcategories = subcategories;
-        setSubcategoryOptions([]);
       } catch (error) {
         console.error('Ошибка загрузки начальных данных:', error);
         setAuthError('Не удалось загрузить данные. Попробуйте позже.');
+      } finally {
+        setIsLoading(false); // Всегда сбрасываем загрузку
       }
     };
     loadData();
-  }, [cityOptions.length]);
+  }, [cityOptions.length, categoryOptions.length, isLoading]); // зависимость только по длине массива
 
   const openSelect = (id: string) => {
     setOpenSelects((prev) => ({ ...prev, [id]: true }));
@@ -265,7 +283,6 @@ const RegisterPage = () => {
 
   const {
     register,
-    handleSubmit,
     formState: { errors },
     setValue,
     trigger,
@@ -283,214 +300,199 @@ const RegisterPage = () => {
       birthDate: '',
       gender: '',
       city: '',
-      categoryToLearn: 0,
-      subcategoryToLearn: 0,
-      categoryToTeach: 0,
-      subcategoryToTeach: 0,
+      categoryToLearn: undefined,
+      subcategoryToLearn: undefined,
+      categoryToTeach: undefined,
+      subcategoryToTeach: undefined,
       skillName: '',
       skillDescription: '',
       photos: [],
     },
   });
 
-  const filteredSubcategories = useMemo(() => {
-    if (categoryToLearn === null) {
-      return [];
-    }
+  const selectedCity = watch('city');
+  const categoryToLearn = watch('categoryToLearn');
+  const subcategoryToLearn = watch('subcategoryToLearn');
+  const categoryToTeach = watch('categoryToTeach');
+  const subcategoryToTeach = watch('subcategoryToTeach');
+  const birthDate = watch('birthDate');
 
-    return filterSubcategoriesByCategory(categoryToLearn);
-  }, [categoryToLearn]);
+  const filteredSubcategories = useMemo(() => {
+    const currentCategory =
+      currentContainer === 2 ? categoryToLearn : categoryToTeach;
+
+    if (!currentCategory) return [];
+
+    return cachedSubcategories
+      .filter((sub) => sub.categoryId === currentCategory)
+      .map((sub) => ({ value: sub.value, label: sub.label }));
+  }, [categoryToLearn, categoryToTeach, currentContainer]);
 
   useEffect(() => {
     setSubcategoryOptions(filteredSubcategories);
 
     // Сбрасываем выбранную подкатегорию, если она не относится к новой категории
-    if (
-      subcategoryToLearn !== null &&
-      !filteredSubcategories.some((sub) => sub.value === subcategoryToLearn)
-    ) {
-      setSubcategoryToLearn(null);
-      setValue('subcategoryToLearn', 0);
-    }
-  }, [filteredSubcategories, subcategoryToLearn, setValue]);
-
-  const validateCurrentStep = useCallback(async (): Promise<boolean> => {
-    if (currentContainer === 1) {
-      const result = await trigger(['email', 'password']);
-      console.log('Валидация шага 1:', result, errors);
-      return result;
-    } else if (currentContainer === 2) {
-      const result = await trigger([
-        'avatar',
-        'name',
-        'birthDate',
-        'gender',
-        'city',
-        'categoryToLearn',
-        'subcategoryToLearn',
-      ]);
-      console.log('Валидация шага 2:', result, errors);
-      return result;
+    if (currentContainer === 2) {
+      if (
+        subcategoryToLearn !== undefined &&
+        !filteredSubcategories.some((sub) => sub.value === subcategoryToLearn)
+      ) {
+        setValue('subcategoryToLearn', NaN, {
+          shouldValidate: true,
+          shouldDirty: true,
+        });
+      }
     } else if (currentContainer === 3) {
-      const result = await trigger([
-        'categoryToTeach',
-        'subcategoryToTeach',
-        'skillName',
-        'skillDescription',
-        'photos',
-      ]);
-      console.log('Валидация шага 3:', result, errors);
-      return result;
+      if (
+        subcategoryToTeach !== undefined &&
+        !filteredSubcategories.some((sub) => sub.value === subcategoryToTeach)
+      ) {
+        setValue('subcategoryToTeach', NaN, {
+          shouldValidate: true,
+          shouldDirty: true,
+        });
+      }
     }
-    return true;
-  }, [currentContainer, trigger, errors]);
+  }, [
+    filteredSubcategories,
+    subcategoryToLearn,
+    subcategoryToTeach,
+    currentContainer,
+    setValue,
+  ]);
+
+  const validateCurrentStep = useCallback(
+    async (field?: keyof RegistrationFormData): Promise<boolean> => {
+      if (field) {
+        // Валидируем только переданное поле
+        return await trigger([field]);
+      }
+
+      // Иначе — все поля текущего шага
+      let fieldsToValidate: (keyof RegistrationFormData)[];
+
+      switch (currentContainer) {
+        case 1:
+          fieldsToValidate = ['email', 'password'];
+          break;
+        case 2:
+          fieldsToValidate = [
+            'name',
+            'birthDate',
+            'gender',
+            'city',
+            'avatar',
+            'categoryToLearn',
+            'subcategoryToLearn',
+          ];
+          break;
+        case 3:
+          fieldsToValidate = [
+            'categoryToTeach',
+            'subcategoryToTeach',
+            'skillName',
+            'skillDescription',
+            'photos',
+          ];
+          break;
+        default:
+          fieldsToValidate = [];
+      }
+
+      return await trigger(fieldsToValidate);
+    },
+    [currentContainer, trigger],
+  );
 
   // Единый обработчик выбора города
-  const handleCitySelect = async (cityName: string) => {
-    setSelectedCity(cityName);
-    setValue('city', cityName);
-    setCollectedData((prev) => ({ ...prev, city: cityName }));
-
-    await validateCurrentStep();
+  const handleCitySelect = (cityName: string) => {
+    setValue('city', cityName, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
   };
 
-  const handleCategorySelect = async (
-    categoryId: number,
-    type: CategoryType,
-  ) => {
+  const handleCategorySelect = (categoryId: number, type: CategoryType) => {
     const categoryField = getCategoryField(type);
-    const setCategory =
-      type === 'learn' ? setCategoryToLearn : setCategoryToTeach;
+    const subcategoryField = getSubcategoryField(type);
 
-    // Обновляем локальное состояние
-    setCategory(categoryId);
-
-    // Устанавливаем значение в форме
     setValue(categoryField, categoryId, {
       shouldValidate: true,
       shouldDirty: true,
     });
 
-    // Фильтруем подкатегории для выбранной категории
-    const filtered = filterSubcategoriesByCategory(categoryId);
-    setSubcategoryOptions(filtered);
-
-    // Сброс подкатегории, если она не относится к новой категории
-    const currentSubcategory =
-      type === 'learn' ? subcategoryToLearn : subcategoryToTeach;
-    const setSubcategory =
-      type === 'learn' ? setSubcategoryToLearn : setSubcategoryToTeach;
-    const subcategoryField = getSubcategoryField(type);
-
-    if (
-      currentSubcategory !== null &&
-      !filtered.some((sub) => sub.value === currentSubcategory)
-    ) {
-      setSubcategory(null);
-      setValue(subcategoryField, 0, {
-        shouldValidate: true,
-        shouldDirty: true,
-      });
-    }
-
-    // Обновляем collectedData
-    setCollectedData((prev) => ({
-      ...prev,
-      [categoryField]: categoryId,
-      [subcategoryField]: null, // сбрасываем подкатегорию
-    }));
-
-    // Запускаем валидацию
-    await validateCurrentStep();
+    // Сбрасываем подкатегорию при смене категории
+    setValue(subcategoryField, NaN, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
   };
 
-  const handleSubcategorySelect = async (
+  const handleSubcategorySelect = (
     subcategoryId: number,
     type: CategoryType,
   ) => {
-    const setSubcategory =
-      type === 'learn' ? setSubcategoryToLearn : setSubcategoryToTeach;
     const subcategoryField = getSubcategoryField(type);
-
-    // Обновляем локальное состояние
-    setSubcategory(subcategoryId);
-
-    // Устанавливаем значение в форме
     setValue(subcategoryField, subcategoryId, {
       shouldValidate: true,
       shouldDirty: true,
     });
-
-    // Обновляем collectedData
-    setCollectedData((prev) => ({
-      ...prev,
-      [subcategoryField]: subcategoryId,
-    }));
-
-    // Запускаем валидацию
-    await validateCurrentStep();
   };
 
   // Обработчик загрузки аватара
   const handleAvatarUpload = async (file: File) => {
     setAvatar(file);
-    setValue('avatar', file);
 
-    setCollectedData((prev) => ({ ...prev, avatar: file }));
-    await validateCurrentStep();
+    // Создаём URL для отображения
+    const newAvatarUrl = URL.createObjectURL(file);
+    setAvatarUrl(newAvatarUrl);
+
+    // Сохраняем URL в форму (тип string | null)
+    setValue('avatar', newAvatarUrl, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+
+    await validateCurrentStep('avatar');
   };
+
+  // Очистка при размонтировании
+  useEffect(() => {
+    return () => {
+      if (avatarUrl) URL.revokeObjectURL(avatarUrl);
+      uploadedPhotoUrls.forEach((url) => URL.revokeObjectURL(url));
+    };
+  }, [avatarUrl, uploadedPhotoUrls]);
 
   // Обработчик загрузки фото навыков
   const handlePhotoUpload = async (files: File[]) => {
     setUploadedPhotos(files);
     setValue('photos', files);
+
+    // Создаём URL для каждого файла
+    const urls = files.map((file) => URL.createObjectURL(file));
+    setUploadedPhotoUrls(urls);
+
     if (currentContainer === 3) {
       setCollectedData((prev) => ({ ...prev, photos: files }));
     }
     await validateCurrentStep();
   };
 
+  useEffect(() => {
+    return () => {
+      if (avatarUrl) {
+        URL.revokeObjectURL(avatarUrl);
+      }
+      // Очищаем URL загруженных фото
+      uploadedPhotoUrls.forEach((url) => URL.revokeObjectURL(url));
+    };
+  }, [avatarUrl, uploadedPhotoUrls]);
+
   const collectCurrentStepData =
     useCallback((): Partial<RegistrationFormData> => {
-      switch (currentContainer) {
-        case 1:
-          return {
-            email: getValues('email'),
-            password: getValues('password'),
-          };
-        case 2:
-          return {
-            avatar,
-            name: getValues('name'),
-            birthDate,
-            gender: getValues('gender'),
-            city: selectedCity,
-            categoryToLearn: categoryToLearn ?? undefined,
-            subcategoryToLearn: subcategoryToLearn ?? undefined,
-          };
-        case 3:
-          return {
-            categoryToTeach: categoryToTeach ?? undefined,
-            subcategoryToTeach: subcategoryToTeach ?? undefined,
-            skillName: getValues('skillName'),
-            skillDescription: getValues('skillDescription'),
-            photos: uploadedPhotos,
-          };
-        default:
-          return {};
-      }
-    }, [
-      currentContainer,
-      getValues,
-      avatar,
-      birthDate,
-      selectedCity,
-      categoryToLearn,
-      subcategoryToLearn,
-      categoryToTeach,
-      subcategoryToTeach,
-      uploadedPhotos,
-    ]);
+      return getValues();
+    }, [getValues]);
 
   const restoreStepData = useCallback(
     (step: 1 | 2 | 3) => {
@@ -503,111 +505,81 @@ const RegisterPage = () => {
         case 2:
           if (data.name) setValue('name', data.name);
           if (data.birthDate) {
-            setBirthDate(data.birthDate);
             setValue('birthDate', data.birthDate);
           }
           if (data.gender) setValue('gender', data.gender);
           if (data.city) {
-            setSelectedCity(data.city);
             setValue('city', data.city);
           }
           if (data.avatar) {
-            setAvatar(data.avatar);
             setValue('avatar', data.avatar);
           }
           if (data.categoryToLearn !== undefined) {
-            setCategoryToLearn(data.categoryToLearn);
             setValue('categoryToLearn', data.categoryToLearn);
           }
           if (data.subcategoryToLearn !== undefined) {
-            setSubcategoryToLearn(data.subcategoryToLearn);
             setValue('subcategoryToLearn', data.subcategoryToLearn);
           }
           break;
         case 3:
           if (data.categoryToTeach !== undefined) {
-            setCategoryToTeach(data.categoryToTeach);
             setValue('categoryToTeach', data.categoryToTeach);
           }
           if (data.subcategoryToTeach !== undefined) {
-            setSubcategoryToTeach(data.subcategoryToTeach);
             setValue('subcategoryToTeach', data.subcategoryToTeach);
           }
           if (data.skillName) setValue('skillName', data.skillName);
           if (data.skillDescription)
             setValue('skillDescription', data.skillDescription);
           if (data.photos) {
-            setUploadedPhotos(data.photos);
             setValue('photos', data.photos);
           }
           break;
       }
     },
-    [
-      collectedData,
-      setValue,
-      setBirthDate,
-      setSelectedCity,
-      setAvatar,
-      setCategoryToLearn,
-      setSubcategoryToLearn,
-      setCategoryToTeach,
-      setSubcategoryToTeach,
-      setUploadedPhotos,
-    ],
+    [collectedData, setValue],
   );
+
+  const logCurrentStepData = useCallback(() => {
+    const currentData = collectCurrentStepData();
+    console.log(`Данные шага ${currentContainer}:`, currentData);
+  }, [currentContainer, collectCurrentStepData]);
 
   // Обработчик перехода к следующему шагу
   const handleNext = useCallback(
     async (e?: React.MouseEvent | React.FormEvent) => {
       e?.preventDefault();
+      setIsLoading(true);
 
-      const isValid = await validateCurrentStep();
+      try {
+        const isValid = await validateCurrentStep(); // Используем единую логику
 
-      if (!isValid) {
-        const firstErrorField = Object.keys(errors)[0];
-        const errorElement = document.getElementById(firstErrorField);
-        errorElement?.scrollIntoView({
-          behavior: 'smooth',
-          block: 'center',
-        });
-        return;
-      }
-
-      // Собираем данные текущего шага
-      const currentStepData = collectCurrentStepData();
-      setCollectedData((prev) => ({ ...prev, ...currentStepData }));
-
-      console.log('=== ДАННЫЕ ПОСЛЕ ШАГА', currentContainer, '===');
-      console.log('Данные текущего шага:', currentStepData);
-      console.log('Все собранные данные:', {
-        ...collectedData,
-        ...currentStepData,
-      });
-      console.log('=====================================');
-
-      // Дополнительная проверка полноты данных
-      if (currentContainer === 2) {
-        const requiredFields = ['name', 'birthDate', 'gender', 'city'];
-        const missingFields = requiredFields.filter(
-          (field) => !currentStepData[field as keyof typeof currentStepData],
-        );
-        if (missingFields.length > 0) {
-          console.error('Не заполнены обязательные поля:', missingFields);
+        if (!isValid) {
+          console.warn('Валидация не пройдена. Ошибки:', errors);
+          setIsLoading(false);
           return;
         }
-      }
 
-      if (currentContainer < 3) {
-        setCurrentContainer((prev) => (prev + 1) as 1 | 2 | 3);
+        // Собираем данные текущего шага
+        const currentStepData = collectCurrentStepData();
+        setCollectedData((prev) => ({ ...prev, ...currentStepData }));
+        logCurrentStepData();
+
+        if (currentContainer < 3) {
+          setCurrentContainer((prev) => (prev + 1) as 1 | 2 | 3);
+        } else {
+          setIsConfirmationModalOpen(true);
+        }
+      } finally {
+        setIsLoading(false);
       }
     },
     [
+      logCurrentStepData,
       currentContainer,
-      errors,
       validateCurrentStep,
       collectCurrentStepData,
-      collectedData,
+      errors,
     ],
   );
 
@@ -620,48 +592,74 @@ const RegisterPage = () => {
     });
   }, [restoreStepData]);
 
-  const onSubmit = async (data: RegistrationFormData) => {
-    setAuthError(null);
-    setIsLoading(true);
+  const handleEdit = () => {
+    setIsConfirmationModalOpen(false);
+    setCurrentContainer(3); // Возвращаемся на последний шаг
+  };
 
+  const handleConfirm = async () => {
+    setIsLoading(true);
     try {
-      // Собираем все данные из формы и локальных состояний
-      const fullData: RegistrationFormData = {
-        ...collectedData,
+      const isValid = await trigger(); // валидируем всю форму
+      if (!isValid) {
+        console.warn('Не все поля заполнены корректно');
+        return;
+      }
+      const userData: RegistrationFormData & { id: string } = {
+        id: generateUserId(),
         email: getValues('email'),
-        password: getValues('password'),
         name: getValues('name'),
         birthDate: getValues('birthDate'),
         gender: getValues('gender'),
         city: getValues('city'),
+        avatar: getValues('avatar'),
+        password: getValues('password'),
         categoryToLearn: getValues('categoryToLearn'),
         subcategoryToLearn: getValues('subcategoryToLearn'),
         categoryToTeach: getValues('categoryToTeach'),
         subcategoryToTeach: getValues('subcategoryToTeach'),
         skillName: getValues('skillName'),
         skillDescription: getValues('skillDescription'),
-        avatar: avatar || null,
-        photos: uploadedPhotos.length > 0 ? uploadedPhotos : data.photos || [],
+        photos: getValues('photos'),
       };
 
-      console.log('Отправка данных:', fullData);
+      console.log('Полный объект данных пользователя:', userData);
 
-      const { userId, skillId } = await registerUser(fullData);
-      navigate(`/skill/${skillId}`);
-
-      localStorage.setItem('isAuthenticated', 'true');
-      localStorage.setItem('userId', userId.toString());
-      navigate('/');
+      localStorage.setItem('userData', JSON.stringify(userData));
+      login(userData);
+      console.log('Пользователь зарегистрирован:', userData);
+      navigate('/profile');
     } catch (error) {
-      if (error instanceof Error) {
-        setAuthError(error.message);
-      } else {
-        setAuthError('Произошла ошибка. Попробуйте позже.');
-      }
+      console.error('Ошибка регистрации:', error);
+      setAuthError('Не удалось завершить регистрацию. Попробуйте ещё раз.');
     } finally {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    return () => {
+      // Очистка URL аватара
+      if (avatarUrl) {
+        URL.revokeObjectURL(avatarUrl);
+      }
+      // Очистка URL загруженных фото
+      uploadedPhotoUrls.forEach((url) => URL.revokeObjectURL(url));
+    };
+  }, [avatarUrl, uploadedPhotoUrls]);
+
+  const cleanupAvatarURL = (url: string) => {
+    URL.revokeObjectURL(url);
+  };
+
+  // Эффект для автоматической очистки при размонтировании компонента
+  useEffect(() => {
+    return () => {
+      if (avatar && avatarUrl) {
+        cleanupAvatarURL(avatarUrl);
+      }
+    };
+  }, [avatar, avatarUrl]);
 
   // Обработчик входа через соцсети
   const handleSocialLogin = (provider: 'google' | 'apple') => {
@@ -677,26 +675,25 @@ const RegisterPage = () => {
   };
 
   // Обработчик выбора даты
-  const handleDateSelect = async (dateString: string) => {
-    setBirthDate(dateString);
+  const handleDateSelect = (dateString: string) => {
     setValue('birthDate', dateString, {
-      shouldValidate: true,
-      shouldDirty: true,
+      shouldValidate: true, // запускаем валидацию поля
+      shouldDirty: true, // отмечаем поле как изменённое
     });
-
-    setCollectedData((prev) => ({ ...prev, birthDate: dateString }));
-    await validateCurrentStep();
   };
 
   const handleRemoveAvatar = () => {
+    if (avatarUrl) {
+      URL.revokeObjectURL(avatarUrl);
+    }
     setAvatar(null);
+    setAvatarUrl(null);
+
+    // Сбрасываем поле до null
     setValue('avatar', null, {
       shouldValidate: true,
       shouldDirty: true,
     });
-    if (currentContainer === 2) {
-      setCollectedData((prev) => ({ ...prev, avatar: null }));
-    }
   };
 
   return (
@@ -718,6 +715,7 @@ const RegisterPage = () => {
                     type='button'
                     className={styles['social-button']}
                     onClick={() => handleSocialLogin('google')}
+                    aria-label='Продолжить с Google'
                   >
                     <span className={styles['social-icon']}>
                       <svg
@@ -750,6 +748,7 @@ const RegisterPage = () => {
                     type='button'
                     className={styles['social-button']}
                     onClick={() => handleSocialLogin('apple')}
+                    aria-label='Продолжить с Apple'
                   >
                     <span className={styles['social-icon']}>
                       <svg
@@ -775,10 +774,7 @@ const RegisterPage = () => {
                   <span className={styles['divider-line']}></span>
                 </div>
 
-                <form
-                  onSubmit={handleSubmit(onSubmit)}
-                  className={styles['form']}
-                >
+                <form onSubmit={handleNext} noValidate>
                   <div className={styles['field']}>
                     <label htmlFor='email' className={styles['label']}>
                       Email
@@ -790,9 +786,17 @@ const RegisterPage = () => {
                       className={`${styles['input']} ${errors.email ? styles['input-error'] : ''}`}
                       {...register('email')}
                       autoComplete='email'
+                      aria-invalid={!!errors.email}
+                      aria-describedby={
+                        errors.email ? 'email-error' : undefined
+                      }
                     />
                     {errors.email && (
-                      <span className={styles['field-error']}>
+                      <span
+                        id='email-error'
+                        role='alert'
+                        className={styles['field-error']}
+                      >
                         {errors.email.message}
                       </span>
                     )}
@@ -810,12 +814,19 @@ const RegisterPage = () => {
                         className={`${styles['input']} ${styles['password-input']} ${errors.password ? styles['input-error'] : ''}`}
                         {...register('password')}
                         autoComplete='current-password'
+                        aria-invalid={!!errors.password}
+                        aria-describedby={
+                          errors.password ? 'password-error' : undefined
+                        }
                       />
                       <button
                         type='button'
                         className={styles['eye-button']}
                         onClick={togglePasswordVisibility}
                         tabIndex={-1}
+                        aria-label={
+                          showPassword ? 'Скрыть пароль' : 'Показать пароль'
+                        }
                       >
                         <Icon
                           name={showPassword ? 'eye' : 'eye-slash'}
@@ -824,24 +835,31 @@ const RegisterPage = () => {
                       </button>
                     </div>
                     {errors.password && (
-                      <span className={styles['field-error']}>
+                      <span
+                        id='password-error'
+                        className={styles['field-error']}
+                        role='alert'
+                      >
                         {errors.password.message}
                       </span>
                     )}
                   </div>
 
                   {authError && (
-                    <div className={styles['auth-error']}>
+                    <div
+                      className={styles['auth-error']}
+                      role='alert'
+                      aria-live='assertive'
+                    >
                       <p className={styles['auth-error-text']}>{authError}</p>
                     </div>
                   )}
 
                   <Button
-                    type='button'
+                    type='submit'
                     variant='primary'
                     className={styles['submit-button']}
-                    onClick={() => handleNext()}
-                    disabled={isLoading}
+                    disabled={isLoading || !!errors.email || !!errors.password}
                     children={isLoading ? 'Переход...' : 'Далее'}
                   />
                 </form>
@@ -874,9 +892,10 @@ const RegisterPage = () => {
                 <form
                   onSubmit={(e) => {
                     e.preventDefault();
-                    handleNext();
+                    handleNext(e);
                   }}
                   className={styles['form']}
+                  noValidate
                 >
                   {/* Аватарка */}
                   <div className={styles['field']}>
@@ -907,13 +926,20 @@ const RegisterPage = () => {
                     <input
                       id='name'
                       type='text'
+                      required
                       placeholder='Введите ваше имя'
                       className={`${styles['input']} ${errors.name ? styles['input-error'] : ''}`}
                       {...register('name')}
                       autoComplete='name'
+                      aria-invalid={!!errors.name}
+                      aria-describedby={errors.name ? 'name-error' : undefined}
                     />
                     {errors.name && (
-                      <span className={styles['field-error']}>
+                      <span
+                        id='name-error'
+                        className={styles['field-error']}
+                        role='alert'
+                      >
                         {errors.name.message}
                       </span>
                     )}
@@ -943,18 +969,27 @@ const RegisterPage = () => {
                       <div className={styles['select-wrapper']}>
                         <select
                           id='gender'
+                          required
                           className={`${styles['input']} ${styles['select']} ${
                             getValues('gender')
                               ? styles['select-with-selection']
                               : ''
                           } ${errors.gender ? styles['input-error'] : ''}`}
                           onChange={(e) => {
-                            setValue('gender', e.target.value);
-                            closeSelect('gender'); // сброс состояния после выбора
+                            const selectedValue = e.target.value;
+                            setValue('gender', selectedValue, {
+                              shouldValidate: true,
+                              shouldDirty: true,
+                            });
+                            closeSelect('gender');
                           }}
                           value={getValues('gender') || ''}
                           onFocus={() => openSelect('gender')}
                           onBlur={() => closeSelect('gender')}
+                          aria-invalid={!!errors.gender}
+                          aria-describedby={
+                            errors.gender ? 'gender-error' : undefined
+                          }
                         >
                           <option
                             className={styles['placeholder']}
@@ -980,7 +1015,11 @@ const RegisterPage = () => {
                         />
                       </div>
                       {errors.gender && (
-                        <span className={styles['field-error']}>
+                        <span
+                          id='gender-error'
+                          className={styles['field-error']}
+                          role='alert'
+                        >
                           {errors.gender.message}
                         </span>
                       )}
@@ -995,6 +1034,7 @@ const RegisterPage = () => {
                     <div className={styles['select-wrapper']}>
                       <select
                         id='city'
+                        required
                         className={`${styles['input']} ${styles['select']} ${
                           selectedCity ? styles['select-with-selection'] : ''
                         } ${errors.city ? styles['input-error'] : ''}`}
@@ -1002,10 +1042,14 @@ const RegisterPage = () => {
                           handleCitySelect(e.target.value);
                           closeSelect('city');
                         }}
-                        value={selectedCity}
+                        value={selectedCity || ''}
                         autoComplete='address-level2'
                         onFocus={() => openSelect('city')}
                         onBlur={() => closeSelect('city')}
+                        aria-invalid={!!errors.city}
+                        aria-describedby={
+                          errors.city ? 'city-error' : undefined
+                        }
                       >
                         <option
                           className={styles['placeholder']}
@@ -1031,7 +1075,11 @@ const RegisterPage = () => {
                       />
                     </div>
                     {errors.city && (
-                      <span className={styles['field-error']}>
+                      <span
+                        id='city-error'
+                        className={styles['field-error']}
+                        role='alert'
+                      >
                         {errors.city.message}
                       </span>
                     )}
@@ -1049,6 +1097,7 @@ const RegisterPage = () => {
                     <div className={styles['select-wrapper']}>
                       <select
                         id='category-to-learn'
+                        required
                         className={`${styles['input']} ${styles['select']} ${
                           categoryToLearn ? styles['select-with-selection'] : ''
                         } ${errors.categoryToLearn ? styles['input-error'] : ''}`}
@@ -1062,6 +1111,12 @@ const RegisterPage = () => {
                         value={categoryToLearn ?? ''}
                         onFocus={() => openSelect('categoryToLearn')}
                         onBlur={() => closeSelect('categoryToLearn')}
+                        aria-invalid={!!errors.categoryToLearn}
+                        aria-describedby={
+                          errors.categoryToLearn
+                            ? 'categoryToLearn-error'
+                            : undefined
+                        }
                       >
                         <option
                           className={styles['placeholder']}
@@ -1087,7 +1142,11 @@ const RegisterPage = () => {
                       />
                     </div>
                     {errors.categoryToLearn && (
-                      <span className={styles['field-error']}>
+                      <span
+                        id='categoryToLearn-error'
+                        className={styles['field-error']}
+                        role='alert'
+                      >
                         {errors.categoryToLearn.message}
                       </span>
                     )}
@@ -1104,6 +1163,7 @@ const RegisterPage = () => {
                     <div className={styles['select-wrapper']}>
                       <select
                         id='subcategory-to-learn'
+                        required
                         className={`${styles['input']} ${styles['select']} ${
                           subcategoryToLearn
                             ? styles['select-with-selection']
@@ -1116,9 +1176,16 @@ const RegisterPage = () => {
                           }
                           closeSelect('subcategoryToLearn');
                         }}
-                        value={subcategoryToLearn ?? ''}
+                        value={subcategoryToLearn || ''}
+                        disabled={!categoryToLearn}
                         onFocus={() => openSelect('subcategoryToLearn')}
                         onBlur={() => closeSelect('subcategoryToLearn')}
+                        aria-invalid={!!errors.subcategoryToLearn}
+                        aria-describedby={
+                          errors.subcategoryToLearn
+                            ? 'subcategoryToLearn-error'
+                            : undefined
+                        }
                       >
                         <option
                           className={styles['placeholder']}
@@ -1144,7 +1211,11 @@ const RegisterPage = () => {
                       />
                     </div>
                     {errors.subcategoryToLearn && (
-                      <span className={styles['field-error']}>
+                      <span
+                        id='subcategoryToLearn-error'
+                        className={styles['field-error']}
+                        role='alert'
+                      >
                         {errors.subcategoryToLearn.message}
                       </span>
                     )}
@@ -1160,10 +1231,9 @@ const RegisterPage = () => {
                     />
                     <Button
                       className={styles['actions-button']}
-                      type='button'
+                      type='submit'
                       variant='primary'
-                      onClick={() => handleNext()}
-                      disabled={isLoading}
+                      disabled={isLoading || Object.keys(errors).length > 0}
                       children={isLoading ? 'Загрузка...' : 'Продолжить'}
                     />
                   </div>
@@ -1195,8 +1265,12 @@ const RegisterPage = () => {
             <div className={styles['content']}>
               <div className={styles['left-side']}>
                 <form
-                  onSubmit={handleSubmit(onSubmit)}
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    handleNext(e);
+                  }}
                   className={styles['form']}
+                  noValidate
                 >
                   {/* Название навыка */}
                   <div className={styles['field']}>
@@ -1205,13 +1279,23 @@ const RegisterPage = () => {
                     </label>
                     <input
                       id='skill-name'
+                      required
                       type='text'
                       placeholder='Введите название вашего навыка'
+                      aria-required='true'
+                      aria-invalid={!!errors.skillName}
+                      aria-describedby={
+                        errors.skillName ? 'skill-name-error' : undefined
+                      }
                       className={`${styles['input']} ${errors.skillName ? styles['input-error'] : ''}`}
                       {...register('skillName')}
                     />
                     {errors.skillName && (
-                      <span className={styles['field-error']}>
+                      <span
+                        id='skill-name-error'
+                        className={styles['field-error']}
+                        role='alert'
+                      >
                         {errors.skillName.message}
                       </span>
                     )}
@@ -1229,6 +1313,14 @@ const RegisterPage = () => {
                     <div className={styles['select-wrapper']}>
                       <select
                         id='category-to-teach'
+                        required
+                        aria-required='true'
+                        aria-invalid={!!errors.categoryToTeach}
+                        aria-describedby={
+                          errors.categoryToTeach
+                            ? 'category-to-teach-error'
+                            : undefined
+                        }
                         className={`${styles['input']} ${styles['select']} ${
                           categoryToTeach ? styles['select-with-selection'] : ''
                         } ${errors.categoryToTeach ? styles['input-error'] : ''}`}
@@ -1239,7 +1331,7 @@ const RegisterPage = () => {
                           }
                           closeSelect('categoryToTeach');
                         }}
-                        value={categoryToTeach ?? ''}
+                        value={categoryToTeach || ''}
                         onFocus={() => openSelect('categoryToTeach')}
                         onBlur={() => closeSelect('categoryToTeach')}
                       >
@@ -1267,7 +1359,11 @@ const RegisterPage = () => {
                       />
                     </div>
                     {errors.categoryToTeach && (
-                      <span className={styles['field-error']}>
+                      <span
+                        id='category-to-teach-error'
+                        className={styles['field-error']}
+                        role='alert'
+                      >
                         {errors.categoryToTeach.message}
                       </span>
                     )}
@@ -1285,6 +1381,14 @@ const RegisterPage = () => {
                     <div className={styles['select-wrapper']}>
                       <select
                         id='subcategory-to-teach'
+                        required
+                        aria-required='true'
+                        aria-invalid={!!errors.subcategoryToTeach}
+                        aria-describedby={
+                          errors.subcategoryToTeach
+                            ? 'subcategory-to-teach-error'
+                            : undefined
+                        }
                         className={`${styles['input']} ${styles['select']} ${
                           subcategoryToTeach
                             ? styles['select-with-selection']
@@ -1297,10 +1401,10 @@ const RegisterPage = () => {
                           }
                           closeSelect('subcategoryToTeach');
                         }}
-                        value={subcategoryToTeach ?? ''}
+                        value={subcategoryToTeach || ''}
+                        disabled={!categoryToTeach}
                         onFocus={() => openSelect('subcategoryToTeach')}
                         onBlur={() => closeSelect('subcategoryToTeach')}
-                        disabled={!categoryToTeach} // блокируем, если категория не выбрана
                       >
                         <option
                           className={styles['placeholder']}
@@ -1326,7 +1430,11 @@ const RegisterPage = () => {
                       />
                     </div>
                     {errors.subcategoryToTeach && (
-                      <span className={styles['field-error']}>
+                      <span
+                        id='subcategory-to-teach-error'
+                        className={styles['field-error']}
+                        role='alert'
+                      >
                         {errors.subcategoryToTeach.message}
                       </span>
                     )}
@@ -1393,8 +1501,8 @@ const RegisterPage = () => {
                       className={styles['actions-button']}
                       type='submit'
                       variant='primary'
-                      disabled={isLoading}
-                      children={isLoading ? 'Регистрация...' : 'Продолжить'}
+                      disabled={isLoading || Object.keys(errors).length > 0}
+                      children={isLoading ? 'Загрузка...' : 'Продолжить'}
                     />
                   </div>
                 </form>
@@ -1414,6 +1522,62 @@ const RegisterPage = () => {
               </div>
             </div>
           </>
+        )}
+        {isConfirmationModalOpen && (
+          <ModalUI
+            onClose={() => setIsConfirmationModalOpen(false)}
+            title='Ваше предложение'
+            subtitle='Пожалуйста, проверьте и подтвердите правильность данных'
+          >
+            <div className={styles['skill-data-container']}>
+              <div className={styles['confirmation-content']}>
+                <h3 className={styles['skill-title']}>
+                  {collectedData.skillName}
+                </h3>
+                <p className={styles['skill-category']}>
+                  {categoryOptions.find(
+                    (c) => c.value === collectedData.categoryToTeach,
+                  )?.label || 'Не указана'}{' '}
+                  /{' '}
+                  {subcategoryOptions.find(
+                    (s) => s.value === collectedData.subcategoryToTeach,
+                  )?.label || 'Не указана'}
+                </p>
+                <p className={styles['skill-description']}>
+                  {collectedData.skillDescription}
+                </p>
+
+                <div className={styles['confirmation-actions']}>
+                  <Button
+                    className={`${styles['actions-button']} ${styles['actions-button-modal']}`}
+                    type='button'
+                    variant='secondary'
+                    onClick={handleEdit}
+                    children={
+                      <>
+                        Редактировать
+                        <Icon name='edit' size={24} />
+                      </>
+                    }
+                  />
+
+                  <Button
+                    className={`${styles['actions-button']} ${styles['actions-button-modal']}`}
+                    type='button'
+                    variant='primary'
+                    onClick={handleConfirm}
+                    children='Готово'
+                  />
+                </div>
+              </div>
+              <div className={styles['gallery-container']}>
+                <ImageView
+                  imagesSkill={uploadedPhotoUrls}
+                  className={styles['image-view']}
+                />
+              </div>
+            </div>
+          </ModalUI>
         )}
       </div>
     </div>

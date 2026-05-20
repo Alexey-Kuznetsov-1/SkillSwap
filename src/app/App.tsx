@@ -1,5 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import './App.css'; // ← ДОБАВИТЬ ЭТУ СТРОКУ
+import './App.css';
+import { AuthProvider } from '@/contexts/AuthProvider';
+
 import HomePage from '@/pages/HomePage/HomePage';
 import SkillPage from '@/pages/SkillPage/SkillPage';
 import { LoginPage } from '@/pages/LoginPage/LoginPage';
@@ -12,19 +14,21 @@ import ProfilePage from '@/pages/ProfilePage/ProfilePage';
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path='/' element={<HomePage />} />
-        <Route path='/skill/:id' element={<SkillPage />} />
-        <Route path='/login' element={<LoginPage />} />
-        <Route path='/register' element={<RegisterPage />} />
-        <Route path='/create' element={<CreatePage />} />
-        <Route path='/favorites' element={<FavoritesPage />} />
-        <Route path='/example' element={<ExamplePage />} />
-        <Route path='/profile' element={<ProfilePage />} />
-        <Route path='*' element={<NotFoundPage />} />
-      </Routes>
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={<HomePage />} />
+          <Route path='/skill/:id' element={<SkillPage />} />
+          <Route path='/login' element={<LoginPage />} />
+          <Route path='/register' element={<RegisterPage />} />
+          <Route path='/create' element={<CreatePage />} />
+          <Route path='/favorites' element={<FavoritesPage />} />
+          <Route path='/example' element={<ExamplePage />} />
+          <Route path='/profile' element={<ProfilePage />} />
+          <Route path='*' element={<NotFoundPage />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 

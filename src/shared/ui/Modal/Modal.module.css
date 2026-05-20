@@ -18,12 +18,13 @@
 .header {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
   align-items: center;
   margin-bottom: 32px;
 }
 
 .title {
+  margin: 0;
   font-family: var(--font-heading);
   font-size: var(--font-size-heading-filters);
   line-height: var(--font-line-height-heading-filters);
