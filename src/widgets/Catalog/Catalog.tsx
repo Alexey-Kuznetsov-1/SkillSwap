@@ -1,8 +1,8 @@
-// Catalog.tsx
+// src/widgets/Catalog/Catalog.tsx
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { useFavorites } from '@/shared/hooks/useFavorites';
 import { CardSkill } from '@/widgets/SkillCard/CardSkill';
-import type { User } from '@/api';
+import type { User, SkillCard } from '@/api';
 import styles from './Catalog.module.css';
 
 interface Skill {
@@ -15,14 +15,19 @@ interface Skill {
   authorCity: string;
   authorAge: number;
   authorAvatar: string;
+  title?: string; // Добавляем для совместимости
+  category?: string;
+  subCategory?: string;
+  likes?: number;
 }
 
 interface CatalogProps {
   skills: Skill[];
   itemsPerPage?: number;
+  allSkills?: Skill[]; // Все навыки для поиска навыков автора
 }
 
-const Catalog: React.FC<CatalogProps> = ({ skills, itemsPerPage = 6 }) => {
+const Catalog: React.FC<CatalogProps> = ({ skills, itemsPerPage = 6, allSkills = [] }) => {
   const { isFavorite } = useFavorites();
   const [displayedCount, setDisplayedCount] = useState(itemsPerPage);
   const [hasMore, setHasMore] = useState(true);
@@ -41,6 +46,27 @@ const Catalog: React.FC<CatalogProps> = ({ skills, itemsPerPage = 6 }) => {
   };
 
   const isAuthenticated = !!localStorage.getItem('token');
+
+  // Функция для получения навыков автора
+  const getAuthorSkills = (authorName: string, type: 'teach' | 'learn') => {
+    return allSkills
+      .filter(skill => skill.author === authorName && skill.type === type)
+      .map(skill => ({
+        id: skill.id,
+        name: skill.name || skill.title || '',  // Исправлено: используем name или title
+        description: skill.description,
+        direction: skill.type,
+        author: {
+          name: skill.author,
+          avatarUrl: skill.authorAvatar,
+          city: skill.authorCity,
+          age: skill.authorAge
+        },
+        likesCount: skill.likes || 0,
+        category: skill.category || '',
+        subcategory: skill.subCategory || ''
+      } as SkillCard));
+  };
 
   useEffect(() => {
     setDisplayedCount(itemsPerPage);
@@ -77,24 +103,37 @@ const Catalog: React.FC<CatalogProps> = ({ skills, itemsPerPage = 6 }) => {
   return (
     <div className={styles.catalog}>
       <div className={styles.grid}>
-        {displayedSkills.map((skill) => (
-          <CardSkill
-            key={`${skill.id}-${isFavorite(skill.id)}`}
-            idSkill={skill.id}
-            skillName={skill.name}
-            descriptionSkill={skill.description}
-            typeSkill={skill.type}
-            authorName={skill.author}
-            authorCity={skill.authorCity}
-            authorAge={skill.authorAge}
-            authorAvatar={skill.authorAvatar}
-            initialLiked={isFavorite(skill.id)}
-            isAuthenticated={isAuthenticated}
-            userAuthenticated={userAuthenticated}
-            variant="default"
-            skills={[]}
-          />
-        ))}
+        {displayedSkills.map((skill) => {
+          // Получаем навыки автора для этого скилла
+          const authorTeachSkills = getAuthorSkills(skill.author, 'teach');
+          const authorLearnSkills = getAuthorSkills(skill.author, 'learn');
+          
+          // Для отладки - посмотри в консоли
+          console.log(`Автор: ${skill.author}`, {
+            teachSkills: authorTeachSkills.map(s => s.name),
+            learnSkills: authorLearnSkills.map(s => s.name)
+          });
+          
+          return (
+            <CardSkill
+              key={`${skill.id}-${isFavorite(skill.id)}`}
+              idSkill={skill.id}
+              skillName={skill.name || skill.title || ''}
+              descriptionSkill={skill.description}
+              typeSkill={skill.type}
+              authorName={skill.author}
+              authorCity={skill.authorCity}
+              authorAge={skill.authorAge}
+              authorAvatar={skill.authorAvatar}
+              initialLiked={isFavorite(skill.id)}
+              isAuthenticated={isAuthenticated}
+              userAuthenticated={userAuthenticated}
+              variant="default"
+              skills={authorTeachSkills}
+              wantedSkills={authorLearnSkills}
+            />
+          );
+        })}
       </div>
       {hasMore && (
         <div ref={loaderRef} className={styles.loader}>
