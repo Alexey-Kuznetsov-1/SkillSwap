@@ -1,117 +1,18 @@
-// src/pages/SkillPage/SkillPage.tsx
+// src/pages/SkillPage.tsx
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Header from '@/widgets/Header';
 import Footer from '@/widgets/Footer';
 import { CardSkill } from '@/widgets/SkillCard/CardSkill';
+import { getSkillById, getRelatedSkills, getSkillsCatalog, type SkillDetails, type SkillCard } from '@/api';
 import styles from './SkillPage.module.css';
-
-// Интерфейс для навыка из skills.json
-interface Skill {
-  id: number;
-  title: string;
-  description: string;
-  type: 'teach' | 'learn';
-  category: string;
-  subCategory: string;
-  author: string;
-  authorCity: string;
-  authorGender: string;
-  authorAge: number;
-  authorAvatar: string;
-  likes: number;
-}
-
-// Интерфейс для пользователей из users.json
-interface User {
-  id: number;
-  name: string;
-  avatarUrl: string;
-  about: string;
-  cityId: number;
-  birthDay: string;
-  gender: string;
-}
-
-// Интерфейс для похожего навыка
-interface SimilarSkill {
-  id: number;
-  name: string;
-  authorName: string;
-  authorCity: string;
-  authorAge: number;
-  authorAvatar: string;
-  direction: 'teach' | 'learn';
-  skills: {
-    id: number;
-    name: string;
-    direction: 'teach' | 'learn';
-    subcategory: null;
-  }[];
-}
-
-// Маппинг категорий для отображения
-const categoryLabels: Record<string, string> = {
-  business: 'Бизнес и карьера',
-  art: 'Творчество и искусство',
-  languages: 'Иностранные языки',
-  education: 'Образование и развитие',
-  home: 'Дом и уют',
-  health: 'Здоровье и лайфстайл',
-};
-
-const subCategoryLabels: Record<string, string> = {
-  team_management: 'Управление командой',
-  marketing: 'Маркетинг и реклама',
-  sales: 'Продажи и переговоры',
-  personal_brand: 'Личный бренд',
-  resume: 'Резюме и собеседование',
-  time_management: 'Тайм-менеджмент',
-  project_management: 'Проектное управление',
-  entrepreneurship: 'Предпринимательство',
-  drawing: 'Рисование и иллюстрация',
-  photography: 'Фотография',
-  video_editing: 'Видеомонтаж',
-  music: 'Музыка и звук',
-  acting: 'Актёрское мастерство',
-  creative_writing: 'Креативное письмо',
-  art_therapy: 'Арт-терапия',
-  diy: 'Декор и DIY',
-  english: 'Английский',
-  french: 'Французский',
-  spanish: 'Испанский',
-  german: 'Немецкий',
-  chinese: 'Китайский',
-  japanese: 'Японский',
-  exam_prep: 'Подготовка к экзаменам (IELTS, TOEFL)',
-  personal_development: 'Личностное развитие',
-  learning_skills: 'Навыки обучения',
-  cognitive_techniques: 'Когнитивные техники',
-  speed_reading: 'Скорочтение',
-  teaching_skills: 'Навыки преподавания',
-  coaching: 'Коучинг',
-  cleaning: 'Уборка и организация',
-  home_finance: 'Домашние финансы',
-  cooking: 'Приготовление еды',
-  plants: 'Домашние растения',
-  repair: 'Ремонт',
-  storage: 'Хранение вещей',
-  yoga: 'Йога и медитация',
-  nutrition: 'Питание и ЗОЖ',
-  mental_health: 'Ментальное здоровье',
-  mindfulness: 'Осознанность',
-  fitness: 'Физические тренировки',
-  sleep: 'Сон и восстановление',
-  work_life_balance: 'Баланс жизни и работы',
-};
 
 const SkillPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [loading, setLoading] = useState(true);
-  const [allSkills, setAllSkills] = useState<Skill[]>([]);
-  const [users, setUsers] = useState<User[]>([]);
-  const [currentSkill, setCurrentSkill] = useState<Skill | null>(null);
-  const [similarSkills, setSimilarSkills] = useState<SimilarSkill[]>([]);
+  const [skill, setSkill] = useState<SkillDetails | null>(null);
+  const [relatedSkills, setRelatedSkills] = useState<SkillCard[]>([]);
+  const [allSkills, setAllSkills] = useState<SkillCard[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
   const itemsPerPage = 4;
 
@@ -132,7 +33,7 @@ const SkillPage: React.FC = () => {
   };
 
   const handleNext = () => {
-    const totalPages = Math.ceil(similarSkills.length / itemsPerPage);
+    const totalPages = Math.ceil(relatedSkills.length / itemsPerPage);
     if (currentPage < totalPages - 1) {
       setCurrentPage(currentPage + 1);
     }
@@ -144,7 +45,6 @@ const SkillPage: React.FC = () => {
     }
   };
 
-  // Переопределяем стили #root для страницы навыка
   useEffect(() => {
     const root = document.getElementById('root');
     const originalStyles: { [key: string]: string } = {};
@@ -176,52 +76,27 @@ const SkillPage: React.FC = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      if (!id) return;
+      
+      const skillId = parseInt(id, 10);
+      if (isNaN(skillId)) return;
+
+      setLoading(true);
+
       try {
-        const [skillsRes, usersRes] = await Promise.all([
-          fetch('/db/skills.json'),
-          fetch('/db/users.json'),
-        ]);
+        const skillData = await getSkillById(skillId);
+        setSkill(skillData);
 
-        const skillsData = await skillsRes.json();
-        const usersData = await usersRes.json();
+        const related = await getRelatedSkills(skillId, 8);
+        setRelatedSkills(related);
 
-        const skills = skillsData.skills as Skill[];
-        const users = usersData.data as User[];
-
-        setAllSkills(skills);
-        setUsers(users);
-
-        const skill = skills.find((s) => s.id === Number(id));
-        setCurrentSkill(skill || null);
-
-        if (skill) {
-          const similar = skills
-            .filter((s) => s.id !== skill.id && s.category === skill.category)
-            .slice(0, 8)
-            .map((s) => {
-              const user = users.find((u) => u.name.startsWith(s.author));
-              return {
-                id: s.id,
-                name: s.title,
-                authorName: s.author,
-                authorCity: s.authorCity,
-                authorAge: s.authorAge,
-                authorAvatar: user?.avatarUrl || s.authorAvatar,
-                direction: s.type,
-                skills: [
-                  {
-                    id: s.id,
-                    name: s.title,
-                    direction: s.type,
-                    subcategory: null,
-                  },
-                ],
-              };
-            });
-          setSimilarSkills(similar);
-        }
+        const catalog = await getSkillsCatalog({ limit: 100 });
+        setAllSkills(catalog.items);
+        
+        console.log('📚 Все навыки для фильтрации:', catalog.items);
+        console.log('🎯 Текущий автор:', skillData?.author.name);
       } catch (error) {
-        console.error('Ошибка загрузки данных:', error);
+        console.error('Ошибка загрузки:', error);
       } finally {
         setLoading(false);
       }
@@ -233,6 +108,23 @@ const SkillPage: React.FC = () => {
   const handleOfferExchange = () => {
     console.log('Предложить обмен для навыка:', id);
   };
+
+  const canTeach = allSkills.filter(
+    (s) => s.author.name === skill?.author.name && s.direction === 'teach'
+  );
+
+  const wantsToLearn = allSkills.filter(
+    (s) => s.author.name === skill?.author.name && s.direction === 'learn'
+  );
+
+  console.log('📊 canTeach:', canTeach);
+  console.log('📊 wantsToLearn:', wantsToLearn);
+
+  const totalPages = Math.ceil(relatedSkills.length / itemsPerPage);
+  const currentSkills = relatedSkills.slice(
+    currentPage * itemsPerPage,
+    (currentPage + 1) * itemsPerPage,
+  );
 
   if (loading) {
     return (
@@ -252,7 +144,7 @@ const SkillPage: React.FC = () => {
     );
   }
 
-  if (!currentSkill) {
+  if (!skill) {
     return (
       <div className={styles.page}>
         <div className={styles.header}>
@@ -273,20 +165,6 @@ const SkillPage: React.FC = () => {
     );
   }
 
-  const currentUser = users.find((u) => u.name.startsWith(currentSkill.author));
-  const userAvatar = currentUser?.avatarUrl || currentSkill.authorAvatar;
-
-  const userSkills = allSkills.filter(
-    (s) => s.author === currentSkill.author && s.type === 'teach',
-  );
-  const canTeach = userSkills.map((s) => s.title);
-
-  const totalPages = Math.ceil(similarSkills.length / itemsPerPage);
-  const currentSkills = similarSkills.slice(
-    currentPage * itemsPerPage,
-    (currentPage + 1) * itemsPerPage,
-  );
-
   return (
     <div className={styles.page}>
       <div className={styles.header}>
@@ -294,36 +172,28 @@ const SkillPage: React.FC = () => {
       </div>
       <div className={styles.content}>
         <div className={styles.mainBlock}>
-          {/* Верхний блок */}
           <div className={styles.topBlock}>
-            {/* Левая колонка — карточка пользователя */}
             <div className={styles.leftBlock}>
               <CardSkill
                 variant='description'
-                idSkill={currentSkill.id}
-                skillName={currentSkill.title}
-                descriptionSkill={currentSkill.description}
-                descriptionUser={`Привет! Я ${currentSkill.author}, ${currentSkill.authorCity}, ${currentSkill.authorAge} года.`}
-                typeSkill={currentSkill.type}
-                authorName={currentSkill.author}
-                authorCity={currentSkill.authorCity}
-                authorAge={currentSkill.authorAge}
-                authorAvatar={userAvatar}
+                idSkill={skill.id}
+                skillName={skill.name}
+                descriptionSkill={skill.description}
+                descriptionUser={`Привет! Я ${skill.author.name}, ${skill.author.city}, ${skill.author.age} лет.`}
+                typeSkill={skill.direction}
+                authorName={skill.author.name}
+                authorCity={skill.author.city}
+                authorAge={skill.author.age}
+                authorAvatar={skill.author.avatarUrl}
                 initialLiked={false}
                 isAuthenticated={false}
-                skills={canTeach.map((skill, index) => ({
-                  id: index,
-                  name: skill,
-                  direction: 'teach' as const,
-                  subcategory: null,
-                }))}
+                skills={canTeach}
+                wantedSkills={wantsToLearn}
               />
             </div>
 
-            {/* Правая колонка — карточка навыка */}
             <div className={styles.rightBlock}>
               <div className={styles.skillCard}>
-                {/* Блок с иконками */}
                 <div className={styles.actionBlock}>
                   <img
                     src='/icons/like.svg'
@@ -345,24 +215,14 @@ const SkillPage: React.FC = () => {
                   />
                 </div>
 
-                {/* Описание и галерея */}
                 <div className={styles.galleryWrapper}>
-                  {/* Описание и кнопка — слева */}
                   <div className={styles.descriptionWrapper}>
                     <div>
-                      <h1 className={styles.skillTitle}>
-                        {currentSkill.title}
-                      </h1>
+                      <h1 className={styles.skillTitle}>{skill.name}</h1>
                       <span className={styles.skillCategory}>
-                        {categoryLabels[currentSkill.category] ||
-                          currentSkill.category}{' '}
-                        /{' '}
-                        {subCategoryLabels[currentSkill.subCategory] ||
-                          currentSkill.subCategory}
+                        {skill.category} / {skill.subcategory}
                       </span>
-                      <p className={styles.skillDescription}>
-                        {currentSkill.description}
-                      </p>
+                      <p className={styles.skillDescription}>{skill.description}</p>
                     </div>
                     <button
                       className={styles.exchangeButton}
@@ -372,13 +232,10 @@ const SkillPage: React.FC = () => {
                     </button>
                   </div>
 
-                  {/* Галерея — справа (заглушка) */}
                   <div className={styles.galleryPlaceholder}>
                     <div className={styles.galleryPlaceholderContent}>
                       <p>Галерея изображений</p>
-                      <p className={styles.galleryPlaceholderNote}>
-                        В разработке
-                      </p>
+                      <p className={styles.galleryPlaceholderNote}>В разработке</p>
                     </div>
                   </div>
                 </div>
@@ -386,33 +243,32 @@ const SkillPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Нижний блок — похожие предложения (карусель) */}
-          {similarSkills.length > 0 && (
+          {relatedSkills.length > 0 && (
             <div className={styles.bottomBlock}>
               <div className={styles.sectionHeader}>
                 <h2 className={styles.sectionTitle}>Похожие предложения</h2>
               </div>
               <div className={styles.carouselContainer}>
                 <div className={styles.carousel}>
-                  {currentSkills.map((skill, idx) => {
+                  {currentSkills.map((related, idx) => {
                     const isLastCard =
                       idx === currentSkills.length - 1 &&
                       currentPage < totalPages - 1;
                     return (
-                      <div key={skill.id} className={styles.cardWrapper}>
+                      <div key={related.id} className={styles.cardWrapper}>
                         <CardSkill
                           variant='default'
-                          idSkill={skill.id}
-                          skillName={skill.name}
-                          descriptionSkill=''
-                          typeSkill={skill.direction}
-                          authorName={skill.authorName}
-                          authorCity={skill.authorCity}
-                          authorAge={skill.authorAge}
-                          authorAvatar={skill.authorAvatar}
+                          idSkill={related.id}
+                          skillName={related.name}
+                          descriptionSkill={related.description}
+                          typeSkill={related.direction}
+                          authorName={related.author.name}
+                          authorCity={related.author.city}
+                          authorAge={related.author.age}
+                          authorAvatar={related.author.avatarUrl}
                           initialLiked={false}
                           isAuthenticated={false}
-                          skills={skill.skills}
+                          skills={[]}
                         />
                         {isLastCard && (
                           <button

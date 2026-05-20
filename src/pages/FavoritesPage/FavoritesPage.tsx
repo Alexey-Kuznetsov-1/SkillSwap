@@ -4,7 +4,8 @@ import Header from '@/widgets/Header';
 import Footer from '@/widgets/Footer';
 import { CardSkill } from '@/widgets/SkillCard/CardSkill';
 import { useFavorites } from '@/shared/hooks/useFavorites';
-import type { User } from '@/api';
+import { getSkillsCatalog } from '@/api';
+import type { User, SkillCard } from '@/api';
 import styles from './FavoritesPage.module.css';
 
 interface Skill {
@@ -17,12 +18,17 @@ interface Skill {
   authorCity: string;
   authorAge: number;
   authorAvatar: string;
+  title?: string;
+  category?: string;
+  subCategory?: string;
+  likes?: number;
 }
 
 const FavoritesPage: React.FC = () => {
   const navigate = useNavigate();
   const { favorites } = useFavorites();
   const [skills, setSkills] = useState<Skill[]>([]);
+  const [allSkills, setAllSkills] = useState<Skill[]>([]);
   const [loading, setLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -51,12 +57,31 @@ const FavoritesPage: React.FC = () => {
 
   useEffect(() => {
     if (!isLoggedIn) return;
+    
     const fetchSkills = async () => {
       try {
-        const response = await fetch('/db/skills.json');
-        const data = await response.json();
-        const skillsData = data.data || data.skills || [];
-        setSkills(skillsData);
+        // Загружаем все навыки через API
+        const result = await getSkillsCatalog({ limit: 100 });
+        console.log('✅ FavoritesPage загружено навыков:', result.items.length);
+        
+        // Преобразуем для совместимости с текущим интерфейсом
+        const transformedSkills: Skill[] = result.items.map(skill => ({
+          id: skill.id,
+          name: skill.name,
+          description: skill.description,
+          type: skill.direction,
+          userId: skill.author.id || 0,
+          author: skill.author.name,
+          authorCity: skill.author.city,
+          authorAge: skill.author.age,
+          authorAvatar: skill.author.avatarUrl,
+          category: skill.category,
+          subCategory: skill.subcategory,
+          likes: skill.likesCount
+        }));
+        
+        setAllSkills(transformedSkills);
+        setSkills(transformedSkills);
       } catch (error) {
         console.error('Ошибка загрузки навыков:', error);
       } finally {
@@ -65,6 +90,27 @@ const FavoritesPage: React.FC = () => {
     };
     fetchSkills();
   }, [isLoggedIn]);
+
+  // Функция для получения навыков автора
+  const getAuthorSkills = (authorName: string, type: 'teach' | 'learn') => {
+    return allSkills
+      .filter(skill => skill.author === authorName && skill.type === type)
+      .map(skill => ({
+        id: skill.id,
+        name: skill.name,
+        description: skill.description,
+        direction: skill.type,
+        author: {
+          name: skill.author,
+          avatarUrl: skill.authorAvatar,
+          city: skill.authorCity,
+          age: skill.authorAge
+        },
+        likesCount: skill.likes || 0,
+        category: skill.category || '',
+        subcategory: skill.subCategory || ''
+      } as SkillCard));
+  };
 
   if (!isLoggedIn) return null;
 
@@ -111,24 +157,30 @@ const FavoritesPage: React.FC = () => {
         <div className={styles.container}>
           <h1 className={styles.title}>Избранное</h1>
           <div className={styles.grid}>
-            {favoriteSkills.map((skill) => (
-              <CardSkill
-                key={skill.id}
-                idSkill={skill.id}
-                skillName={skill.name}
-                descriptionSkill={skill.description}
-                typeSkill={skill.type}
-                authorName={skill.author}
-                authorCity={skill.authorCity}
-                authorAge={skill.authorAge}
-                authorAvatar={skill.authorAvatar}
-                initialLiked={true}
-                isAuthenticated={isAuthenticated}
-                userAuthenticated={userAuthenticated}
-                variant="default"
-                skills={[]}
-              />
-            ))}
+            {favoriteSkills.map((skill) => {
+              const authorTeachSkills = getAuthorSkills(skill.author, 'teach');
+              const authorLearnSkills = getAuthorSkills(skill.author, 'learn');
+              
+              return (
+                <CardSkill
+                  key={skill.id}
+                  idSkill={skill.id}
+                  skillName={skill.name}
+                  descriptionSkill={skill.description}
+                  typeSkill={skill.type}
+                  authorName={skill.author}
+                  authorCity={skill.authorCity}
+                  authorAge={skill.authorAge}
+                  authorAvatar={skill.authorAvatar}
+                  initialLiked={true}
+                  isAuthenticated={isAuthenticated}
+                  userAuthenticated={userAuthenticated}
+                  variant="default"
+                  skills={authorTeachSkills}
+                  wantedSkills={authorLearnSkills}
+                />
+              );
+            })}
           </div>
         </div>
       </main>
