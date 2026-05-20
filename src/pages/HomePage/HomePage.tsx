@@ -5,6 +5,7 @@ import Footer from '@/widgets/Footer';
 import FiltersSidebar from '@/widgets/FiltersSidebar';
 import Catalog from '@/widgets/Catalog';
 import { getSkillsCatalog, type SkillCard } from '@/api';
+import { Icon } from '@/shared/ui/Icon/Icon';
 import styles from './HomePage.module.css';
 
 // Константы для фильтров (оставляем как было)
@@ -259,7 +260,8 @@ const HomePage: React.FC = () => {
                         className={styles.showAllButton}
                         onClick={() => setShowAllPopular(!showAllPopular)}
                       >
-                        {showAllPopular ? 'Скрыть' : 'Смотреть все'}
+                        <span>{showAllPopular ? 'Скрыть' : 'Смотреть все'}</span>
+                        {!showAllPopular && <Icon name="chevron-right" size={24} />}
                       </button>
                     </div>
                     <Catalog skills={popularSkills} allSkills={allSkills} />
@@ -271,7 +273,8 @@ const HomePage: React.FC = () => {
                         className={styles.showAllButton}
                         onClick={() => setShowAllNew(!showAllNew)}
                       >
-                        {showAllNew ? 'Скрыть' : 'Смотреть все'}
+                        <span>{showAllNew ? 'Скрыть' : 'Смотреть все'}</span>
+                        {!showAllNew && <Icon name="chevron-right" size={24} />}
                       </button>
                     </div>
                     <Catalog skills={newSkills} allSkills={allSkills} />
