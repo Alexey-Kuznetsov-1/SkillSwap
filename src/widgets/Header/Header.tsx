@@ -1,6 +1,7 @@
 // src/widgets/Header/Header.tsx
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTheme } from '@/app/providers/ThemeProvider';
 import { Button } from '@/shared/ui/Button/Button';
 import { Icon } from '@/shared/ui/Icon/Icon';
 import { SearchInput } from '@/shared/ui/SearchInput/SearchInput';
@@ -103,6 +104,7 @@ const Header: React.FC<HeaderProps> = ({
   onSearch,
 }) => {
   const navigate = useNavigate();
+  const { theme, toggleTheme } = useTheme();
   const [searchValue, setSearchValue] = useState('');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -163,8 +165,8 @@ const Header: React.FC<HeaderProps> = ({
         <div className={styles.logo} onClick={handleLogoClick}>
           <div className={styles.logoIcon}>
             <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect width="40" height="40" rx="20" fill="#ABD27A"/>
-              <path d="M20 10C20 10 20.5518 15.1499 22.7009 17.2991C24.8501 19.4482 30 20 30 20C30 20 24.8501 20.5518 22.7009 22.7009C20.5518 24.8501 20 30 20 30C20 30 19.4482 24.8501 17.2991 22.7009C15.1499 20.5518 10 20 10 20C10 20 15.1499 19.4482 17.2991 17.2991C19.4482 15.1499 20 10 20 10Z" fill="#F9FAF7"/>
+              <rect width="40" height="40" rx="20" fill="var(--color-accent-main)"/>
+              <path d="M20 10C20 10 20.5518 15.1499 22.7009 17.2991C24.8501 19.4482 30 20 30 20C30 20 24.8501 20.5518 22.7009 22.7009C20.5518 24.8501 20 30 20 30C20 30 19.4482 24.8501 17.2991 22.7009C15.1499 20.5518 10 20 10 20C10 20 15.1499 19.4482 17.2991 17.2991C19.4482 15.1499 20 10 20 10Z" fill="var(--color-logo-inner)"/>
             </svg>
           </div>
           <span className={styles.logoText}>SkillSwap</span>
@@ -196,8 +198,18 @@ const Header: React.FC<HeaderProps> = ({
 
         <div className={styles.actions}>
           <div className={styles.iconsGroup}>
-            <button className={styles.iconButton}>
-              <Icon name="moon" size={20} />
+            <button
+              type="button"
+              className={styles.iconButton}
+              onClick={toggleTheme}
+              aria-label={theme === 'light' ? 'Включить тёмную тему' : 'Включить светлую тему'}
+              title={theme === 'light' ? 'Тёмная тема' : 'Светлая тема'}
+            >
+              <Icon
+                name={theme === 'light' ? 'moon' : 'sun'}
+                size={20}
+                className="theme-icon"
+              />
             </button>
             {isLoggedIn && (
               <>

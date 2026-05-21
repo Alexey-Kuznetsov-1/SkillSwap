@@ -1,4 +1,6 @@
 :root {
+  color-scheme: light;
+
   /* Базовые цвета: */
   --color-bg: #f9faf7;
   --color-main: #fff;
@@ -8,6 +10,14 @@
   --color-accent-dark: #508826;
   --color-accent-light: #deebc5;
   --color-accent-pale: #e4e8df;
+
+  /* Дополнительные семантические цвета */
+  --color-border: #e5e7eb;
+  --color-surface-hover: #f5f5f5;
+  --color-button-text: #0c0c0c;
+  --color-logo-inner: #f9faf7;
+  --shadow-dropdown: 0 4px 20px rgb(0 0 0 / 15%);
+  --shadow-card: 0 4px 12px rgb(0 0 0 / 10%);
 
   /* Цвета для сопутствующих элементов: */
   --color-error: #bf3920;
@@ -23,10 +33,51 @@
   --color-category-more: #e8ecf7;
 
   /* Состояния: */
-
-  /* - цвет шрифта деактивированных кнопок "Войти", "Сообщить об ошибке" и "назад" */
   --color-text-disabled: #9ca197;
-
-  /* - цвет выключенной иконки переключателя */
   --color-toggle-disabled: #b2b9a9;
+
+  /* Совместимость со старыми переменными Vite-шаблона */
+  --border: var(--color-border);
+  --text-h: var(--color-text-main);
+  --text: var(--color-caption);
+  --accent: var(--color-accent-main);
+  --accent-border: var(--color-accent-dark);
+  --bg: var(--color-main);
+  --code-bg: var(--color-accent-pale);
+  --social-bg: var(--color-surface-hover);
+  --shadow: var(--shadow-card);
+}
+
+[data-theme='dark'] {
+  color-scheme: dark;
+
+  --color-bg: #151a12;
+  --color-main: #1f2619;
+  --color-text-main: #e8ebe3;
+  --color-caption: #9ca197;
+  --color-accent-main: #8fb86a;
+  --color-accent-dark: #b8d99a;
+  --color-accent-light: #3d4a32;
+  --color-accent-pale: #2a3324;
+
+  --color-border: #3d4536;
+  --color-surface-hover: #2a3324;
+  --color-button-text: #0c0c0c;
+  --color-logo-inner: #151a12;
+  --shadow-dropdown: 0 4px 24px rgb(0 0 0 / 45%);
+  --shadow-card: 0 4px 16px rgb(0 0 0 / 35%);
+
+  --color-error: #e0796e;
+  --color-alarm: #bf3920;
+
+  --color-category-business: #3a3348;
+  --color-category-art: #483a44;
+  --color-category-lang: #45412e;
+  --color-category-edu: #334248;
+  --color-category-home: #483c36;
+  --color-category-lifestyle: #364833;
+  --color-category-more: #343a48;
+
+  --color-text-disabled: #6b7364;
+  --color-toggle-disabled: #5a6354;
 }

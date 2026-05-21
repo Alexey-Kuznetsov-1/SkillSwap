@@ -25,13 +25,13 @@
   font-size: 18px;
   font-weight: 600;
   margin: 0 0 4px 0;
-  color: #253017;
+  color: var(--color-text-main);
 }
 
 .authorInfo {
   font-family: 'Roboto', sans-serif;
   font-size: 12px;
-  color: #69735D;
+  color: var(--color-caption);
   margin: 0 0 8px 0;
 }
 
@@ -39,14 +39,14 @@
   font-family: 'Roboto', sans-serif;
   font-size: 14px;
   font-weight: 500;
-  color: #253017;
+  color: var(--color-text-main);
   margin: 0 0 8px 0;
 }
 
 .description {
   font-family: 'Roboto', sans-serif;
   font-size: 14px;
-  color: #69735D;
+  color: var(--color-caption);
   margin: 0;
   line-height: 1.4;
 }
@@ -68,12 +68,12 @@
   text-align: center;
   padding: 40px;
   font-family: 'Roboto', sans-serif;
-  color: #69735D;
+  color: var(--color-caption);
 }
 
 .loader {
   text-align: center;
   padding: 20px;
   font-family: 'Roboto', sans-serif;
-  color: #69735D;
+  color: var(--color-caption);
 }

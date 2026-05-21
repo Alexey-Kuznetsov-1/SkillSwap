@@ -6,19 +6,19 @@
 }
 
 .label {
-  color: #222;
+  color: var(--color-text-main);
   font-size: 14px;
   font-weight: 500;
   line-height: 20px;
 }
 
 .select {
-  border: 1px solid #d9d9d9;
+  border: 1px solid var(--color-border);
   border-radius: 8px;
-  background-color: #fff;
+  background-color: var(--color-main);
   min-height: 44px;
   padding: 10px 12px;
-  color: #222;
+  color: var(--color-text-main);
   font-size: 14px;
   line-height: 20px;
 }
@@ -29,11 +29,11 @@
 }
 
 .errorState {
-  border-color: #d63638;
+  border-color: var(--color-error);
 }
 
 .error {
-  color: #d63638;
+  color: var(--color-error);
   font-size: 12px;
   line-height: 16px;
 }

@@ -8,15 +8,15 @@ interface LogoProps {
 }
 
 export const Logo = ({ variant = 'default', withText = true, onClick }: LogoProps) => {
-  const iconColor = variant === 'light' ? '#FFFFFF' : '#ABD27A';
-  const textColor = variant === 'light' ? '#FFFFFF' : '#253017';
+  const iconColor = variant === 'light' ? 'var(--color-main)' : 'var(--color-accent-main)';
+  const textColor = variant === 'light' ? 'var(--color-main)' : 'var(--color-text-main)';
 
   return (
     <Link to="/" className={styles.logo} onClick={onClick}>
       <div className={styles.logoIcon}>
         <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect width="40" height="40" rx="20" fill={iconColor}/>
-          <path d="M20 10C20 10 20.5518 15.1499 22.7009 17.2991C24.8501 19.4482 30 20 30 20C30 20 24.8501 20.5518 22.7009 22.7009C20.5518 24.8501 20 30 20 30C20 30 19.4482 24.8501 17.2991 22.7009C15.1499 20.5518 10 20 10 20C10 20 15.1499 19.4482 17.2991 17.2991C19.4482 15.1499 20 10 20 10Z" fill="#F9FAF7"/>
+          <path d="M20 10C20 10 20.5518 15.1499 22.7009 17.2991C24.8501 19.4482 30 20 30 20C30 20 24.8501 20.5518 22.7009 22.7009C20.5518 24.8501 20 30 20 30C20 30 19.4482 24.8501 17.2991 22.7009C15.1499 20.5518 10 20 10 20C10 20 15.1499 19.4482 17.2991 17.2991C19.4482 15.1499 20 10 20 10Z" fill="var(--color-logo-inner)"/>
         </svg>
       </div>
       {withText && <span className={styles.logoText} style={{ color: textColor }}>SkillSwap</span>}

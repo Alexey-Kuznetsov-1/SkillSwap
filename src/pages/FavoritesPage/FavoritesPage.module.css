@@ -1,5 +1,5 @@
 .main {
-  background: #F9FAF7;
+  background: var(--color-bg);
   min-height: calc(100vh - 104px - 232px);
   padding: 40px 0;
 }
@@ -14,7 +14,7 @@
   font-family: 'Jost', sans-serif;
   font-size: 32px;
   font-weight: 600;
-  color: #253017;
+  color: var(--color-text-main);
   margin-bottom: 32px;
 }
 
@@ -34,22 +34,22 @@
   font-family: 'Jost', sans-serif;
   font-size: 24px;
   font-weight: 500;
-  color: #253017;
+  color: var(--color-text-main);
   margin-bottom: 12px;
 }
 
 .emptyState p {
   font-family: 'Roboto', sans-serif;
   font-size: 16px;
-  color: #69735D;
+  color: var(--color-caption);
   margin-bottom: 32px;
 }
 
 .backLink {
   display: inline-block;
   padding: 12px 24px;
-  background: #ABD27A;
-  color: #253017;
+  background: var(--color-accent-main);
+  color: var(--color-text-main);
   text-decoration: none;
   border-radius: 12px;
   font-family: 'Roboto', sans-serif;
@@ -58,12 +58,12 @@
 }
 
 .backLink:hover {
-  background: #9bc46a;
+  background: var(--color-accent-dark);
 }
 
 .loader {
   text-align: center;
   padding: 20px;
   font-family: 'Roboto', sans-serif;
-  color: #69735D;
+  color: var(--color-caption);
 }
