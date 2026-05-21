@@ -15,6 +15,15 @@
 
 body {
   margin: 0;
+  background-color: var(--color-bg);
+  color: var(--color-text-main);
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+[data-theme='dark'] img.theme-icon {
+  filter: brightness(0) invert(0.92);
 }
 
 h1,
@@ -54,7 +63,7 @@ code,
 .counter {
   display: inline-flex;
   font-family: var(--font-text), sans-serif;
-  color: var(--text-h);
+  color: var(--color-text-main);
   border-radius: 4px;
 }
 
@@ -62,5 +71,5 @@ code {
   padding: 4px 8px;
   font-size: 15px;
   line-height: 135%;
-  background: var(--code-bg);
+  background: var(--color-accent-pale);
 }

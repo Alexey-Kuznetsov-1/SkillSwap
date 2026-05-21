@@ -1,5 +1,5 @@
 .main {
-  background: #F9FAF7;
+  background: var(--color-bg);
   min-height: calc(100vh - 104px - 232px);
   padding: 40px 0;
 }

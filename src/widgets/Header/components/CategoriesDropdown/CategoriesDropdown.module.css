@@ -11,9 +11,9 @@
   position: absolute;
   top: 100%;
   left: 0;
-  background: #FFFFFF;
+  background: var(--color-main);
   border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--shadow-dropdown);
   padding: 24px;
   z-index: 1000;
   min-width: 600px;
@@ -36,7 +36,7 @@
   font-family: 'Jost', sans-serif;
   font-weight: 600;
   font-size: 16px;
-  color: #253017;
+  color: var(--color-text-main);
   background: none;
   border: none;
   cursor: pointer;
@@ -46,7 +46,7 @@
 }
 
 .categoryButton:hover {
-  color: #ABD27A;
+  color: var(--color-accent-main);
 }
 
 .subCategories {
@@ -58,7 +58,7 @@
 .subCategoryButton {
   font-family: 'Roboto', sans-serif;
   font-size: 14px;
-  color: #69735D;
+  color: var(--color-caption);
   background: none;
   border: none;
   cursor: pointer;
@@ -67,5 +67,5 @@
 }
 
 .subCategoryButton:hover {
-  color: #ABD27A;
+  color: var(--color-accent-main);
 }

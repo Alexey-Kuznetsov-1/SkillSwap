@@ -18,51 +18,51 @@
 
 /* Primary styles */
 .primary {
-  background-color: #abd27a;
-  color: #0c0c0c;
+  background-color: var(--color-accent-main);
+  color: var(--color-button-text);
 }
 
 .primary:hover:not(:disabled) {
-  background-color: #deebc5;
-  color: #253017;
+  background-color: var(--color-accent-light);
+  color: var(--color-text-main);
 }
 
 .primary:active:not(:disabled) {
-  background-color: #508826;
-  color: #ffffff;
+  background-color: var(--color-accent-dark);
+  color: var(--color-main);
 }
 
 /* Secondary styles */
 .secondary {
-  background-color: #ffffff;
-  border: 1px solid #abd27a;
-  color: #0c0c0c;
+  background-color: var(--color-main);
+  border: 1px solid var(--color-accent-main);
+  color: var(--color-button-text);
 }
 
 .secondary:hover:not(:disabled) {
-  border-color: #deebc5;
-  color: #69735d;
+  border-color: var(--color-accent-light);
+  color: var(--color-caption);
 }
 
 .secondary:active:not(:disabled) {
-  border-color: #508826;
-  color: #253017;
+  border-color: var(--color-accent-dark);
+  color: var(--color-text-main);
 }
 
 /* Tertiary styles */
 .tertiary {
-  background-color: #ffffff;
-  color: #253017;
+  background-color: var(--color-main);
+  color: var(--color-text-main);
 }
 
 .tertiary:hover:not(:disabled) {
-  background-color: #deebc5;
-  color: #253017;
+  background-color: var(--color-accent-light);
+  color: var(--color-text-main);
 }
 
 .tertiary:active:not(:disabled) {
-  background-color: #508826;
-  color: #ffffff;
+  background-color: var(--color-accent-dark);
+  color: var(--color-main);
 }
 
 /* Disabled state (общий для всех вариантов) */
@@ -71,19 +71,19 @@
 }
 
 .primary.disabled {
-  background-color: #e4e8df;
-  color: #69735d;
+  background-color: var(--color-accent-pale);
+  color: var(--color-caption);
 }
 
 .secondary.disabled {
-  background-color: #ffffff;
-  border-color: #e4e8df;
-  color: #9ca197;
+  background-color: var(--color-main);
+  border-color: var(--color-accent-pale);
+  color: var(--color-text-disabled);
 }
 
 .tertiary.disabled {
-  background-color: #ffffff;
-  color: #9ca197;
+  background-color: var(--color-main);
+  color: var(--color-text-disabled);
 }
 
 /* Full width */

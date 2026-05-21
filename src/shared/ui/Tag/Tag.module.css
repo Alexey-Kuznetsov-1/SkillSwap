@@ -5,11 +5,10 @@
   padding-block: 8px;
   border-radius: 20px;
   display: inline-block;
-
 }
 
 .tag-default {
-  background-color: #E8ECF7; /* по умолчанию default */
+  background-color: var(--color-category-more);
 }
 
 .tag-text {
@@ -18,10 +17,7 @@
   font-size: 12px;
   line-height: 16px;
   vertical-align: middle;
-  color: #253017;
+  color: var(--color-text-main);
   margin: 0;
   padding: 0;
 }
-
-
- 

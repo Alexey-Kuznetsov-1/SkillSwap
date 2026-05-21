@@ -11,7 +11,7 @@
 
 /* Основная обертка страницы */
 .page {
-  background: #f9faf7;
+  background: var(--color-bg);
   width: 100%;
   min-height: 100vh;
   display: flex;
@@ -38,7 +38,7 @@
 .mainBlock {
   width: 1368px;
   height: 932px;
-  background: #f9faf7;
+  background: var(--color-bg);
   display: flex;
   flex-direction: column;
   gap: 60px;
@@ -71,9 +71,9 @@
 .skillCard {
   width: 100%;
   height: 100%;
-  background: #ffffff;
+  background: var(--color-main);
   border-radius: 12px;
-  border: 2px solid #e5e7eb;
+  border: 2px solid var(--color-border);
   padding: 32px 52px;
   display: flex;
   flex-direction: column;
@@ -119,14 +119,14 @@
   font-family: 'Jost', sans-serif;
   font-size: 24px;
   font-weight: 600;
-  color: #253017;
+  color: var(--color-text-main);
   margin: 0 0 8px 0;
 }
 
 .skillCategory {
   font-family: 'Roboto', sans-serif;
   font-size: 14px;
-  color: #69735d;
+  color: var(--color-caption);
   margin-bottom: 16px;
   display: block;
 }
@@ -135,19 +135,19 @@
   font-family: 'Roboto', sans-serif;
   font-size: 16px;
   line-height: 1.5;
-  color: #253017;
+  color: var(--color-text-main);
   margin: 0 0 24px 0;
 }
 
 .exchangeButton {
-  background: #abd27a;
+  background: var(--color-accent-main);
   border: none;
   border-radius: 12px;
   padding: 12px 24px;
   font-family: 'Jost', sans-serif;
   font-size: 16px;
   font-weight: 600;
-  color: #253017;
+  color: var(--color-text-main);
   cursor: pointer;
   transition: opacity 0.2s;
   width: 399px;
@@ -163,7 +163,7 @@
 .galleryPlaceholder {
   width: 324px;
   height: 324px;
-  background: #e5e7eb;
+  background: var(--color-border);
   border-radius: 12px;
   display: flex;
   align-items: center;
@@ -175,13 +175,13 @@
   text-align: center;
   font-family: 'Roboto', sans-serif;
   font-size: 14px;
-  color: #69735d;
+  color: var(--color-caption);
 }
 
 .galleryPlaceholderNote {
   font-size: 12px;
   margin-top: 8px;
-  color: #9ca197;
+  color: var(--color-text-disabled);
 }
 
 /* Нижний блок — похожие предложения (карусель) */
@@ -203,7 +203,7 @@
   font-family: 'Jost', sans-serif;
   font-size: 24px;
   font-weight: 600;
-  color: #253017;
+  color: var(--color-text-main);
   margin: 0;
 }
 
@@ -235,22 +235,22 @@
   transform: translateY(-50%);
   width: 40px;
   height: 40px;
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
+  background: var(--color-main);
+  border: 1px solid var(--color-border);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all 0.2s;
-  color: #253017;
+  color: var(--color-text-main);
   z-index: 10;
 }
 
 .nextButton:hover {
-  background: #abd27a;
-  border-color: #abd27a;
-  color: #ffffff;
+  background: var(--color-accent-main);
+  border-color: var(--color-accent-main);
+  color: var(--color-main);
 }
 
 /* Кнопка "назад" (стрелка влево) — появляется после нажатия на стрелку вправо */
@@ -261,22 +261,22 @@
   transform: translateY(-50%);
   width: 40px;
   height: 40px;
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
+  background: var(--color-main);
+  border: 1px solid var(--color-border);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all 0.2s;
-  color: #253017;
+  color: var(--color-text-main);
   z-index: 10;
 }
 
 .prevButton:hover {
-  background: #abd27a;
-  border-color: #abd27a;
-  color: #ffffff;
+  background: var(--color-accent-main);
+  border-color: var(--color-accent-main);
+  color: var(--color-main);
 }
 
 /* Футер */
@@ -291,29 +291,29 @@
   padding: 60px 20px;
   font-family: 'Roboto', sans-serif;
   font-size: 18px;
-  color: #69735d;
+  color: var(--color-caption);
 }
 
 /* Error */
 .errorBlock {
   text-align: center;
   padding: 60px 20px;
-  background: #ffffff;
+  background: var(--color-main);
   border-radius: 16px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--color-border);
 }
 
 .errorBlock h2 {
   font-family: 'Jost', sans-serif;
   font-size: 24px;
-  color: #253017;
+  color: var(--color-text-main);
   margin: 0 0 12px 0;
 }
 
 .errorBlock p {
   font-family: 'Roboto', sans-serif;
   font-size: 16px;
-  color: #69735d;
+  color: var(--color-caption);
   margin: 0;
 }
 

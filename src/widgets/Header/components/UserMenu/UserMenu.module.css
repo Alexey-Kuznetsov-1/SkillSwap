@@ -1,0 +1,64 @@
+.menu {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  min-width: 248px;
+  padding: 8px;
+  background: #FFFFFF;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(37, 48, 23, 0.12);
+  z-index: 1000;
+  animation: fadeIn 0.15s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.menuItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 16px;
+  background: none;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  text-align: left;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.02em;
+  color: #253017;
+  transition: background-color 0.15s ease;
+}
+
+.menuItem:hover {
+  background: #F1F4ED;
+}
+
+.menuItem:focus-visible {
+  outline: 2px solid #ABD27A;
+  outline-offset: -2px;
+}
+
+.menuItemText {
+  flex: 1;
+  white-space: nowrap;
+}
+
+.menuItemIcon {
+  flex-shrink: 0;
+}
