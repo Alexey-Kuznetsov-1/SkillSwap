@@ -1,14 +1,5 @@
 /* src/pages/SkillPage/SkillPage.module.css */
 
-/* Переопределяем глобальные ограничения */
-.page :global(#root) {
-  width: 100%;
-  max-width: none;
-  border: none;
-  margin: 0;
-  padding: 0;
-}
-
 /* Основная обертка страницы */
 .page {
   background: var(--color-bg);
@@ -24,7 +15,7 @@
   width: 100%;
 }
 
-/* Контентная область  */
+/* Контентная область — центрируем основной блок */
 .content {
   flex: 1;
   display: flex;
@@ -34,7 +25,7 @@
   padding: 0;
 }
 
-/* Основной блок  */
+/* Основной блок — точные размеры по макету */
 .mainBlock {
   width: 1368px;
   height: 932px;
@@ -73,7 +64,7 @@
   height: 100%;
   background: var(--color-main);
   border-radius: 12px;
-  border: 2px solid var(--color-border);
+  border: 2px solid var(--color-accent-pale);
   padding: 32px 52px;
   display: flex;
   flex-direction: column;
@@ -81,7 +72,7 @@
   gap: 24px;
 }
 
-/* Блок с иконками  */
+/* Блок с иконками (action) */
 .actionBlock {
   width: 100%;
   display: flex;
@@ -100,43 +91,52 @@
   opacity: 0.7;
 }
 
-/* Галерея и описание навыка */
+/* Галерея и описание в одной строке */
 .galleryWrapper {
   display: flex;
   gap: 77px;
   width: 100%;
 }
 
-/* Блок с описанием навыка */
+/* Контейнер для галереи */
+.galleryContainer {
+  flex-shrink: 0;
+}
+
+/* Блок с описанием — слева */
 .descriptionWrapper {
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  text-align: left; /* Добавляем выравнивание по левому краю */
 }
 
 .skillTitle {
-  font-family: 'Jost', sans-serif;
+  font-family: var(--font-heading);
   font-size: 24px;
-  font-weight: 600;
+  font-weight: var(--font-weight-medium);
   color: var(--color-text-main);
   margin: 0 0 8px 0;
+  text-align: left; /* Выравнивание заголовка по левому краю */
 }
 
 .skillCategory {
-  font-family: 'Roboto', sans-serif;
-  font-size: 14px;
+  font-family: var(--font-text);
+  font-size: var(--font-size-caption);
   color: var(--color-caption);
   margin-bottom: 16px;
   display: block;
+  text-align: left; /* Выравнивание категории по левому краю */
 }
 
 .skillDescription {
-  font-family: 'Roboto', sans-serif;
-  font-size: 16px;
+  font-family: var(--font-text);
+  font-size: var(--font-size-text);
   line-height: 1.5;
   color: var(--color-text-main);
   margin: 0 0 24px 0;
+  text-align: left; /* Выравнивание описания по левому краю */
 }
 
 .exchangeButton {
@@ -144,9 +144,9 @@
   border: none;
   border-radius: 12px;
   padding: 12px 24px;
-  font-family: 'Jost', sans-serif;
-  font-size: 16px;
-  font-weight: 600;
+  font-family: var(--font-heading);
+  font-size: var(--font-size-text);
+  font-weight: var(--font-weight-medium);
   color: var(--color-text-main);
   cursor: pointer;
   transition: opacity 0.2s;
@@ -157,31 +157,6 @@
 
 .exchangeButton:hover {
   opacity: 0.9;
-}
-
-/* Заглушка для галереи */
-.galleryPlaceholder {
-  width: 324px;
-  height: 324px;
-  background: var(--color-border);
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.galleryPlaceholderContent {
-  text-align: center;
-  font-family: 'Roboto', sans-serif;
-  font-size: 14px;
-  color: var(--color-caption);
-}
-
-.galleryPlaceholderNote {
-  font-size: 12px;
-  margin-top: 8px;
-  color: var(--color-text-disabled);
 }
 
 /* Нижний блок — похожие предложения (карусель) */
@@ -200,9 +175,9 @@
 }
 
 .sectionTitle {
-  font-family: 'Jost', sans-serif;
+  font-family: var(--font-heading);
   font-size: 24px;
-  font-weight: 600;
+  font-weight: var(--font-weight-medium);
   color: var(--color-text-main);
   margin: 0;
 }
@@ -236,7 +211,7 @@
   width: 40px;
   height: 40px;
   background: var(--color-main);
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-accent-pale);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -253,7 +228,7 @@
   color: var(--color-main);
 }
 
-/* Кнопка "назад" (стрелка влево) — появляется после нажатия на стрелку вправо */
+/* Кнопка "назад" (стрелка влево) */
 .prevButton {
   position: absolute;
   left: -20px;
@@ -262,7 +237,7 @@
   width: 40px;
   height: 40px;
   background: var(--color-main);
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-accent-pale);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -289,7 +264,7 @@
 .loading {
   text-align: center;
   padding: 60px 20px;
-  font-family: 'Roboto', sans-serif;
+  font-family: var(--font-text);
   font-size: 18px;
   color: var(--color-caption);
 }
@@ -300,19 +275,19 @@
   padding: 60px 20px;
   background: var(--color-main);
   border-radius: 16px;
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-accent-pale);
 }
 
 .errorBlock h2 {
-  font-family: 'Jost', sans-serif;
+  font-family: var(--font-heading);
   font-size: 24px;
   color: var(--color-text-main);
   margin: 0 0 12px 0;
 }
 
 .errorBlock p {
-  font-family: 'Roboto', sans-serif;
-  font-size: 16px;
+  font-family: var(--font-text);
+  font-size: var(--font-size-text);
   color: var(--color-caption);
   margin: 0;
 }
@@ -323,11 +298,11 @@
     width: calc(100% - 72px);
     margin: 0 36px;
   }
-
+  
   .topBlock {
     width: 100%;
   }
-
+  
   .bottomBlock {
     width: 100%;
   }
@@ -338,34 +313,34 @@
     flex-direction: column;
     height: auto;
   }
-
+  
   .leftBlock {
     width: 100%;
     height: auto;
   }
-
+  
   .rightBlock {
     width: 100%;
     height: auto;
   }
-
+  
   .bottomBlock {
     height: auto;
   }
-
+  
   .carousel {
     grid-template-columns: repeat(2, 1fr);
   }
-
+  
   .mainBlock {
     height: auto;
     padding: 20px 0;
   }
-
+  
   .nextButton {
     right: -10px;
   }
-
+  
   .prevButton {
     left: -10px;
   }
@@ -376,35 +351,29 @@
     flex-direction: column;
     gap: 24px;
   }
-
-  .galleryPlaceholder {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 1 / 1;
-  }
-
+  
   .exchangeButton {
     width: 100%;
   }
-
+  
   .carousel {
     grid-template-columns: 1fr;
   }
-
+  
   .skillCard {
     padding: 24px;
   }
-
+  
   .sectionHeader {
     flex-direction: column;
     gap: 16px;
     align-items: flex-start;
   }
-
+  
   .nextButton {
     right: -5px;
   }
-
+  
   .prevButton {
     left: -5px;
   }
