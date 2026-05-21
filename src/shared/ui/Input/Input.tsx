@@ -1,15 +1,25 @@
 import React from 'react';
 import styles from './Input.module.css';
 
-export type InputType = 'text' | 'email' | 'password' | 'tel' | 'url' | 'number' | 'search';
+export type InputType =
+  | 'text'
+  | 'email'
+  | 'password'
+  | 'tel'
+  | 'url'
+  | 'number'
+  | 'search';
 
-export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
+export interface InputProps extends Omit<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  'size'
+> {
   /** Тип поля */
   type?: InputType;
   /** Текущее значение */
   value: string;
   /** Обработчик изменения */
-  onChange: (value: string) => void;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   /** Плейсхолдер */
   placeholder?: string;
   /** Состояние ошибки */
@@ -45,10 +55,6 @@ export const Input: React.FC<InputProps> = ({
   id,
   ...restProps
 }) => {
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    onChange(event.target.value);
-  };
-
   const inputClasses = [
     styles.input,
     styles[size],
@@ -68,7 +74,7 @@ export const Input: React.FC<InputProps> = ({
         type={type}
         className={inputClasses}
         value={value}
-        onChange={handleChange}
+        onChange={onChange}
         placeholder={placeholder}
         disabled={disabled}
         name={name}

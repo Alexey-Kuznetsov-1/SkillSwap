@@ -205,7 +205,6 @@ const RegisterPage = () => {
   const { login } = useAuth();
   const [uploadedPhotoUrls, setUploadedPhotoUrls] = useState<string[]>([]);
 
-  const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
   const generateUserId = (): string => {
     return (
       'user-' +
@@ -232,6 +231,11 @@ const RegisterPage = () => {
   const [currentContainer, setCurrentContainer] = useState<1 | 2 | 3>(1);
   const [avatar, setAvatar] = useState<File | null>(null);
   const [uploadedPhotos, setUploadedPhotos] = useState<File[]>([]);
+
+  const [modalState, setModalState] = useState({
+    isOpen: false,
+    type: null as 'confirmation' | null, // тип модалки
+  });
 
   // Эффект для синхронизации currentContainer с хэшем
   useEffect(() => {
@@ -456,6 +460,10 @@ const RegisterPage = () => {
     await validateCurrentStep('avatar');
   };
 
+  useEffect(() => {
+    console.log('Состояние модального окна:', modalState);
+  }, [modalState]);
+
   // Очистка при размонтировании
   useEffect(() => {
     return () => {
@@ -568,7 +576,7 @@ const RegisterPage = () => {
         if (currentContainer < 3) {
           setCurrentContainer((prev) => (prev + 1) as 1 | 2 | 3);
         } else {
-          setIsConfirmationModalOpen(true);
+          setModalState({ isOpen: true, type: 'confirmation' });
         }
       } finally {
         setIsLoading(false);
@@ -593,8 +601,8 @@ const RegisterPage = () => {
   }, [restoreStepData]);
 
   const handleEdit = () => {
-    setIsConfirmationModalOpen(false);
-    setCurrentContainer(3); // Возвращаемся на последний шаг
+    handleCloseModal();
+    setCurrentContainer(3); // возвращаем на последний шаг
   };
 
   const handleConfirm = async () => {
@@ -605,7 +613,10 @@ const RegisterPage = () => {
         console.warn('Не все поля заполнены корректно');
         return;
       }
-      const userData: RegistrationFormData & { id: string } = {
+
+      const generatedSkillId = generateUserId();
+
+      const userData: RegistrationFormData & { id: string; skillId: string } = {
         id: generateUserId(),
         email: getValues('email'),
         name: getValues('name'),
@@ -621,14 +632,18 @@ const RegisterPage = () => {
         skillName: getValues('skillName'),
         skillDescription: getValues('skillDescription'),
         photos: getValues('photos'),
+        skillId: generatedSkillId,
       };
 
       console.log('Полный объект данных пользователя:', userData);
 
       localStorage.setItem('userData', JSON.stringify(userData));
+      localStorage.setItem('isAuthenticated', 'true');
+
       login(userData);
       console.log('Пользователь зарегистрирован:', userData);
-      navigate('/profile');
+
+      navigate(`/skill/${generatedSkillId}?created=true`);
     } catch (error) {
       console.error('Ошибка регистрации:', error);
       setAuthError('Не удалось завершить регистрацию. Попробуйте ещё раз.');
@@ -694,6 +709,10 @@ const RegisterPage = () => {
       shouldValidate: true,
       shouldDirty: true,
     });
+  };
+
+  const handleCloseModal = () => {
+    setModalState({ isOpen: false, type: null });
   };
 
   return (
@@ -1523,9 +1542,10 @@ const RegisterPage = () => {
             </div>
           </>
         )}
-        {isConfirmationModalOpen && (
+        {modalState.isOpen && modalState.type === 'confirmation' && (
           <ModalUI
-            onClose={() => setIsConfirmationModalOpen(false)}
+            isOpen={modalState.isOpen}
+            onClose={handleCloseModal}
             title='Ваше предложение'
             subtitle='Пожалуйста, проверьте и подтвердите правильность данных'
           >
