@@ -6,14 +6,52 @@ import { Button } from '@/shared/ui/Button/Button';
 import { Icon } from '@/shared/ui/Icon/Icon';
 import { SearchInput } from '@/shared/ui/SearchInput/SearchInput';
 import CategoriesDropdown from './components/CategoriesDropdown';
+import NotificationsDropdown, {
+  type NotificationItem,
+} from './components/NotificationsDropdown';
 import styles from './Header.module.css';
 
 interface HeaderProps {
   isLoggedIn?: boolean;
   userName?: string;
   avatarSrc?: string;
+  notifications?: NotificationItem[];
   onSearch?: (query: string) => void;
+  onNotificationAction?: (notificationId: string) => void;
 }
+
+const DEFAULT_NOTIFICATIONS: NotificationItem[] = [
+  {
+    id: 'n1',
+    title: 'Николай принял ваш обмен',
+    description: 'Перейдите в профиль, чтобы обсудить детали',
+    date: 'сегодня',
+    isNew: true,
+    actionLabel: 'Перейти',
+  },
+  {
+    id: 'n2',
+    title: 'Татьяна предлагает вам обмен',
+    description: 'Примите обмен, чтобы обсудить детали',
+    date: 'сегодня',
+    isNew: true,
+    actionLabel: 'Перейти',
+  },
+  {
+    id: 'n3',
+    title: 'Олег предлагает вам обмен',
+    description: 'Примите обмен, чтобы обсудить детали',
+    date: 'вчера',
+    isNew: false,
+  },
+  {
+    id: 'n4',
+    title: 'Игорь принял ваш обмен',
+    description: 'Перейдите в профиль, чтобы обсудить детали',
+    date: '23 мая',
+    isNew: false,
+  },
+];
 
 const categories = [
   // ... массив categories без изменений (такой же как был)
@@ -101,13 +139,28 @@ const Header: React.FC<HeaderProps> = ({
   isLoggedIn = false,
   userName = 'Мария',
   avatarSrc = '',
+  notifications: notificationsProp,
   onSearch,
+  onNotificationAction,
 }) => {
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
   const [searchValue, setSearchValue] = useState('');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+  const [notifications, setNotifications] = useState<NotificationItem[]>(
+    notificationsProp ?? DEFAULT_NOTIFICATIONS,
+  );
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const notificationsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (notificationsProp) {
+      setNotifications(notificationsProp);
+    }
+  }, [notificationsProp]);
+
+  const unreadCount = notifications.filter((item) => item.isNew).length;
 
   const handleSearchChange = (value: string) => {
     setSearchValue(value);
@@ -115,21 +168,67 @@ const Header: React.FC<HeaderProps> = ({
   };
 
   const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
+    setIsDropdownOpen((prev) => !prev);
+    setIsNotificationsOpen(false);
   };
 
   const closeDropdown = () => {
     setIsDropdownOpen(false);
   };
 
+  const toggleNotifications = () => {
+    setIsNotificationsOpen((prev) => !prev);
+    setIsDropdownOpen(false);
+  };
+
+  const closeNotifications = () => {
+    setIsNotificationsOpen(false);
+  };
+
+  const handleReadAll = () => {
+    setNotifications((prev) => prev.map((item) => ({ ...item, isNew: false })));
+  };
+
+  const handleClearViewed = () => {
+    setNotifications((prev) => prev.filter((item) => item.isNew));
+  };
+
+  const handleNotificationAction = (notificationId: string) => {
+    setNotifications((prev) =>
+      prev.map((item) =>
+        item.id === notificationId ? { ...item, isNew: false } : item,
+      ),
+    );
+    closeNotifications();
+    onNotificationAction?.(notificationId);
+  };
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      const target = event.target as Node;
+      if (dropdownRef.current && !dropdownRef.current.contains(target)) {
         closeDropdown();
+      }
+      if (
+        notificationsRef.current &&
+        !notificationsRef.current.contains(target)
+      ) {
+        closeNotifications();
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        closeNotifications();
+        closeDropdown();
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
   }, []);
 
   const handleCategoryClick = (categoryValue: string) => {
@@ -213,9 +312,34 @@ const Header: React.FC<HeaderProps> = ({
             </button>
             {isLoggedIn && (
               <>
-                <button className={styles.iconButton}>
-                  <Icon name="notification" size={24} />
-                </button>
+                <div
+                  className={styles.notificationsWrapper}
+                  ref={notificationsRef}
+                >
+                  <button
+                    type="button"
+                    className={styles.iconButton}
+                    onClick={toggleNotifications}
+                    aria-label="Уведомления"
+                    aria-haspopup="dialog"
+                    aria-expanded={isNotificationsOpen}
+                  >
+                    <Icon name="notification" size={24} />
+                    {unreadCount > 0 && (
+                      <span
+                        className={styles.notificationBadge}
+                        aria-label={`Новых уведомлений: ${unreadCount}`}
+                      />
+                    )}
+                  </button>
+                  <NotificationsDropdown
+                    isOpen={isNotificationsOpen}
+                    notifications={notifications}
+                    onReadAll={handleReadAll}
+                    onClearViewed={handleClearViewed}
+                    onActionClick={handleNotificationAction}
+                  />
+                </div>
                 <button className={styles.iconButton}>
                   <Icon name="like" size={24} />
                 </button>
