@@ -148,4 +148,5 @@ export interface RegistrationFormData {
   skillName: string;
   skillDescription: string;
   photos: File[];
+  skillId?: string;
 }

@@ -11,6 +11,7 @@ import ExamplePage from '@/pages/ExamplePage';
 import NotFoundPage from '@/pages/NotFoundPage/NotFoundPage';
 import ProfilePage from '@/pages/ProfilePage/ProfilePage';
 import AboutPage from '@/pages/AboutPage/AboutPage';
+import { AuthWrapper } from '@/features/auth/AuthWrapper';
 
 function App() {
   return (
@@ -18,7 +19,14 @@ function App() {
       <Routes>
         <Route path='/' element={<HomePage />} />
         <Route path='/skill/:id' element={<SkillPage />} />
-        <Route path='/login' element={<LoginPage />} />
+        <Route
+          path='/login'
+          element={
+            <AuthWrapper>
+              <LoginPage />
+            </AuthWrapper>
+          }
+        />
         <Route path='/register' element={<RegisterPage />} />
         <Route path='/create' element={<CreatePage />} />
         <Route path='/favorites' element={<FavoritesPage />} />
