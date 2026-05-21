@@ -1,0 +1,133 @@
+/* src/pages/TermsPage/TermsPage.module.css */
+
+.main {
+  background: var(--color-bg);
+  min-height: calc(100vh - 104px - 232px);
+  padding: 40px 0;
+}
+
+.container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 36px;
+}
+
+.content {
+  max-width: 900px;
+  margin: 0 auto;
+  background: var(--color-main);
+  border-radius: 24px;
+  padding: 48px 56px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-heading-section);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-main);
+  margin: 0 0 32px 0;
+  text-align: center;
+}
+
+.termsContainer {
+  max-height: 600px;
+  overflow-y: auto;
+  padding-right: 16px;
+}
+
+/* Стили для каждой строки соглашения */
+.termLine {
+  font-family: var(--font-text);
+  line-height: 1.5;
+  color: var(--color-text-main);
+  margin: 8px 0;
+  transition: font-size 0.1s ease;
+}
+
+/* Предупреждение */
+.warning {
+  font-family: var(--font-heading);
+  font-size: 14px;
+  font-weight: var(--font-weight-medium);
+  color: var(--color-error);
+  text-align: center;
+  padding: 12px;
+  background: rgba(191, 57, 32, 0.1);
+  border-radius: 12px;
+  margin: 0 0 24px 0;
+}
+
+/* Подпись в конце */
+.signature {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 2px solid var(--color-accent-main);
+  text-align: right;
+  font-family: var(--font-heading);
+  color: var(--color-text-main);
+}
+
+.signature p {
+  margin: 4px 0;
+}
+
+.small {
+  font-size: 12px;
+  color: var(--color-caption);
+  margin-top: 8px !important;
+}
+
+/* Стилизация скроллбара */
+.termsContainer::-webkit-scrollbar {
+  width: 8px;
+}
+
+.termsContainer::-webkit-scrollbar-track {
+  background: var(--color-accent-pale);
+  border-radius: 4px;
+}
+
+.termsContainer::-webkit-scrollbar-thumb {
+  background: var(--color-accent-main);
+  border-radius: 4px;
+}
+
+.termsContainer::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent-dark);
+}
+
+/* Адаптив */
+@media (width <= 1024px) {
+  .content {
+    padding: 32px 36px;
+  }
+  
+  .title {
+    font-size: 32px;
+  }
+}
+
+@media (width <= 768px) {
+  .container {
+    padding: 0 20px;
+  }
+  
+  .content {
+    padding: 24px 20px;
+  }
+  
+  .title {
+    font-size: 28px;
+    margin-bottom: 24px;
+  }
+  
+  .termsContainer {
+    max-height: 500px;
+    padding-right: 8px;
+  }
+  
+  .warning {
+    font-size: 12px;
+  }
+}

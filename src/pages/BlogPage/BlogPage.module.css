@@ -1,0 +1,64 @@
+/* src/pages/BlogPage/BlogPage.module.css */
+
+.main {
+  background: var(--color-bg);
+  min-height: calc(100vh - 104px - 232px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 36px;
+  width: 100%;
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+}
+
+.messageBlock {
+  text-align: center;
+  max-width: 600px;
+  padding: 48px 32px;
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-heading-section);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-main);
+  margin: 0 0 24px 0;
+}
+
+.message {
+  font-family: var(--font-text);
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--color-caption);
+  margin: 0;
+}
+
+/* Адаптив */
+@media (width <= 768px) {
+  .container {
+    padding: 0 20px;
+  }
+  
+  .title {
+    font-size: 28px;
+  }
+  
+  .message {
+    font-size: 16px;
+  }
+  
+  .messageBlock {
+    padding: 32px 20px;
+  }
+}

@@ -1,3 +1,5 @@
+/* src/widgets/Footer/Footer.module.css */
+
 .footer {
   background: var(--color-main);
   padding: 32px 0;
@@ -19,6 +21,19 @@
   gap: 12px;
 }
 
+/* Добавь этот блок — стили для ссылки логотипа */
+.logoLink {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.logoLink:hover .logoText {
+  color: var(--color-accent-main);
+}
+
 .logoIcon {
   width: 40px;
   height: 40px;
@@ -34,6 +49,7 @@
   line-height: 32px;
   letter-spacing: -0.011em;
   color: var(--color-text-main);
+  transition: color 0.2s ease;
 }
 
 .linksContainer {
@@ -59,9 +75,34 @@
   color: var(--color-text-main);
   text-decoration: none;
   text-align: left;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
 }
 
 .link:hover {
+  text-decoration: underline;
+  color: var(--color-accent-main);
+}
+
+.linkButton {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.02em;
+  color: var(--color-text-main);
+  text-decoration: none;
+  text-align: left;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.linkButton:hover {
+  color: var(--color-accent-main);
   text-decoration: underline;
 }
 
