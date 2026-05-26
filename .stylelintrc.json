@@ -1,0 +1,24 @@
+{
+  "extends": [
+    "stylelint-config-standard",
+    "stylelint-config-standard-scss",
+    "stylelint-config-recess-order"
+  ],
+  "overrides": [
+    {
+      "files": ["**/*.scss"],
+      "customSyntax": "postcss-scss"
+    },
+    {
+      "files": ["src/stories/**/*.css"],
+      "rules": {
+        "selector-class-pattern": null
+      }
+    }
+  ],
+  "rules": {
+    "alpha-value-notation": "number",
+    "color-function-notation": "modern",
+    "scss/operator-no-unspaced": null
+  }
+}
